@@ -160,12 +160,22 @@ Other possible arguments to `ADD-apply` are
 * `+TIMES+` (originally Cudd_addTimes) -- Integer and floating point multiplication.
 * `+PLUS+` (originally Cudd_addPlus) -- Integer and floating point addition
 
+Another  way  to  construct an  ADD  is  to  convert  the corresponding  BDD  by
+`bdd->add` function. (This case applies only to the case where 0-1 ADDs suffice,
+i.e. ADDs with only 0 or 1 terminal nodes).
+
 ### Representing a family of set using ZDD
 
-ZDD is notoriously famous among Japanese CS researchers due to the hype in
-https://www.youtube.com/watch?v=Q4gTV4r0zRs . It is actually quite powerful and
+ZDD is notoriously famous among Japanese CS researchers due to this hyped youtube video 
+https://www.youtube.com/watch?v=Q4gTV4r0zRs . No, it is actually quite powerful and
 is a better option than BDD when *most of the paths leads to the zero-node*, and is
 particularly useful for representing a family of sets.
+
+One way to construct a ZDD is to call either of conversion functions
+`bdd->zdd-simple` and `bdd->zdd-cover`. The first function directly maps a BDD
+variable into a ZDD variable, i.e. 1-to-1 manner. The second function converts a
+BDD into a *cover* representation by mapping each BDD variable into
+corresponding **on** and **off** variables, which is more efficient.
 
 
 
