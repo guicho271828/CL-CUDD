@@ -69,24 +69,17 @@
   (with-manager ()
     (let ((f
            (reduce #'node-or
-                   (print
-                    (iter (for line in-file path using #'read-line)
-                         (pass)
+                   (iter (for line in-file path using #'read-line)
                          (collect
-                             (print
-                              (let ((number 0))
-                                (reduce #'node-and
-                                        (iter (for c in-vector line)
-                                              (for index from 0)
-                                              (incf number)
-                                              (pass)
-                                              (collect
-                                                  (ecase c
-                                                    (#\0 (node-complement
-                                                          (make-var 'add-node :index index)))
-                                                    (#\1 (make-var 'add-node :index index)))))
-                                        :initial-value (one-node 'add-node)))))
-                         (pass)))
+                             (reduce #'node-and
+                                     (iter (for c in-vector line)
+                                           (for index from 0)
+                                           (collect
+                                               (ecase c
+                                                 (#\0 (node-complement
+                                                       (make-var 'add-node :index index)))
+                                                 (#\1 (make-var 'add-node :index index)))))
+                                     :initial-value (one-node 'add-node))))
                    :initial-value (zero-node 'add-node))))
       (print f)
       (match path
