@@ -469,7 +469,8 @@
            :SIZEOF-LONG 
            :SIZEOF-VOID-P 
            :TRUE 
-           :VALUE )
+           :VALUE
+           :zdd-dump-dot)
   ;; other exports done by swig
   )
 
