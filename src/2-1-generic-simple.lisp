@@ -33,7 +33,9 @@ and H being the else branch"
   :bdd "Implements ITE(f,g,h).")
 
 (defgeneric cube (nodes type)
-  (:documentation "Build a cube from a list of nodes. TYPE defines which nodes we have
+  (:documentation "
+A cube, or product, is a boolean product of literals.
+Build a cube from a list of nodes. TYPE defines which nodes we have
 in the list of nodes: ADD-NODE or BDD-NODE"))
 
 (defmethod cube (nodes (type (eql 'add-node)))
