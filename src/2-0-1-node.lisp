@@ -59,8 +59,11 @@ every node in the body and decreasing it after the body is run"
     (format stream "~A " (cudd-node-read-index (node-pointer object)))
     (if (node-constant-p object)
         (format stream "LEAF (VALUE ~A)" (node-value object))
-        (format stream "INNER 0x~x" (pointer-address (node-pointer object))))
-    (format stream " REF-COUNT ~d" (cudd-node-get-ref-count (manager-pointer *manager*) (node-pointer object)))))
+        (format stream "INNER 0x~x INDEX ~d"
+                (pointer-address (node-pointer object))
+                (node-index object)))
+    (format stream " REF ~d"
+            (cudd-node-get-ref-count (manager-pointer *manager*) (node-pointer object)))))
 
 (defun node-index (node)
   (cudd-node-read-index (node-pointer node)))
