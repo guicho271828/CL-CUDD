@@ -554,4 +554,8 @@
    #:zero-node
 
    #:with-nodes
-   #:zdd-node))
+   #:zdd-node
+   #:bdd->zdd-simple
+   #:zdd->bdd-simple
+   #:bdd->zdd-cover
+   #:zdd->bdd-cover))

@@ -4,51 +4,45 @@
 ;; CUDD-ZDD-PORT-TO-BDD
 ;; CUDD-ZDD-PORT-FROM-BDD
 
-;; (defun bdd->add (bdd)
-;;   "Converts a BDD to a 0-1 ADD"
-;;   (assert (typep bdd 'bdd-node))
-;;   (wrap-and-finalize
-;;    (cudd-bdd-to-add (manager-pointer *manager*) (node-pointer bdd))
-;;    'add-node))
-;; 
-;; (defun add->bdd (add)
-;;   "Converts an ADD to a BDD by replacing all discriminants different from 0 with 1."
-;;   (assert (typep add 'add-node))
-;;   (wrap-and-finalize
-;;    (cudd-add-bdd-pattern (manager-pointer *manager*) (node-pointer add))
-;;    'bdd-node))
-;; 
-;; (def-cudd-call add->bdd-interval (() (f :node) lower upper)
-;;   :generic "Converts an ADD to a BDD by replacing all discriminants greater than or equal to lower and less
-;;   than or equal to upper with 1, and all other discriminants with 0.")
-;; 
-;; (defmethod add->bdd-interval ((f add-node) lower upper)
-;;   (wrap-and-finalize (cudd-add-bdd-interval
-;;                       (manager-pointer *manager*)
-;;                       (node-pointer f)
-;;                       lower upper)
-;;                      'bdd-node))
-;; 
-;; 
-;; (def-cudd-call add->bdd-strict-threshold (() (f :node) threshold)
-;;   :generic "Converts an ADD to a BDD by replacing all discriminants STRICTLY greater than value with 1, and
-;;   all other discriminants with 0.")
-;; 
-;; (defmethod add->bdd-strict-threshold ((f add-node) threshold)
-;;   (wrap-and-finalize (cudd-add-bdd-strict-threshold
-;;                       (manager-pointer *manager*)
-;;                       (node-pointer f)
-;;                       threshold)
-;;                      'bdd-node))
-;; 
-;; (def-cudd-call add->bdd-threshold (() (f :node) threshold)
-;;   :generic "Converts an ADD to a BDD by replacing all discriminants greater than or equal to value with 1, and
-;;   all other discriminants with 0.")
-;; 
-;; (defmethod add->bdd-threshold ((f add-node) threshold)
-;;   (wrap-and-finalize (cudd-add-bdd-threshold
-;;                       (manager-pointer *manager*)
-;;                       (node-pointer f)
-;;                       threshold)
-;;                      'bdd-node))
+;; From the definition of DdManager, it seems like the BDD variables and the ZDD
+;; variables are managed separately. In other words, they have sort-of
+;; separate namespaces.
+
+(defun bdd->zdd-simple (bdd)
+  "Converts a BDD to a ZDD via simple 1-to-1 variable conversion.
+This function internally calls cudd-zdd-vars-from-bdd-vars and increases the ZDD variable table size as necessary."
+  (assert (typep bdd 'bdd-node))
+  (let ((dd (manager-pointer *manager*)))
+    ;; TODO check if there are zdd vars?
+    (assert (= 1 (cudd-zdd-vars-from-bdd-vars dd 1)))
+    (wrap-and-finalize
+     (cudd-zdd-port-from-bdd dd (node-pointer bdd))
+     'zdd-node)))
+
+(defun zdd->bdd-simple (zdd)
+  "Converts a ZDD to a BDD via simple 1-to-1 variable conversion."
+  (assert (typep zdd 'zdd-node))
+  (let ((dd (manager-pointer *manager*)))
+    (wrap-and-finalize
+     (cudd-zdd-port-to-bdd dd (node-pointer zdd))
+     'bdd-node)))
+
+
+(defun bdd->zdd-cover (bdd)
+  "Converts a BDD to a ZDD via 1-to-2 conversion for cover representation.
+This function internally calls cudd-zdd-vars-from-bdd-vars and increases the ZDD variable table size as necessary."
+  (assert (typep bdd 'bdd-node))
+  (let ((dd (manager-pointer *manager*)))
+    (assert (= 1 (cudd-zdd-vars-from-bdd-vars dd 2)))
+    (wrap-and-finalize
+     (cudd-zdd-port-from-bdd dd (node-pointer bdd))
+     'zdd-node)))
+
+(defun zdd->bdd-cover (zdd)
+  "Converts a BDD to a ZDD via 1-to-2 conversion for cover representation."
+  (assert (typep zdd 'zdd-node))
+  (let ((dd (manager-pointer *manager*)))
+    (wrap-and-finalize
+     (cudd-zdd-port-to-bdd dd (node-pointer zdd))
+     'bdd-node)))
 
