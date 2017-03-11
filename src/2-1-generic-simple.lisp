@@ -110,6 +110,10 @@ instead of having a complement pointer to 1."))
   "Return the arithmetic zero node (0.0d0)."
   (wrap-and-finalize (cudd-read-zero (manager-pointer *manager*)) type))
 
+(defmethod zero-node ((type (eql 'zdd-node)))
+  "Return the arithmetic zero node (0.0d0). (Same as ADD)"
+  (wrap-and-finalize (cudd-read-zero (manager-pointer *manager*)) type))
+
 (def-cudd-call one-node ((:common (lambda (dd type) (wrap-and-finalize (cudd-read-one dd) type)))
                          type)
   :generic "Return the one node."
