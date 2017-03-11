@@ -88,13 +88,18 @@ only if their pointers are the same."
     (cudd-node-get-value (manager-pointer *manager*) node)))
 
 
+(defclass bdd-node (node)
+  ()
+  (:documentation
+   "Node of a binary decision diagram (BDD)"))
+
 (defclass add-node (node)
   ()
   (:documentation
    "Node of an algebraic decision diagram (ADD)"))
 
-(defclass bdd-node (node)
+(defclass zdd-node (node)
   ()
   (:documentation
-   "Node of a binary decision diagram (BDD)"))
+   "Node of an zero-suppressed decision diagram (ZDD)"))
 

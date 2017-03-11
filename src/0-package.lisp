@@ -553,4 +553,5 @@
    #:one-node
    #:zero-node
 
-   #:with-nodes))
+   #:with-nodes
+   #:zdd-node))
