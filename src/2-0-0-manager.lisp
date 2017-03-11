@@ -21,6 +21,7 @@ Every function in this package works with this manager.")
 
 (defmacro with-manager ((&key 
                          (initial-num-vars 0)
+                         (initial-num-vars-z 0)
                          (initial-num-slots 256)
                          (cache-size 262144)
                          (max-memory 0))
@@ -30,7 +31,10 @@ Every function in this package works with this manager.")
           (make-instance
            'manager
            :pointer
-           (cudd-init ,initial-num-vars 0 ,initial-num-slots ,cache-size ,max-memory))))
+           (cudd-init ,initial-num-vars
+                      ,initial-num-vars-z
+                      ,initial-num-slots
+                      ,cache-size ,max-memory))))
      (unwind-protect
           (progn ,@body)
        (cudd-quit (manager-pointer *manager*))
