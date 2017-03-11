@@ -14,14 +14,23 @@ BDDs (Binary Decision Diagrams) are awesome datastructures that can compactly re
 
 [CUDD](http://vlsi.colorado.edu/~fabio/CUDD/)
 is a famous implementation of BDDs and its relatives: 
-Multi-Terminal Binary Decision Diagrams (MTBDDs or ADDs) and Zero-suppressed Decision Diagrams.
+Multi-Terminal Binary Decision Diagrams (MTBDDs, also known as Algebraic DD / ADDs) and
+Zero-suppressed Decision Diagrams.
 
-For more information, see either
+References:
+
 [Wikipedia](http://en.wikipedia.org/wiki/Binary_decision_diagram)
-or the first [paper](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=1675141)
+
+or the first 
 about BDDs and the first
-[paper](http://repository.cmu.edu/cgi/viewcontent.cgi?article=1456&context=compsci)
+
 about ADDs.
+
++ [Binary Decision Diagrams](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=1675141) by Akers et al
++ [Symbolic Boolean manipulation with ordered binary-decision diagrams](http://www.cse.chalmers.se/edu/course/TDA956/Papers/acmcs92.pdf) by RE Bryant (this sorta made BDDs truely practical I guess)
++ ADDs : [Multi-Terminal Binary Decision Diagrams: An Efficient Data Structure for Matrix Representation](http://repository.cmu.edu/cgi/viewcontent.cgi?article=1456&context=compsci) by Clarke et al
++ ZDDs (survey) : [An Introduction to Zero-Suppressed Binary Decision Diagrams](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.500.6132&rep=rep1&type=pdf) by Alan Mishchenko
+
 
 Building/Loading the system
 ---------------------------
