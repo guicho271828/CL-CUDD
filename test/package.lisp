@@ -21,6 +21,14 @@
    (cudd-regular (node-pointer f))
    (namestring (make-pathname :name name :type "dot" :defaults path))))
 
+
+(defun dump-zdd (path name f)
+  (cl-cudd.baseapi:zdd-dump-dot
+   (manager-pointer *manager*)
+   (cudd-regular (node-pointer f))
+   (namestring (make-pathname :name name :type "dot" :defaults path))))
+
+
 (defun parse-bdd (path)
   (fresh-line)
   (with-manager ()
@@ -44,7 +52,8 @@
          (dump path (format nil "~a-BDD" name) f)
          ;; since BDDs may contain complemented edges, it is slightly hard to understand.
          ;; Usually converting it into ADDs will improve the output
-         (dump path (format nil "~a-BDD-as-ADD" name) (bdd->add f)))))))
+         (dump path (format nil "~a-BDD-as-ADD" name) (bdd->add f))
+         (dump-zdd path (format nil "~a-BDD-as-ZDD-simple" name) (bdd->zdd-simple f)))))))
 
 (test bdd
   (dolist (m (models "gates"))
