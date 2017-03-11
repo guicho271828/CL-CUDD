@@ -105,6 +105,54 @@
                     :output t
                     :error-output t))
 
+
+(defun parse-zdd (path)
+  (fresh-line)
+  (with-manager ()
+    (let ((f
+           (reduce #'node-or
+                   (print
+                    (iter (for line in-file path using #'read-line)
+                         (pass)
+                         (collect
+                             (print
+                              (let ((number 0))
+                                (reduce #'node-and
+                                        (iter (for c in-vector line)
+                                              (for index from 0)
+                                              (incf number)
+                                              (pass)
+                                              (collect
+                                                  (ecase c
+                                                    (#\0 (node-complement
+                                                          (make-var 'zdd-node :index index)))
+                                                    (#\1 (make-var 'zdd-node :index index)))))
+                                        :initial-value (zdd-constant 1.0d0)))))
+                         (pass)))
+                   :initial-value (zdd-constant 0.0d0))))
+      (print f)
+      (match path
+        ((pathname name)
+         (dump path (format nil "~a-ZDD" name) f))))))
+
+(test zdd
+  (with-manager ()
+    (finishes (print (zero-node 'zdd-node)))
+    (finishes (print (zdd-constant 0.0d0)))
+    (finishes (print (node-and (make-var 'zdd-node :index 1)
+                               (zdd-constant 0.0d0))))
+    (finishes (print (node-or (make-var 'zdd-node :index 1)
+                              (zdd-constant 0.0d0)))))
+  (dolist (m (models "gates"))
+    (format t "~%testing model ~a" m)
+    (finishes
+      (parse-zdd m)))
+  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/gates/"))
+                    :ignore-error-status t
+                    :output t
+                    :error-output t))
+
+
 (test reordering
   ;; swap
 
