@@ -54,7 +54,6 @@ every node in the body and decreasing it after the body is run"
                   :for binding :in pointers
                   :collect `(cudd-recursive-deref ,manager ,(car binding)))))))))
 
-;; TODO Print more information, like the value if it is a leaf node
 (defmethod print-object ((object node) stream)
   (print-unreadable-object (object stream :type (type-of object) :identity nil)
     (format stream "~A " (cudd-node-read-index (node-pointer object)))
