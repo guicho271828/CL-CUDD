@@ -16,7 +16,7 @@ This is a fork of original CL-CUDD using the modern common lisp convension.
 What is BDDs and CUDD?
 -------------
 
-BDDs (Binary Decision Diagrams) are awesome datastructures that can compactly represent exponentially large number of datasets, as well as allowing the direct computation over the compressed representation, i.e., you do not have to decompress the datastructure for those operations!
+BDDs (Binary Decision Diagrams) are awesome datastructures that can compactly represent exponentially large number of datasets, as well as allowing the direct computation over the compressed representation, i.e., you can take the sum/product/union/intersection of the datasets without decompressing the data!
 
 [CUDD](http://vlsi.colorado.edu/~fabio/CUDD/)
 is a famous C implementation of BDDs and its relatives: 
