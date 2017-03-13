@@ -7,6 +7,11 @@ This is a fork of original CL-CUDD using the modern common lisp convension.
 * Requirements: make, curl
 * State of the repository: After some refurbishment, now it loads reliably and all tests pass.
 * TODOs:
+    * Automatic variable reordering
+    * Variable grouping API
+    * GC hook and control API
+    * Higher-order layer for set manipulation
+    * benchmarking & fall back to `defstruct` for better speed
 
 What is BDDs and CUDD?
 -------------
@@ -14,7 +19,7 @@ What is BDDs and CUDD?
 BDDs (Binary Decision Diagrams) are awesome datastructures that can compactly represent exponentially large number of datasets, as well as allowing the direct computation over the compressed representation, i.e., you do not have to decompress the datastructure for those operations!
 
 [CUDD](http://vlsi.colorado.edu/~fabio/CUDD/)
-is a famous implementation of BDDs and its relatives: 
+is a famous C implementation of BDDs and its relatives: 
 Multi-Terminal Binary Decision Diagrams (MTBDDs, also known as Algebraic DD / ADDs) and
 Zero-suppressed Decision Diagrams.
 
@@ -26,6 +31,7 @@ References:
 + ADDs : [Multi-Terminal Binary Decision Diagrams: An Efficient Data Structure for Matrix Representation](http://repository.cmu.edu/cgi/viewcontent.cgi?article=1456&context=compsci) by Clarke et al
 + ZDDs (survey) : [An Introduction to Zero-Suppressed Binary Decision Diagrams](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.500.6132&rep=rep1&type=pdf) by Alan Mishchenko
 
+[trivialib.bdd](http://quickdocs.org/trivialib.bdd/) is another common lisp library for BDDs, which is entirely written in lisp. CUDD is more on the state-of-the-art side.
 
 Building/Loading the system
 ---------------------------
