@@ -19,13 +19,7 @@ Zero-suppressed Decision Diagrams.
 
 References:
 
-[Wikipedia](http://en.wikipedia.org/wiki/Binary_decision_diagram)
-
-or the first 
-about BDDs and the first
-
-about ADDs.
-
++ [Wikipedia](http://en.wikipedia.org/wiki/Binary_decision_diagram) contains lots of information.
 + [Binary Decision Diagrams](http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=1675141) by Akers et al
 + [Symbolic Boolean manipulation with ordered binary-decision diagrams](http://www.cse.chalmers.se/edu/course/TDA956/Papers/acmcs92.pdf) by RE Bryant (this sorta made BDDs truely practical I guess)
 + ADDs : [Multi-Terminal Binary Decision Diagrams: An Efficient Data Structure for Matrix Representation](http://repository.cmu.edu/cgi/viewcontent.cgi?article=1456&context=compsci) by Clarke et al
