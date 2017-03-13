@@ -2,8 +2,8 @@
 (in-package :cl-user)
 
 (defpackage cl-cudd.test
-  (:use :cl :cl-cudd :cl-cudd.baseapi :fiveam :iterate :trivia)
-  (:shadow :next))
+  (:use :cl :cl-cudd :cl-cudd.baseapi :fiveam :iterate :trivia :arrow-macros)
+  (:shadow :next :<>))
 
 (in-package cl-cudd.test)
 
