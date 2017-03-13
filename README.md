@@ -1,16 +1,17 @@
 Common Lisp binding to CUDD [![Build Status](https://travis-ci.org/guicho271828/CL-CUDD.svg?branch=master)](https://travis-ci.org/guicho271828/CL-CUDD)
 ===========================
 
-This is a fork of original CUDD using a modern common lisp convension, CFFI-Grovel and unit testing.
+This is a fork of original CL-CUDD using the modern common lisp convension.
 
-Supported implementations: SBCL, CCL and ECL.
-
-Requirements: make, curl
+* Supported implementations: SBCL, CCL and ECL.
+* Requirements: make, curl
+* State of the repository: After some refurbishment, now it loads reliably and all tests pass.
+* TODOs:
 
 What is BDDs and CUDD?
 -------------
 
-BDDs (Binary Decision Diagrams) are awesome datastructures that can compactly represent exponentially large number of datasets, as well as allowing the direct computation over the compressed representation (i.e. you do not have to decompress the datastructure in order to conduct addition and multiplication!)
+BDDs (Binary Decision Diagrams) are awesome datastructures that can compactly represent exponentially large number of datasets, as well as allowing the direct computation over the compressed representation, i.e., you do not have to decompress the datastructure for those operations!
 
 [CUDD](http://vlsi.colorado.edu/~fabio/CUDD/)
 is a famous implementation of BDDs and its relatives: 
@@ -29,7 +30,7 @@ References:
 Building/Loading the system
 ---------------------------
 The system is asdf-loadable.
-This version of CL-CUDD automatically fetches the CUDD archive from http://vlsi.colorado.edu/~fabio/CUDD/ via curl.
+This version of CL-CUDD automatically fetches CUDD v3.0.0 from http://vlsi.colorado.edu/~fabio/CUDD/ via curl.
 The archive is expanded in the ASDF system directory and builds its dynamic library, which is then loaded by CL-CUDD.
 
 To test the system, evaluate `(asdf:test-system :cl-cudd.test)`.
@@ -40,9 +41,7 @@ The binding(s)
 --------------
 The binding consists of two layers:
 The lower layer has `cl-cudd.baseapi` package.
-This is loosely based on the SWIG-extracted information and is using CFFI-Grovel to actually map C symbols to lisp symbols.
-If you want to use this layer, then it would be best to have a look
-at the CUDD manual. This layer is a very thin wrapper around the C library,
+This layer is a very thin wrapper around the C library,
 passes raw pointers around and requires that you take care of reference counting.
 
 Above this layer there is a package named `cl-cudd` (with a nickname `cudd`).
@@ -230,6 +229,10 @@ System structure
 ----------------
 
 ### Low-level
+
+This is loosely based on the SWIG-extracted information and is using CFFI-Grovel
+to actually map C symbols to lisp symbols.  If you want to use this layer, then
+it would be best to have a look at the CUDD manual.
 
 You can use the low-level system just as you would use the C API of
 CUDD. This also means that you have to do all the reference counting
