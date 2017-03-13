@@ -108,48 +108,31 @@
                     :error-output t))
 
 
-(defun parse-zdd (path)
+(defun parse-zdd-sets-of-subsets (path)
   (fresh-line)
-  (with-manager ()
-    (let ((f
-           (reduce #'node-or
-                   (print
-                    (iter (for line in-file path using #'read-line)
-                         (pass)
-                         (collect
-                             (print
-                              (let ((number 0))
-                                (reduce #'node-and
-                                        (iter (for c in-vector line)
-                                              (for index from 0)
-                                              (incf number)
-                                              (pass)
-                                              (collect
-                                                  (ecase c
-                                                    (#\0 (node-complement
-                                                          (make-var 'zdd-node :index index)))
-                                                    (#\1 (make-var 'zdd-node :index index)))))
-                                        :initial-value (zdd-constant 1.0d0)))))
-                         (pass)))
-                   :initial-value (zdd-constant 0.0d0))))
-      (print f)
-      (match path
-        ((pathname name)
-         (dump path (format nil "~a-ZDD" name) f))))))
+  (let* ((all "abc"))
+    (with-manager ()
+      (let* ((f
+              (reduce #'zdd-union
+                      (iter (for line in-file path using #'read-line)
+                            (collect
+                                (iter (for c in-vector line)
+                                      (with f = (zdd-set-of-emptyset)) ; {{}} --- does not contain anything
+                                      ;; (break "~@{~a~}" c all (position c all))
+                                      (setf f (zdd-change f (position c all))) ; add c to {{}} --> {{c}}
+                                      (finally (return f)))))
+                      :initial-value (zdd-emptyset))))
+        (print f)
+        (match path
+          ((pathname name)
+           (dump-zdd path (format nil "~a-ZDD" name) f)))))))
 
 (test zdd
-  (with-manager ()
-    (finishes (print (zero-node 'zdd-node)))
-    (finishes (print (zdd-constant 0.0d0)))
-    (finishes (print (node-and (make-var 'zdd-node :index 1)
-                               (zdd-constant 0.0d0))))
-    (finishes (print (node-or (make-var 'zdd-node :index 1)
-                              (zdd-constant 0.0d0)))))
-  (dolist (m (models "gates"))
+  (dolist (m (models "sets-of-subsets"))
     (format t "~%testing model ~a" m)
     (finishes
-      (parse-zdd m)))
-  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/gates/"))
+      (parse-zdd-sets-of-subsets m)))
+  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/sets-of-subsets/"))
                     :ignore-error-status t
                     :output t
                     :error-output t))
