@@ -175,19 +175,63 @@ i.e. ADDs with only 0 or 1 terminal nodes).
 
 ### Representing a family of set using ZDD
 
-ZDD is notoriously famous among Japanese CS researchers due to this hyped youtube video 
-https://www.youtube.com/watch?v=Q4gTV4r0zRs . No, it is actually quite powerful and
-is a better option than BDD when *most of the paths leads to the zero-node*, and is
-particularly useful for representing a family of sets.
+Recently, ZDD is famous especially among Japanese CS researchers due to this
+hyped youtube video https://www.youtube.com/watch?v=Q4gTV4r0zRs made by people
+funded by
+[JST ERATO (Exploratory Research for Advanced Technology)](http://www.jst.go.jp/erato/en/index.html). No,
+it is actually quite powerful and is a better option than BDD when *most of the
+paths leads to the zero-node*, and is particularly useful for representing a
+family of sets.
 
 One way to construct a ZDD is to call either of conversion functions
-`bdd->zdd-simple` and `bdd->zdd-cover`. The first function directly maps a BDD
-variable into a ZDD variable, i.e. 1-to-1 manner. The second function converts a
-BDD into a *cover* representation by mapping each BDD variable into
-corresponding **on** and **off** variables, which is more efficient.
+`bdd->zdd-simple` and `bdd->zdd-cover` to an existing BDD.
 
+* `bdd->zdd-simple` directly maps one BDD variable to one ZDD variable.
+  This is called a *unate* algebra representation, which is suitable for representing a binary function and a set of subsets.
+* `bdd->zdd-cover` maps one BDD variable to two ZDD variables representing true and false.
+  This is called *binate* algebra representation, which is suitable for representing cube covers because it can efficiently encode the missing variables. See section 3.3 of [Mishchenko 14] section 3.11 of CUDD manual.
 
+Another option is to build a ZDD directly, starting from {{}} and "flipping" the
+true/false by `(zdd-change zdd variable)` operator.  Consider we are encoding a
+family of sets F={{1,2}, {1,3}, {3}}. First, A={{1,2}} is built as follows:
 
+```lisp
+(defvar *a* (zdd-set-of-emptyset))
+(setf *a* (zdd-change *a* 1))
+(setf *a* (zdd-change *a* 2))
+
+;; alternatively, using threading macro:
+(defvar *a*
+   (-> (zdd-set-of-emptyset)
+       (zdd-change 1)
+       (zdd-change 2)))
+```
+
+Then take their union.
+
+```lisp
+(defvar *b* ..) ; construct *b* and *c* similarly.
+(defvar *c* ..)
+
+(defvar *f* (reduce #'zdd-union (list *a* *b* *c*) :initial-value (zdd-emptyset)))
+
+;; alternatively, 
+(defvar *f* 
+   (-> (zdd-emptyset)
+       (zdd-union *a*)
+       (zdd-union *b*)
+       (zdd-union *c*)))
+
+;; or,
+(defvar *f* (zdd-emptyset))
+(setf *f* (zdd-union *f* *a*))
+(setf *f* (zdd-union *f* *b*))
+(setf *f* (zdd-union *f* *c*))
+
+;; of course, this is equivalent and is more efficient:
+(defvar *f* (zdd-union *a* *b*))
+(setf *f* (zdd-union *f* *c*))
+```
 
 System structure
 ----------------
