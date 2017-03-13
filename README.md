@@ -40,8 +40,7 @@ The binding(s)
 --------------
 The binding consists of two layers:
 The lower layer has `cl-cudd.baseapi` package.
-The initial version was automatically generated using [SWIG](http://www.swig.org) by Utz-Uwe Haus.
-The second version was adapted to the needs by Christian von Essen <christian.vonEssen@imag.fr>.
+This is loosely based on the SWIG-extracted information and is using CFFI-Grovel to actually map C symbols to lisp symbols.
 If you want to use this layer, then it would be best to have a look
 at the CUDD manual. This layer is a very thin wrapper around the C library,
 passes raw pointers around and requires that you take care of reference counting.
@@ -256,6 +255,15 @@ You can also create a manager by
 
 All functions of package `CL-CUDD` are documented using the original or
 slightly modified documentation of CUDD.
+
+History
+-------
+
+The initial version was automatically generated using [SWIG](http://www.swig.org) by Utz-Uwe Haus.
+The second version was adapted to the needs by Christian von Essen <christian.vonEssen@imag.fr>.
+Later, @Neronus made a git repository on Github and @rpgoldman made a few bugfixes.
+Finally @guicho271828 (Masataro Asai) has modernized the repository according to the recent practice in common lisp:  unit tests, Travis-CI support, better documentation and additional support for ZDDs.
+
 
 Known problems
 --------------
