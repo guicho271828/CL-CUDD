@@ -24,7 +24,7 @@ If abstracting an ADD, we assume that it is an 0-1-ADD
 If abstracting an ADD, we assume that it is an 0-1-ADD")
 
 
-(def-cudd-call cofactor ((:add cudd-cofactor :bdd cudd-cofactor)
+(def-cudd-call cofactor ((:common cudd-cofactor)
                          (f :node) (g :node))
   :generic "Computes the cofactor of f with respect to g; g must be the BDD or the ADD of a cube.")
 

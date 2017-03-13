@@ -2,8 +2,8 @@
 (in-package :cl-user)
 
 (defpackage cl-cudd.test
-  (:use :cl :cl-cudd :cl-cudd.baseapi :fiveam :iterate :trivia)
-  (:shadow :next))
+  (:use :cl :cl-cudd :cl-cudd.baseapi :fiveam :iterate :trivia :arrow-macros)
+  (:shadow :next :<>))
 
 (in-package cl-cudd.test)
 
@@ -20,6 +20,14 @@
    (manager-pointer *manager*)
    (cudd-regular (node-pointer f))
    (namestring (make-pathname :name name :type "dot" :defaults path))))
+
+
+(defun dump-zdd (path name f)
+  (cl-cudd.baseapi:zdd-dump-dot
+   (manager-pointer *manager*)
+   (cudd-regular (node-pointer f))
+   (namestring (make-pathname :name name :type "dot" :defaults path))))
+
 
 (defun parse-bdd (path)
   (fresh-line)
@@ -44,7 +52,8 @@
          (dump path (format nil "~a-BDD" name) f)
          ;; since BDDs may contain complemented edges, it is slightly hard to understand.
          ;; Usually converting it into ADDs will improve the output
-         (dump path (format nil "~a-BDD-as-ADD" name) (bdd->add f)))))))
+         (dump path (format nil "~a-BDD-as-ADD" name) (bdd->add f))
+         (dump-zdd path (format nil "~a-BDD-as-ZDD-simple" name) (bdd->zdd-simple f)))))))
 
 (test bdd
   (dolist (m (models "gates"))
@@ -60,24 +69,17 @@
   (with-manager ()
     (let ((f
            (reduce #'node-or
-                   (print
-                    (iter (for line in-file path using #'read-line)
-                         (pass)
+                   (iter (for line in-file path using #'read-line)
                          (collect
-                             (print
-                              (let ((number 0))
-                                (reduce #'node-and
-                                        (iter (for c in-vector line)
-                                              (for index from 0)
-                                              (incf number)
-                                              (pass)
-                                              (collect
-                                                  (ecase c
-                                                    (#\0 (node-complement
-                                                          (make-var 'add-node :index index)))
-                                                    (#\1 (make-var 'add-node :index index)))))
-                                        :initial-value (one-node 'add-node)))))
-                         (pass)))
+                             (reduce #'node-and
+                                     (iter (for c in-vector line)
+                                           (for index from 0)
+                                           (collect
+                                               (ecase c
+                                                 (#\0 (node-complement
+                                                       (make-var 'add-node :index index)))
+                                                 (#\1 (make-var 'add-node :index index)))))
+                                     :initial-value (one-node 'add-node))))
                    :initial-value (zero-node 'add-node))))
       (print f)
       (match path
@@ -104,6 +106,37 @@
                     :ignore-error-status t
                     :output t
                     :error-output t))
+
+
+(defun parse-zdd-sets-of-subsets (path)
+  (fresh-line)
+  (let* ((all "abc"))
+    (with-manager ()
+      (let* ((f
+              (reduce #'zdd-union
+                      (iter (for line in-file path using #'read-line)
+                            (collect
+                                (iter (for c in-vector line)
+                                      (with f = (zdd-set-of-emptyset)) ; {{}} --- does not contain anything
+                                      ;; (break "~@{~a~}" c all (position c all))
+                                      (setf f (zdd-change f (position c all))) ; add c to {{}} --> {{c}}
+                                      (finally (return f)))))
+                      :initial-value (zdd-emptyset))))
+        (print f)
+        (match path
+          ((pathname name)
+           (dump-zdd path (format nil "~a-ZDD" name) f)))))))
+
+(test zdd
+  (dolist (m (models "sets-of-subsets"))
+    (format t "~%testing model ~a" m)
+    (finishes
+      (parse-zdd-sets-of-subsets m)))
+  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/sets-of-subsets/"))
+                    :ignore-error-status t
+                    :output t
+                    :error-output t))
+
 
 (test reordering
   ;; swap

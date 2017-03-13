@@ -2,7 +2,9 @@
 (in-package :cl-cudd.baseapi)
 
 (defun cudd-bdd-not (manager node)
-  "Mark the node as a negated node. See CUDD documentation Sec.4.3 Complement Arc"
+  "Mark the node as a negated node. See CUDD documentation Sec.4.3 Complement Arc.
+This function is not imported from CFFI because the corresponding implementation in CUDD
+ is written as a macro. See cudd.h l.334"
   (declare (ignore manager))
   ;; TODO What happens on big-endian machines?
   (let ((result (make-pointer (logxor 1 (pointer-address node)))))

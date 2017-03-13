@@ -54,14 +54,16 @@ every node in the body and decreasing it after the body is run"
                   :for binding :in pointers
                   :collect `(cudd-recursive-deref ,manager ,(car binding)))))))))
 
-;; TODO Print more information, like the value if it is a leaf node
 (defmethod print-object ((object node) stream)
   (print-unreadable-object (object stream :type (type-of object) :identity nil)
     (format stream "~A " (cudd-node-read-index (node-pointer object)))
     (if (node-constant-p object)
         (format stream "LEAF (VALUE ~A)" (node-value object))
-        (format stream "INNER 0x~x" (pointer-address (node-pointer object))))
-    (format stream " REF-COUNT ~d" (cudd-node-get-ref-count (manager-pointer *manager*) (node-pointer object)))))
+        (format stream "INNER 0x~x INDEX ~d"
+                (pointer-address (node-pointer object))
+                (node-index object)))
+    (format stream " REF ~d"
+            (cudd-node-get-ref-count (manager-pointer *manager*) (node-pointer object)))))
 
 (defun node-index (node)
   (cudd-node-read-index (node-pointer node)))
@@ -88,13 +90,18 @@ only if their pointers are the same."
     (cudd-node-get-value (manager-pointer *manager*) node)))
 
 
+(defclass bdd-node (node)
+  ()
+  (:documentation
+   "Node of a binary decision diagram (BDD)"))
+
 (defclass add-node (node)
   ()
   (:documentation
    "Node of an algebraic decision diagram (ADD)"))
 
-(defclass bdd-node (node)
+(defclass zdd-node (node)
   ()
   (:documentation
-   "Node of a binary decision diagram (BDD)"))
+   "Node of an zero-suppressed decision diagram (ZDD)"))
 

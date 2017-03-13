@@ -72,14 +72,20 @@ Set the finalizer to call cudd-recursive-deref."
   (node-function generic-name arguments add-function 'add-node dont-wrap))
 (defun bdd-function (generic-name arguments bdd-function dont-wrap)
   (node-function generic-name arguments bdd-function 'bdd-node dont-wrap))
+(defun zdd-function (generic-name arguments zdd-function dont-wrap)
+  (node-function generic-name arguments zdd-function 'zdd-node dont-wrap))
 (defun common-function (generic-name arguments function dont-wrap)
   (node-function generic-name arguments function t dont-wrap))
+
 (defun set-add-docu (add-function add-docu)
   (when (symbolp add-function)
     `(setf (documentation ',add-function 'function) ,add-docu)))
 (defun set-bdd-docu (bdd-function bdd-docu)
   (when (symbolp bdd-function)
     `(setf (documentation ',bdd-function 'function) ,bdd-docu)))
+(defun set-zdd-docu (zdd-function zdd-docu)
+  (when (symbolp zdd-function)
+    `(setf (documentation ',zdd-function 'function) ,zdd-docu)))
 (defun set-common-docu (function docu)
   (when (symbolp function)
     `(setf (documentation ',function 'function) ,docu)))
@@ -95,10 +101,12 @@ Set the finalizer to call cudd-recursive-deref."
                          &rest documentation)
   (let* ((add-function    (find-2list :add functions))
          (bdd-function    (find-2list :bdd functions))
+         (zdd-function    (find-2list :zdd functions))
          (common-function (find-2list :common functions))
          (generic-docu    (find-2list :generic documentation))
          (add-docu        (or (find-2list :add documentation) generic-docu))
          (bdd-docu        (or (find-2list :bdd documentation) generic-docu))
+         (zdd-docu        (or (find-2list :zdd documentation) generic-docu))
          (dont-wrap       (find-2list :dont-wrap-result documentation)))
     `(progn
        ,(generic-cudd-function generic-name arguments generic-docu)
@@ -106,12 +114,16 @@ Set the finalizer to call cudd-recursive-deref."
           (add-function generic-name arguments add-function dont-wrap))
        ,(when bdd-function
           (bdd-function generic-name arguments bdd-function dont-wrap))
+       ,(when zdd-function
+          (zdd-function generic-name arguments zdd-function dont-wrap))
        ,(when common-function
           (common-function generic-name arguments common-function dont-wrap))
        ,(when (and add-docu add-function)
           (set-add-docu add-function add-docu))
        ,(when (and bdd-docu bdd-function)
           (set-bdd-docu bdd-function bdd-docu))
+       ,(when (and zdd-docu zdd-function)
+          (set-zdd-docu zdd-function zdd-docu))
        ,(when common-function
           (set-common-docu common-function generic-docu)))))
 
