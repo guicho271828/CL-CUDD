@@ -559,4 +559,17 @@
    #:bdd->zdd-simple
    #:zdd->bdd-simple
    #:bdd->zdd-cover
-   #:zdd->bdd-cover))
+   #:zdd->bdd-cover
+   #:zdd-emptyset
+   #:zdd-set-of-emptyset
+   #:zdd-singleton
+   #:zdd-subset-0
+   #:zdd-subset-1
+   #:zdd-change
+   #:zdd-union
+   #:zdd-intersection
+   #:zdd-difference
+   #:zdd-divide-unate
+   #:zdd-divide-binate
+   #:zdd-product-unate
+   #:zdd-product-binate))
