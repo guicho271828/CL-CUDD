@@ -305,8 +305,8 @@ Using the GC to do reference counting automatically has its own share of problem
    increases the reference count of each node before the body and
    decreases the reference count of each node after the body.
 
-       (defun bar (dd)
-         (cudd-do-something-with-callback (node-pointer dd)))
+        (defun bar (dd)
+          (cudd-do-something-with-callback (node-pointer dd)))
 
    In this case, we might have a problem if
    `cudd-do-something-with-callback` calls back into
