@@ -35,6 +35,7 @@
               (:file "src/2-1-generic-simple")
               (:file "src/2-1-generic-swap")
               (:file "src/2-1-system")
+              (:file "src/2-1-zdd-set-operations")
               (:file "src/2-2-add-bdd-bridge")
               (:file "src/2-2-zdd-bdd-bridge"))
  :description "A two-layered binding to the CUDD binary decision diagram library.
