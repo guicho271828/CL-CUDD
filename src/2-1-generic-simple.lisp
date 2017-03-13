@@ -15,22 +15,24 @@
   :add     "Conjunction of two 0-1 ADDs."
   :bdd     "Conjunction of two BDDs.")
 
-(def-cudd-call node-complement ((:add cudd-add-cmpl :bdd cudd-bdd-not)
+(def-cudd-call node-complement ((:add cudd-add-cmpl :bdd cudd-bdd-not
+                                 :zdd cudd-zdd-complement)
                                 (node :node))
   :generic "Computes the complement of a node a la C language:
 The complement of 0 is 1 and the complement of everything else is 0."
   :add "Computes the complement of an ADD a la C language:
 The complement of 0 is 1 and the complement of everything else is 0."
   :bdd "Complements a DD by flipping the complement attribute of the
-pointer (the least significant bit).")
+pointer (the least significant bit)."
+  :zdd "Complements a unate ZDD.")
 
-(def-cudd-call if-then-else ((:add cudd-add-ite :bdd cudd-bdd-ite)
+(def-cudd-call if-then-else ((:add cudd-add-ite :bdd cudd-bdd-ite :zdd cudd-zdd-ite)
                              (f :node) (g :node) (h :node))
   :generic "Return a new DD-node for with F being the top-node, G being the then-branch
 and H being the else branch"
-  :add "Implements ITE(f,g,h). This procedure assumes that f is a 0-1
-  ADD."
-  :bdd "Implements ITE(f,g,h).")
+  :add "Implements ITE(f,g,h). This procedure assumes that f is a 0-1 ADD."
+  :bdd "Implements ITE(f,g,h)."
+  :zdd "Implements ITE(f,g,h).")
 
 (defgeneric cube (nodes type)
   (:documentation "

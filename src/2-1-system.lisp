@@ -25,9 +25,8 @@ that the DdNode pointer bck is already referenced."
   "Counts the number of leaves in a DD."
   (cudd-count-leaves (node-pointer node)))
 
-(defun dag-size (node)
-  "Counts the number of nodes in a DD."
-  (cudd-dag-size (node-pointer node)))
+(def-cudd-call dag-size ((:zdd cudd-zdd-dag-size :common cudd-dag-size) (s :node))
+  :generic "Counts the number of nodes in a DD.")
 
 ;; (def-cudd-call disable-reordering ((:common cudd-disable-garbage-collection))
 ;;                :generic "Disables garbage collection. Garbage
