@@ -3,15 +3,17 @@ Common Lisp binding to CUDD [![Build Status](https://travis-ci.org/guicho271828/
 
 This is a fork of original CL-CUDD using the modern common lisp convension.
 
-* Supported implementations: SBCL, CCL and ECL.
-* Requirements: make, curl
-* State of the repository: After some refurbishment, now it loads reliably and all tests pass.
-* TODOs:
+* **Supported implementations**: SBCL, CCL and ECL.
+* **Requirements**: make, curl
+* **Developmental State**: After some refurbishment, now it loads reliably and all tests pass.
+* **TODOs**:
     * Automatic variable reordering
     * Variable grouping API
     * GC hook and control API
     * Higher-order layer for set manipulation
     * benchmarking & fall back to `defstruct` for better speed
+* **Related work**: 
+  trivialib.bdd is another common lisp library for BDDs, which is entirely written in lisp. CUDD is more on the state-of-the-art side.
 
 What is BDDs and CUDD?
 -------------
