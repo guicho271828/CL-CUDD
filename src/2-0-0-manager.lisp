@@ -7,14 +7,10 @@
 
 Every function in this package works with this manager.")
 
-;; TODO: convert to struct
-(defclass manager ()
-  ((pointer :type cffi:foreign-pointer
-            :initarg :pointer
-            :initform (error "MANAGER needs to wrap a pointer")
-            :accessor manager-pointer))
-  (:documentation
-   "A boxed CUDD manager class"))
+(defstruct manager
+  "A boxed CUDD manager class"
+  (pointer (error "MANAGER needs to wrap a pointer")
+           :type cffi:foreign-pointer))
 
 (defmethod cffi:translate-to-foreign (pointer (manager manager))
   (manager-pointer manager))
@@ -38,8 +34,7 @@ Every function in this package works with this manager.")
   unique table growth based on the available memory.
 "
   `(let ((*manager*
-          (make-instance
-           'manager
+          (make-manager
            :pointer
            (cudd-init ,initial-num-vars
                       ,initial-num-vars-z
