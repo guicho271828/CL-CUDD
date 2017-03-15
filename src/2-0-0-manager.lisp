@@ -23,6 +23,8 @@ Every function in this package works with this manager.")
                          (max-memory 0))
                         &body body)
   "Bind a freshly generated manager to *MANAGER*.
+This macro is not so useful when multiple managers are in place.
+Also, all data on the diagram are lost when it exits the scope of WITH-MANAGER.
 
 * INITIAL-NUM-VARS and INITIAL-NUM-VARS-Z: are just initial values.
   The number of variables in CUDD manager is automatically increased when it exceeds this value.
