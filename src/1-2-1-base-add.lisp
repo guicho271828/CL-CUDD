@@ -3,6 +3,8 @@
 
 (defun cudd-add-cube (manager vars)
   "Build an add cube out of the variables."
+  (declare (foreign-pointer manager)
+           (list vars))
   (let ((n (length vars)))
     (with-foreign-object (array :pointer n)
       (loop :for v :in vars
@@ -27,6 +29,7 @@ invokes a signal otherwise.
 
 An ADD variable differs from a BDD variable because it points to the arithmetic zero,
 instead of having a complement pointer to 1."
+  (declare (foreign-pointer manager))
   (when (and index level)
     (error "ADD-VAR accepts at most one of INDEX and LEVEL"))
   (cond
