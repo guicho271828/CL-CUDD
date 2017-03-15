@@ -11,7 +11,7 @@ This is a fork of original CL-CUDD using the modern common lisp convension.
     * Variable grouping API
     * GC hook and control API
     * Higher-order layer for set manipulation
-    * benchmarking & fall back to `defstruct` for better speed
+    * benchmarking
 * **Related work**: 
   trivialib.bdd is another common lisp library for BDDs, which is entirely written in lisp. CUDD is more on the state-of-the-art side.
 
