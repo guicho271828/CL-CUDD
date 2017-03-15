@@ -34,7 +34,10 @@ is not a null pointer."
 (defun wrap-and-finalize (pointer type)
   "Wrap the given pointer in a node-wrapper of type TYPE.
 Set the finalizer to call cudd-recursive-deref."
-  (let ((wrapper (make-instance type :pointer pointer)))
+  (let ((wrapper (funcall (ecase type
+                            (bdd-node #'make-bdd-node)
+                            (add-node #'make-add-node)
+                            (zdd-node #'make-zdd-node)) :pointer pointer)))
     (set-node-finalizer wrapper pointer)
     wrapper))
 

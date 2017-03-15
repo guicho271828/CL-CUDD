@@ -2,13 +2,10 @@
 (in-package :cudd)
 
 ;;; Wrapped CUDD node
-(defclass node ()
-  ((pointer :type foreign-pointer
-            :initarg :pointer
-            :initform (error "NODE needs to wrap a pointer")
-            :reader node-pointer))
-  (:documentation
-   "A boxed CUDD node class. Top class of all CUDD nodes."))
+(defstruct node
+  "A boxed CUDD node class. Top class of all CUDD nodes."
+  (pointer (error "NODE needs to wrap a pointer")
+           :type cffi:foreign-pointer))
 
 (defmethod cffi:translate-to-foreign (pointer (node node))
   (node-pointer node))
@@ -90,18 +87,12 @@ only if their pointers are the same."
     (cudd-node-get-value (manager-pointer *manager*) node)))
 
 
-(defclass bdd-node (node)
-  ()
-  (:documentation
-   "Node of a binary decision diagram (BDD)"))
+(defstruct (bdd-node (:include node))
+  "Node of a binary decision diagram (BDD)")
 
-(defclass add-node (node)
-  ()
-  (:documentation
-   "Node of an algebraic decision diagram (ADD)"))
+(defstruct (add-node (:include node))
+  "Node of an algebraic decision diagram (ADD)")
 
-(defclass zdd-node (node)
-  ()
-  (:documentation
-   "Node of an zero-suppressed decision diagram (ZDD)"))
+(defstruct (zdd-node (:include node))
+  "Node of an zero-suppressed decision diagram (ZDD)")
 
