@@ -572,4 +572,5 @@
    #:zdd-divide-unate
    #:zdd-divide-binate
    #:zdd-product-unate
-   #:zdd-product-binate))
+   #:zdd-product-binate
+   #:info))

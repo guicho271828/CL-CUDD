@@ -97,7 +97,8 @@
     (finishes (print (node-and (make-var 'add-node :index 1)
                                (zero-node 'add-node))))
     (finishes (print (node-or (make-var 'add-node :index 1)
-                              (zero-node 'add-node)))))
+                              (zero-node 'add-node))))
+    (finishes (print (info))))
   (dolist (m (models "gates"))
     (format t "~%testing model ~a" m)
     (finishes
