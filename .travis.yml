@@ -15,20 +15,20 @@ env:
     - ROSWELL_INSTALL_DIR=$HOME/.roswell
   matrix:
     - LISP=ecl
-    - LISP=cmucl
     - LISP=sbcl-bin
     - LISP=ccl-bin
-    - LISP=abcl
-    - LISP=clisp
-    - LISP=alisp
+    # - LISP=cmucl # 32 bit only
+    # - LISP=alisp # 32 bit on travis
+    # - LISP=abcl  # cffi error?
+    # - LISP=clisp # unsupported
 
 matrix:
   allow_failures:
-    - env: LISP=clisp
-    - env: LISP=alisp
     - env: LISP=ecl
-    - env: LISP=cmucl
-    - env: LISP=abcl
+    # - env: LISP=clisp
+    # - env: LISP=alisp
+    # - env: LISP=cmucl
+    # - env: LISP=abcl
 
 install:
   - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
