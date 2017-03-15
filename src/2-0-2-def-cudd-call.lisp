@@ -14,8 +14,6 @@
        ,@(when generic-docu
            `((:documentation ,generic-docu))))))
 
-
-
 (defun set-node-finalizer (wrapper pointer)
   "Set the finalizer of WRAPPER to recursively deref POINTER if the
 pointer of the manager BOUND AT THE TIME OF THE CALL OF #'SET-NODE-FINALIZER
@@ -34,6 +32,7 @@ is not a null pointer."
 (defun wrap-and-finalize (pointer type)
   "Wrap the given pointer in a node-wrapper of type TYPE.
 Set the finalizer to call cudd-recursive-deref."
+  (declare ((member bdd-node add-node zdd-node) type))
   (let ((wrapper (funcall (ecase type
                             (bdd-node #'make-bdd-node)
                             (add-node #'make-add-node)
