@@ -26,7 +26,17 @@ Every function in this package works with this manager.")
                          (cache-size 262144)
                          (max-memory 0))
                         &body body)
-  "Bind a freshly generated manager to *manager*"
+  "Bind a freshly generated manager to *MANAGER*.
+
+* INITIAL-NUM-VARS and INITIAL-NUM-VARS-Z: are just initial values.
+  The number of variables in CUDD manager is automatically increased when it exceeds this value.
+
+* INITIAL-NUM-SLOTS : initial size of the unique tables
+* CACHE-SIZE : initial size of the cache
+* MAX-MEMORY : target maximum memory occupation. If zero, CUDD decides suitable
+  values for the maximum size of the cache and for the limit for fast
+  unique table growth based on the available memory.
+"
   `(let* ((*manager*
           (make-instance
            'manager
