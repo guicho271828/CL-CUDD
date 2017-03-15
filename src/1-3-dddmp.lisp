@@ -104,7 +104,9 @@
               (fclose file)))))))
 
 (defun print-info (manager pathname)
-  (let ((file (fopen (coerce pathname 'string) "w")))
+  (declare (foreign-pointer manager)
+           ((or string pathname) pathname))
+  (let ((file (fopen (namestring pathname) "w")))
     (if (null-pointer-p file)
         (error "Could not open file for writing")
         (unwind-protect
