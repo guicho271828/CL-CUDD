@@ -37,7 +37,7 @@ Every function in this package works with this manager.")
   values for the maximum size of the cache and for the limit for fast
   unique table growth based on the available memory.
 "
-  `(let* ((*manager*
+  `(let ((*manager*
           (make-instance
            'manager
            :pointer
