@@ -1,6 +1,8 @@
 ;;; BDD : Binary Decision Diagram
 (in-package :cl-cudd.baseapi)
 
+(declaim (ftype managed-node-operation
+                cudd-bdd-not))
 (defun cudd-bdd-not (manager node)
   "Mark the node as a negated node. See CUDD documentation Sec.4.3 Complement Arc.
 This function is not imported from CFFI because the corresponding implementation in CUDD
@@ -13,6 +15,8 @@ This function is not imported from CFFI because the corresponding implementation
 
 (defun cudd-bdd-cube (manager vars)
   "Build an bdd cube out of the variables."
+  (declare (foreign-pointer manager)
+           (list vars))
   (let ((n (length vars)))
     (with-foreign-object (array :pointer n)
       (loop :for v :in vars
@@ -37,6 +41,7 @@ invokes a signal otherwise.
 
 An ADD variable differs from a BDD variable because it points to the arithmetic zero,
 instead of having a complement pointer to 1."
+  (declare (foreign-pointer manager))
   (when (and index level)
     (error "BDD-VAR accepts at most one of INDEX and LEVEL"))
   (cond

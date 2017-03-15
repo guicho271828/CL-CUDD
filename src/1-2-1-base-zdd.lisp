@@ -1,8 +1,5 @@
-;;; BDD : Binary Decision Diagram
+;;; ZDD : Zero-suppressed Decision Diagram
 (in-package :cl-cudd.baseapi)
-
-;; cudd-bdd-not
-;; cudd-bdd-cube
 
 (defun zdd-var (manager &key index level)
   "Creates a new ZDD variable. At most one of INDEX and LEVEL may be given.
@@ -21,6 +18,7 @@ invokes a signal otherwise.
 
 An ADD variable differs from a BDD variable because it points to the arithmetic zero,
 instead of having a complement pointer to 1."
+  (declare (foreign-pointer manager))
   (when (and index level)
     (error "BDD-VAR accepts at most one of I and LEVEL"))
   (cond

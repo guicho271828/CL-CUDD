@@ -1,6 +1,10 @@
 ;;; functions on a raw cudd-node pointer
 (in-package :cl-cudd.baseapi)
 
+(deftype managed-node-operation ()
+  `(function (foreign-pointer foreign-pointer) t))
+
+(declaim (ftype (function (foreign-pointer) foreign-pointer) cudd-regular))
 (defun cudd-regular (node)
   (let ((addr (pointer-address node)))
     (setf (ldb (byte 1 0) addr) 0)
@@ -12,6 +16,13 @@
                  (- (expt 2 31) 1)
                  ;; ((unsigned short) ~0)
                  (- (expt 2 16) 1)))
+
+(declaim (ftype managed-node-operation
+                cudd-node-is-constant
+                cudd-node-get-value
+                cudd-node-get-then
+                cudd-node-get-else
+                cudd-node-get-ref-count))
 
 (defun cudd-node-is-constant (manager node)
   (declare (ignore manager))
