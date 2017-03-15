@@ -6,12 +6,12 @@
     (setf (ldb (byte 1 0) addr) 0)
     (make-pointer addr)))
 
-(defparameter +cudd-max-index+
-              (if (and (= +sizeof-void-p+ 8) (= +sizeof-int+ 4))
-                  ;; ((unsigned int) ~0) >> 1
-                  (- (expt 2 31) 1)
-                  ;; ((unsigned short) ~0)
-                  (- (expt 2 16) 1)))
+(defconstant +cudd-max-index+
+             (if (and (= +sizeof-void-p+ 8) (= +sizeof-int+ 4))
+                 ;; ((unsigned int) ~0) >> 1
+                 (- (expt 2 31) 1)
+                 ;; ((unsigned short) ~0)
+                 (- (expt 2 16) 1)))
 
 (defun cudd-node-is-constant (manager node)
   (declare (ignore manager))
