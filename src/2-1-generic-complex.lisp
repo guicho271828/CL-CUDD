@@ -24,8 +24,11 @@ If abstracting an ADD, we assume that it is an 0-1-ADD
 If abstracting an ADD, we assume that it is an 0-1-ADD")
 
 
-(def-cudd-call cofactor ((:common cudd-cofactor)
-                         (f :node) (g :node))
-  :generic "Computes the cofactor of f with respect to g; g must be the BDD or the ADD of a cube.")
+(defun cofactor (f g)
+  "Computes the cofactor of f with respect to g; g must be the BDD or the ADD of a cube."
+  (let* ((p
+          (with-pointers ((f f) (g g))
+            (cudd-cofactor (manager-pointer *manager*) f g))))
+    (wrap-and-finalize p (type-of f))))
 
 
