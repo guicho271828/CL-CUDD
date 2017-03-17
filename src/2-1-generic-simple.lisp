@@ -120,7 +120,5 @@ instead of having a complement pointer to 1."))
 
 (defun one-node (type)
   "return the one node."
-  (funcall #'(lambda (dd type)
-               (wrap-and-finalize (cudd-read-one dd) type))
-           (manager-pointer *manager*) type))
+  (wrap-and-finalize (cudd-read-one (manager-pointer *manager*)) type))
 
