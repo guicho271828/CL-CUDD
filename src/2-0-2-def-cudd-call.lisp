@@ -34,10 +34,10 @@ is not a null pointer."
 Set the finalizer to call cudd-recursive-deref."
   (declare (foreign-pointer pointer)
            ((member bdd-node add-node zdd-node) type))
-  (let ((wrapper (funcall (ecase type
-                            (bdd-node #'make-bdd-node)
-                            (add-node #'make-add-node)
-                            (zdd-node #'make-zdd-node)) :pointer pointer)))
+  (let ((wrapper (ecase type
+                   (bdd-node (make-bdd-node :pointer pointer))
+                   (add-node (make-add-node :pointer pointer))
+                   (zdd-node (make-zdd-node :pointer pointer)))))
     (set-node-finalizer wrapper pointer)
     wrapper))
 
