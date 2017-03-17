@@ -47,3 +47,8 @@ Also, all data on the diagram are lost when it exits the scope of WITH-MANAGER.
        (cudd-quit (manager-pointer *manager*))
        (setf (manager-pointer *manager*) (cffi:null-pointer)))))
 
+(defun info ()
+  (uiop:with-temporary-file (:stream s :pathname path)
+    (print-info (manager-pointer *manager*) path)
+    (uiop:slurp-stream-string s)))
+
