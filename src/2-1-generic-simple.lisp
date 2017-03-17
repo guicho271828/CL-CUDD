@@ -118,8 +118,9 @@ instead of having a complement pointer to 1."))
   "Return the arithmetic zero node (0.0d0). (Same as ADD)"
   (wrap-and-finalize (cudd-read-zero (manager-pointer *manager*)) type))
 
-(def-cudd-call one-node ((:common (lambda (dd type) (wrap-and-finalize (cudd-read-one dd) type)))
-                         type)
-  :generic "Return the one node."
-  :dont-wrap-result t)
+(defun one-node (type)
+  "return the one node."
+  (funcall #'(lambda (dd type)
+               (wrap-and-finalize (cudd-read-one dd) type))
+           (manager-pointer *manager*) type))
 
