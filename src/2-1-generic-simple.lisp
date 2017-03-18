@@ -82,6 +82,11 @@ instead of having a complement pointer to 1."))
    (bdd-var (manager-pointer *manager*) :index index :level level)
    'bdd-node))
 
+(defmethod make-var ((type (eql 'zdd-node)) &key level index)
+  (wrap-and-finalize
+   (zdd-var (manager-pointer *manager*) :index index :level level)
+   'zdd-node))
+
 (def-cudd-call node-then ((:add cudd-node-get-then :bdd cudd-node-get-then)
                           (node :node))
   :generic "Return the then child of an inner node")

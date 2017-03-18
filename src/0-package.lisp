@@ -470,7 +470,8 @@
            :SIZEOF-VOID-P 
            :TRUE 
            :VALUE
-           :zdd-dump-dot)
+           :zdd-dump-dot
+           :zdd-var)
   ;; other exports done by swig
   )
 
