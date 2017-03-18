@@ -107,7 +107,12 @@
                                (zero-node 'add-node))))
     (finishes (print (node-or (make-var 'add-node :index 1)
                               (zero-node 'add-node))))
-    (finishes (print (info))))
+    (finishes (print (info)))
+    (finishes (print (node-count)))
+    (finishes (print (peak-node-count)))
+    (finishes (print (peak-live-node-count)))
+    ;; This number always includes the two constants 1 and 0.
+    (is (= 2 (zdd-node-count))))
   (dolist (m (models "gates"))
     (format t "~%testing model ~a" m)
     (parse-add m))

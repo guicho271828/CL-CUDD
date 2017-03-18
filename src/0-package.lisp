@@ -573,4 +573,8 @@
    #:zdd-divide-binate
    #:zdd-product-unate
    #:zdd-product-binate
-   #:info))
+   #:info
+   #:peak-node-count
+   #:peak-live-node-count
+   #:node-count
+   #:zdd-node-count))
