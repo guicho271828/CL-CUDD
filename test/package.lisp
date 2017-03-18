@@ -46,20 +46,23 @@
                                            (#\1 (make-var 'bdd-node :index index)))))
                                   :initial-value (one-node 'bdd-node))))
                    :initial-value (zero-node 'bdd-node))))
-      (print f)
-      (print (dag-size f))
+      (pass "constructed DD")
+      (finishes (print f))
+      (finishes (print (dag-size f)))
       (match path
         ((pathname name)
-         (dump path (format nil "~a-BDD" name) f)
+         (finishes
+           (dump path (format nil "~a-BDD" name) f))
          ;; since BDDs may contain complemented edges, it is slightly hard to understand.
          ;; Usually converting it into ADDs will improve the output
-         (dump path (format nil "~a-BDD-as-ADD" name) (bdd->add f))
-         (dump-zdd path (format nil "~a-BDD-as-ZDD-simple" name) (bdd->zdd-simple f)))))))
+         (finishes
+           (dump path (format nil "~a-BDD-as-ADD" name) (bdd->add f)))
+         (finishes
+           (dump-zdd path (format nil "~a-BDD-as-ZDD-simple" name) (bdd->zdd-simple f))))))))
 
 (test bdd
   (dolist (m (models "gates"))
-    (finishes
-      (parse-bdd m)))
+    (parse-bdd m))
   (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/gates/"))
                     :ignore-error-status t
                     :output t
@@ -82,11 +85,15 @@
                                                  (#\1 (make-var 'add-node :index index)))))
                                      :initial-value (one-node 'add-node))))
                    :initial-value (zero-node 'add-node))))
-      (print f)
-      (print (dag-size f))
+      (pass "constructed DD")
+      (finishes
+        (print f))
+      (finishes
+        (print (dag-size f)))
       (match path
         ((pathname name)
-         (dump path (format nil "~a-ADD" name) f))))))
+         (finishes
+           (dump path (format nil "~a-ADD" name) f)))))))
 
 (test add
   (with-manager ()
@@ -103,8 +110,7 @@
     (finishes (print (info))))
   (dolist (m (models "gates"))
     (format t "~%testing model ~a" m)
-    (finishes
-      (parse-add m)))
+    (parse-add m))
   (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/gates/"))
                     :ignore-error-status t
                     :output t
@@ -125,17 +131,20 @@
                                       (setf f (zdd-change f (position c all))) ; add c to {{}} --> {{c}}
                                       (finally (return f)))))
                       :initial-value (zdd-emptyset))))
-        (print f)
-        (print (dag-size f))
+        (pass "constructed DD")
+        (finishes
+          (print f))
+        (finishes
+          (print (dag-size f)))
         (match path
           ((pathname name)
-           (dump-zdd path (format nil "~a-ZDD" name) f)))))))
+           (finishes
+             (dump-zdd path (format nil "~a-ZDD" name) f))))))))
 
 (test zdd
   (dolist (m (models "sets-of-subsets"))
     (format t "~%testing model ~a" m)
-    (finishes
-      (parse-zdd-sets-of-subsets m)))
+    (parse-zdd-sets-of-subsets m))
   (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/sets-of-subsets/"))
                     :ignore-error-status t
                     :output t
