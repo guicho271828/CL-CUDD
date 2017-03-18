@@ -47,6 +47,7 @@
                                   :initial-value (one-node 'bdd-node))))
                    :initial-value (zero-node 'bdd-node))))
       (print f)
+      (print (dag-size f))
       (match path
         ((pathname name)
          (dump path (format nil "~a-BDD" name) f)
@@ -82,6 +83,7 @@
                                      :initial-value (one-node 'add-node))))
                    :initial-value (zero-node 'add-node))))
       (print f)
+      (print (dag-size f))
       (match path
         ((pathname name)
          (dump path (format nil "~a-ADD" name) f))))))
@@ -124,6 +126,7 @@
                                       (finally (return f)))))
                       :initial-value (zdd-emptyset))))
         (print f)
+        (print (dag-size f))
         (match path
           ((pathname name)
            (dump-zdd path (format nil "~a-ZDD" name) f)))))))
