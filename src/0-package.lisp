@@ -543,6 +543,8 @@
 
    #:node-or
    #:node-and
+   #:node-else
+   #:node-then
 
    #:plus-infinity
    #:minus-infinity
