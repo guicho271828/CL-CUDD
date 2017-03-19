@@ -60,29 +60,59 @@
 
 ;; between a ZDD and a single variable
 
-(def-cudd-call zdd-subset-0 ((:zdd cudd-zdd-subset-0) (s :node) var)
-  :zdd "Computes the subset of S that does not contain element VAR (integer).")
-(def-cudd-call zdd-subset-1 ((:zdd cudd-zdd-subset-1) (s :node) var)
-  :zdd "Computes the subset of S that contains element VAR (integer).")
-(def-cudd-call zdd-change ((:zdd cudd-zdd-change) (s :node) var)
-  :zdd "Computes the subset of S that contains element VAR (integer).")
+(defun zdd-subset-0 (zdd var)
+  "Computes the subset of S that does not contain element VAR (integer)."
+  (wrap-and-finalize
+   (cudd-zdd-subset-0 (manager-pointer *manager*) (node-pointer zdd) var)
+   'zdd-node))
+(defun zdd-subset-1 (zdd var)
+  "Computes the subset of S that contains element VAR (integer)."
+  (wrap-and-finalize
+   (cudd-zdd-subset-1 (manager-pointer *manager*) (node-pointer zdd) var)
+   'zdd-node))
+(defun zdd-change (zdd var)
+  "Computes the subset of S that contains element VAR (integer)."
+  (wrap-and-finalize
+   (cudd-zdd-change (manager-pointer *manager*) (node-pointer zdd) var)
+   'zdd-node))
 
 ;; between 2 ZDDs
 
-(def-cudd-call zdd-union ((:zdd cudd-zdd-union) (f :node) (g :node))
-  :zdd "Computes the union of F and G.")
-(def-cudd-call zdd-intersection ((:zdd cudd-zdd-intersect) (f :node) (g :node))
-  :zdd "Computes the intersection of F and G.")
-(def-cudd-call zdd-difference ((:zdd cudd-zdd-diff) (f :node) (g :node))
-  :zdd "Computes the difference of F and G.")
+(defun zdd-union (f g)
+  "Computes the union of F and G."
+  (wrap-and-finalize
+   (cudd-zdd-union (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   'zdd-node))
+(defun zdd-intersection (f g)
+  "Computes the intersection of F and G."
+  (wrap-and-finalize
+   (cudd-zdd-intersect (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   'zdd-node))
+(defun zdd-difference (f g)
+  "Computes the difference of F and G."
+  (wrap-and-finalize
+   (cudd-zdd-diff (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   'zdd-node))
 
-(def-cudd-call zdd-divide-unate ((:zdd cudd-zdd-divide) (f :node) (g :node))
-  :zdd "Computes the weak division of F by G (assumes unate representation).")
-(def-cudd-call zdd-divide-binate ((:zdd cudd-zdd-weak-div) (f :node) (g :node))
-  :zdd "Computes the weak division of F by G (assumes binate representation).")
-(def-cudd-call zdd-product-unate ((:zdd cudd-zdd-unate-product) (f :node) (g :node))
-  :zdd "Computes the weak division of F by G (assumes binate representation).")
-(def-cudd-call zdd-product-binate ((:zdd cudd-zdd-product) (f :node) (g :node))
-  :zdd "Computes the weak division of F by G (assumes binate representation).")
+(defun zdd-divide-unate (f g)
+  "Computes the weak division of F by G (assumes unate representation)."
+  (wrap-and-finalize
+   (cudd-zdd-divide (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   'zdd-node))
+(defun zdd-divide-binate (f g)
+  "Computes the weak division of F by G (assumes binate representation)."
+  (wrap-and-finalize
+   (cudd-zdd-weak-div (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   'zdd-node))
+(defun zdd-product-unate (f g)
+  "Computes the weak division of F by G (assumes binate representation)."
+  (wrap-and-finalize
+   (cudd-zdd-unate-product (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   'zdd-node))
+(defun zdd-product-binate (f g)
+  "Computes the weak division of F by G (assumes binate representation)."
+  (wrap-and-finalize
+   (cudd-zdd-product (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   'zdd-node))
 
 
