@@ -29,7 +29,7 @@
    (namestring (make-pathname :name name :type "dot" :defaults path))))
 
 
-(defun parse-bdd (path)
+(defun parse-bdd (path &optional zdd-binate?)
   (fresh-line)
   (with-manager ()
     (let ((f
@@ -58,12 +58,19 @@
          (finishes
            (dump path (format nil "~a-BDD-as-ADD" name) (bdd->add f)))
          (finishes
-           (dump-zdd path (format nil "~a-BDD-as-ZDD-simple" name) (bdd->zdd-simple f))))))))
+           (if zdd-binate?
+               (dump-zdd path (format nil "~a-BDD-as-ZDD-cover" name) (bdd->zdd-cover f))
+               (dump-zdd path (format nil "~a-BDD-as-ZDD-simple" name) (bdd->zdd-simple f)))))))))
 
 (test bdd
-  (dolist (m (models "gates"))
-    (parse-bdd m))
+  (dolist (m (append (models "gates") (models "modest")))
+    (parse-bdd m)
+    (parse-bdd m t))
   (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/gates/"))
+                    :ignore-error-status t
+                    :output t
+                    :error-output t)
+  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/modest/"))
                     :ignore-error-status t
                     :output t
                     :error-output t))
@@ -113,10 +120,14 @@
     (finishes (print (peak-live-node-count)))
     ;; This number always includes the two constants 1 and 0.
     (is (= 2 (zdd-node-count))))
-  (dolist (m (models "gates"))
+  (dolist (m (append (models "gates") (models "modest")))
     (format t "~%testing model ~a" m)
     (parse-add m))
   (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/gates/"))
+                    :ignore-error-status t
+                    :output t
+                    :error-output t)
+  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/modest/"))
                     :ignore-error-status t
                     :output t
                     :error-output t))
