@@ -31,7 +31,8 @@ pointer of the manager BOUND AT THE TIME OF THE CALL OF #'SET-NODE-FINALIZER
 is not a null pointer."
   (trivial-garbage:finalize
    wrapper
-   (lambda () (node-finalizer *manager* pointer))))
+   (let ((manager *manager*))
+     (lambda () (node-finalizer manager pointer)))))
 
 (declaim (inline wrap-and-finalize))
 (defun wrap-and-finalize (pointer type)
