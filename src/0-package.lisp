@@ -470,7 +470,8 @@
            :SIZEOF-VOID-P 
            :TRUE 
            :VALUE
-           :zdd-dump-dot)
+           :zdd-dump-dot
+           :zdd-var)
   ;; other exports done by swig
   )
 
@@ -543,6 +544,8 @@
 
    #:node-or
    #:node-and
+   #:node-else
+   #:node-then
 
    #:plus-infinity
    #:minus-infinity
@@ -573,4 +576,8 @@
    #:zdd-divide-binate
    #:zdd-product-unate
    #:zdd-product-binate
-   #:info))
+   #:info
+   #:peak-node-count
+   #:peak-live-node-count
+   #:node-count
+   #:zdd-node-count))

@@ -76,15 +76,15 @@ only if their pointers are the same."
 
 (defun node-constant-p (node)
   "return t if the node is constant, nil otherwise"
-  (with-pointers ((node node))
-     (cudd-node-is-constant (manager-pointer *manager*) node)))
+  (cudd-node-is-constant (manager-pointer *manager*)
+                         (node-pointer node)))
 
 (defun node-value (node)
   "Return the node value of a constant node"
   ;; Make sure that we only try to read the value of a constant node
   (assert (node-constant-p node))
-  (with-pointers ((node node))
-    (cudd-node-get-value (manager-pointer *manager*) node)))
+  (cudd-node-get-value (manager-pointer *manager*)
+                       (node-pointer node)))
 
 
 (defstruct (bdd-node (:include node))
