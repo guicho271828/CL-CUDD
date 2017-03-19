@@ -33,6 +33,7 @@ is not a null pointer."
    wrapper
    (lambda () (node-finalizer *manager* pointer))))
 
+(declaim (inline wrap-and-finalize))
 (defun wrap-and-finalize (pointer type)
   "Wrap the given pointer in a node-wrapper of type TYPE.
 Set the finalizer to call cudd-recursive-deref."
