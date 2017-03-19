@@ -105,12 +105,12 @@
    (cudd-zdd-weak-div (manager-pointer *manager*) (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-product-unate (f g)
-  "Computes the weak division of F by G (assumes binate representation)."
+  "Computes the product of F by G (assumes unate representation)."
   (wrap-and-finalize
    (cudd-zdd-unate-product (manager-pointer *manager*) (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-product-binate (f g)
-  "Computes the weak division of F by G (assumes binate representation)."
+  "Computes the product of F by G (assumes binate representation)."
   (wrap-and-finalize
    (cudd-zdd-product (manager-pointer *manager*) (node-pointer f) (node-pointer g))
    'zdd-node))
