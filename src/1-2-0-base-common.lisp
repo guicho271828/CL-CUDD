@@ -36,7 +36,7 @@ Warning: Undefined behaviour if DD is not a leaf node"
   (declare (ignore manager))
   (foreign-slot-value
    (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
-   '(:union dd-node-type) 'value))
+   '(:union dd-node/type) 'value))
 
 (defun cudd-node-get-then (manager node)
   "Return the then-child of an inner node.
@@ -47,7 +47,7 @@ Warning: Undefined behaviour if DD is a leaf node"
          (foreign-slot-value
           (foreign-slot-value
            (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
-           '(:union dd-node-type) 'kids)
+           '(:union dd-node/type) 'kids)
           '(:struct dd-children) 'T)))
     (cudd-ref result)
     result))
@@ -61,7 +61,7 @@ Warning: Undefined behaviour if DD is a leaf node"
          (foreign-slot-value
           (foreign-slot-value
            (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
-           '(:union dd-node-type) 'kids)
+           '(:union dd-node/type) 'kids)
           '(:struct dd-children) 'E)))
     (cudd-ref result)
     result))

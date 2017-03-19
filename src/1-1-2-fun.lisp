@@ -1,42 +1,15 @@
 (in-package :cl-cudd.baseapi)
 
-(defcstruct #.(lispify "DdChildren" :classname)
-            (t node)
-            (e node))
+(defcunion dd-node/type
+  (value cudd-value-type)
+  (kids (:struct dd-children)))
 
-(defcunion #.(lispify "DdNode_type" :classname)
-           (value cudd-value-type)
-           (kids (:struct dd-children)))
+(defcstruct dd-node
+  (index dd-half-word)
+  (ref dd-half-word)
+  (next node)
+  (type (:union dd-node/type)))
 
-(defcstruct #.(lispify "DdNode" :classname)
-            (index dd-half-word)
-            (ref dd-half-word)
-            (next node)
-            (type (:union dd-node-type)))
-
-(defcstruct ddgen-gen-cubes
-  (cube (:pointer :int))
-  (value cudd-value-type))
-(defcstruct ddgen-gen-primes
-  (cube (:pointer :int))
-  (ub node))
-(defcstruct ddgen-gen-nodes
-  (size :int))
-(defcstruct ddgen-stack
-  (sp :int)
-  (stack (:pointer node)))
-(defcunion ddgen-gen
-  (cubes  (:struct ddgen-gen-cubes))
-  (primes (:struct ddgen-gen-primes))
-  (nodes  (:struct ddgen-gen-nodes)))
-
-(defcstruct #.(lispify "DdGen" :classname)
-            (manager manager)
-            (type :int)
-            (status :int)
-            (gen (:union ddgen-gen))
-            (stack (:struct ddgen-stack))
-            (node node))
 
 (defcfun ("Cudd_addNewVar" #.(lispify "Cudd_addNewVar" :function)) node
   (dd manager))

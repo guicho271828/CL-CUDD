@@ -102,4 +102,36 @@
        ((#.(lispify "CUDD_VAR_PRESENT_STATE" :enumvalue :keyword) "CUDD_VAR_PRESENT_STATE"))
        ((#.(lispify "CUDD_VAR_NEXT_STATE" :enumvalue :keyword) "CUDD_VAR_NEXT_STATE")))
 
+;; forward declarations
 
+(cstruct dd-node "DdNode")
+(cstruct dd-children "DdChildren")
+(cstruct dd-gen "DdGen")
+(cstruct dd-hook "DdHook")
+(cstruct dd-local-cahce-item "DdLocalCacheItem")
+(cstruct dd-local-cache "DdLocalCache")
+(cstruct dd-hash-item "DdHashItem")
+(cstruct dd-hash-table "DdHashTable")
+(cstruct dd-cache "DdCache")
+(cstruct dd-subtable "DdSubtable")
+(cstruct dd-manager "DdManager")
+(cstruct move "Move")
+(cstruct index-key "IndexKey")
+(cstruct dd-queue-item "DdQueueItem")
+(cstruct dd-level-queue "DdLevelQueue")
+
+;; definitions --- putting only the necessary nodes.
+;; the offsets are automatically found by the groveller.
+
+(cstruct dd-children "DdChildren"
+         (t "T" :type (:pointer (:struct dd-node)))
+         (e "E" :type (:pointer (:struct dd-node))))
+(cstruct dd-manager "DdManager"
+         (error-code "errorCode" :type cudd-error-type))
+
+#+enable_this_when_cffi_upstream_patch_is_approved
+(cstruct dd-node "DdNode"
+         (ref "ref" :type dd-half-word)
+         (type "type" :type (:union
+                             (value cudd-value-type)
+                             (kids dd-children))))
