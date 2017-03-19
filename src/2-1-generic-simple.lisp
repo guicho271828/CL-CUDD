@@ -34,28 +34,19 @@ and H being the else branch"
   :bdd "Implements ITE(f,g,h)."
   :zdd "Implements ITE(f,g,h).")
 
-(defgeneric cube (nodes type)
-  (:documentation "
+(defun cube (nodes type)
+  "
 A cube, or product, is a boolean product of literals.
 Build a cube from a list of nodes. TYPE defines which nodes we have
-in the list of nodes: ADD-NODE or BDD-NODE"))
-
-(defmethod cube (nodes (type (eql 'add-node)))
+in the list of nodes: ADD-NODE or BDD-NODE"
   (wrap-and-finalize
-   (cudd-add-cube (manager-pointer *manager*) (mapcar #'node-pointer nodes))
-   'add-node))
+   (ecase type
+     (bdd-node (cudd-bdd-cube (manager-pointer *manager*) (map 'list #'node-pointer nodes)))
+     (add-node (cudd-add-cube (manager-pointer *manager*) (map 'list #'node-pointer nodes))))
+   (or type (type-of (first-elt nodes)))))
 
-(defmethod cube (nodes (type (eql 'bdd-node)))
-  (wrap-and-finalize
-   (cudd-bdd-cube (manager-pointer *manager*) (mapcar #'node-pointer nodes))
-   'bdd-node))
-
-(defmethod cube (nodes (type (eql 'nil)))
-  (cube nodes (type-of (first nodes))))
-
-(defgeneric make-var (type &key level index)
-  (:documentation
-   "Creates a new DD variable. At most one of index and level may be given.
+(defun make-var (type &key level index)
+  "Creates a new DD variable. At most one of index and level may be given.
 
 If neither index nor level are given, then the new variable has an index equal
 to the largest previous index plus 1.
@@ -70,36 +61,25 @@ Returns a pointer to the new variable if successful;
 invokes a signal otherwise.
 
 An ADD variable differs from a BDD variable because it points to the arithmetic zero,
-instead of having a complement pointer to 1."))
-
-(defmethod make-var ((type (eql 'add-node)) &key level index)
+instead of having a complement pointer to 1."
+  (declare (node-type type))
   (wrap-and-finalize
-   (add-var (manager-pointer *manager*) :index index :level level)
-   'add-node))
+   (ecase type
+     (bdd-node (bdd-var (manager-pointer *manager*) :index index :level level))
+     (add-node (add-var (manager-pointer *manager*) :index index :level level))
+     (zdd-node (zdd-var (manager-pointer *manager*) :index index :level level))) type))
 
-(defmethod make-var ((type (eql 'bdd-node)) &key level index)
-  (wrap-and-finalize
-   (bdd-var (manager-pointer *manager*) :index index :level level)
-   'bdd-node))
+(defun node-then (type node)
+  "Return the then child of an inner node"
+  (declare (node-type type))
+  (assert (not (node-constant-p node)))
+  (wrap-and-finalize (cudd-node-get-then (manager-pointer *manager*) (node-pointer node)) type))
 
-(defmethod make-var ((type (eql 'zdd-node)) &key level index)
-  (wrap-and-finalize
-   (zdd-var (manager-pointer *manager*) :index index :level level)
-   'zdd-node))
-
-(def-cudd-call node-then ((:add cudd-node-get-then :bdd cudd-node-get-then)
-                          (node :node))
-  :generic "Return the then child of an inner node")
-
-(defmethod node-then :before (node)
-  (assert (not (node-constant-p node))))
-
-(def-cudd-call node-else ((:add cudd-node-get-else :bdd cudd-node-get-else)
-                          (node :node))
-  :generic "Return the else child of an inner node")
-
-(defmethod node-else :before (node)
-  (assert (not (node-constant-p node))))
+(defun node-else (type node)
+  "Return the else child of an inner node"
+  (declare (node-type type))
+  (assert (not (node-constant-p node)))
+  (wrap-and-finalize (cudd-node-get-else (manager-pointer *manager*) (node-pointer node)) type))
 
 #|
 
@@ -109,21 +89,20 @@ instead of having a complement pointer to 1."))
 
 |#
 
-(defgeneric zero-node (type))
-
-(defmethod zero-node ((type (eql 'bdd-node)))
-  "Return the logical zero node (boolean 0)."
-  (wrap-and-finalize (cudd-read-logic-zero (manager-pointer *manager*)) type))
-
-(defmethod zero-node ((type (eql 'add-node)))
-  "Return the arithmetic zero node (0.0d0)."
-  (wrap-and-finalize (cudd-read-zero (manager-pointer *manager*)) type))
-
-(defmethod zero-node ((type (eql 'zdd-node)))
-  "Return the arithmetic zero node (0.0d0). (Same as ADD)"
-  (wrap-and-finalize (cudd-read-zero (manager-pointer *manager*)) type))
+(defun zero-node (type)
+  "Return the zero node for the correspoinding type.
+BDD: the logical zero node (boolean 0).
+ADD: the arithmetic zero node (0.0d0).
+ZDD: the arithmetic zero node (0.0d0). (Same as ADD)"
+  (declare (node-type type))
+  (wrap-and-finalize
+   (ecase type
+     (bdd-node (cudd-read-logic-zero (manager-pointer *manager*)))
+     (add-node (cudd-read-zero (manager-pointer *manager*)))
+     (zdd-node (cudd-read-zero (manager-pointer *manager*)))) type))
 
 (defun one-node (type)
   "return the one node."
+  (declare (node-type type))
   (wrap-and-finalize (cudd-read-one (manager-pointer *manager*)) type))
 
