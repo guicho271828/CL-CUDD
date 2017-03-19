@@ -14,20 +14,24 @@
        ,@(when generic-docu
            `((:documentation ,generic-docu))))))
 
+(defun node-finalizer (manager pointer)
+  "Set the finalizer of WRAPPER to recursively deref POINTER if the
+pointer of the manager BOUND AT THE TIME OF THE CALL OF #'SET-NODE-FINALIZER
+is not a null pointer."
+  (let ((m (manager-pointer manager)))
+    (when (not (null-pointer-p m))
+      (when (zerop (cudd-node-get-ref-count m pointer))
+        (error "Tried to decrease reference count of node that already has refcount zero"))
+      (cudd-recursive-deref
+       m pointer))))
+
 (defun set-node-finalizer (wrapper pointer)
   "Set the finalizer of WRAPPER to recursively deref POINTER if the
 pointer of the manager BOUND AT THE TIME OF THE CALL OF #'SET-NODE-FINALIZER
 is not a null pointer."
-  (let ((manager *manager*))
-    (trivial-garbage:finalize
-     wrapper
-     (lambda (&rest rest)
-       (declare (ignore rest))
-       (when (not (null-pointer-p (manager-pointer manager)))
-         (when (zerop (cudd-node-get-ref-count (manager-pointer manager) pointer))
-           (error "Tried to decrease reference count of node that already has refcount zero"))
-         (cudd-recursive-deref
-          (manager-pointer manager) pointer))))))
+  (trivial-garbage:finalize
+   wrapper
+   (lambda () (node-finalizer *manager* pointer))))
 
 (defun wrap-and-finalize (pointer type)
   "Wrap the given pointer in a node-wrapper of type TYPE.
