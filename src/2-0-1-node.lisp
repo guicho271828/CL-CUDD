@@ -96,3 +96,5 @@ only if their pointers are the same."
 (defstruct (zdd-node (:include node))
   "Node of an zero-suppressed decision diagram (ZDD)")
 
+(deftype node-type ()
+  `(member bdd-node add-node zdd-node))
