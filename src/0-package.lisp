@@ -12,8 +12,25 @@
   (:documentation "Low-level interface")
   (:use :cl :cffi :cl-cudd.swig-macros :alexandria)
   (:shadow #:pi)
-  (:export :+CUDD-MAX-INDEX+ 
-           :ADD-VAR 
+  ;; constants/variables/enums
+  (:export :+CUDD-MAX-INDEX+
+           :+SIZEOF-INT+
+           :+SIZEOF-LONG+
+           :+SIZEOF-VOID-P+
+           :+CUDD_TRUE+
+           :+CUDD_FALSE+
+           :+CUDD-CACHE-SLOTS+
+           :+CUDD-OUT-OF-MEM+
+           :+CUDD-RESIDUE-DEFAULT+
+           :+CUDD-RESIDUE-MSB+
+           :+CUDD-RESIDUE-TC+
+           :+CUDD-UNIQUE-SLOTS+
+           :+CUDD-VERSION+
+           :+DD-APA-BASE+
+           :+DD-APA-BITS+
+           :+DD-APA-HEXPRINT+
+           :+DD-APA-MASK+)
+  (:export :ADD-VAR 
            :BDD-VAR 
            :CUDD-ADD-AGREEMENT 
            :CUDD-ADD-APPLY 
@@ -189,7 +206,6 @@
            :CUDD-BDD-XOR-EXIST-ABSTRACT 
            :CUDD-BIASED-OVER-APPROX 
            :CUDD-BIASED-UNDER-APPROX 
-           :CUDD-CACHE-SLOTS 
            :CUDD-CHECK-KEYS 
            :CUDD-CHECK-ZERO-REF 
            :CUDD-CLASSIFY-SUPPORT 
@@ -264,7 +280,6 @@
            :CUDD-NODE-GET-VALUE 
            :CUDD-NODE-IS-CONSTANT 
            :CUDD-NODE-READ-INDEX 
-           :CUDD-OUT-OF-MEM 
            :CUDD-OVER-APPROX 
            :CUDD-PRIME 
            :CUDD-PRINT-DEBUG 
@@ -351,9 +366,6 @@
            :CUDD-REORDERING-STATUS 
            :CUDD-REORDERING-STATUS-ZDD 
            :CUDD-REORDERING-TYPE 
-           :CUDD-RESIDUE-DEFAULT 
-           :CUDD-RESIDUE-MSB 
-           :CUDD-RESIDUE-TC 
            :CUDD-SET-ARCVIOLATION 
            :CUDD-SET-BACKGROUND 
            :CUDD-SET-EPSILON 
@@ -402,13 +414,11 @@
            :CUDD-TURN-OFF-COUNT-DEAD 
            :CUDD-TURN-ON-COUNT-DEAD 
            :CUDD-UNDER-APPROX 
-           :CUDD-UNIQUE-SLOTS 
            :CUDD-VARIABLE-TYPE 
            :CUDD-VECTOR-SUPPORT 
            :CUDD-VECTOR-SUPPORT-INDEX 
            :CUDD-VECTOR-SUPPORT-SIZE 
            :CUDD-VERIFY-SOL 
-           :CUDD-VERSION 
            :CUDD-XEQY 
            :CUDD-XGTY 
            :CUDD-ZDD-CHANGE 
@@ -449,26 +459,17 @@
            :CUDD-ZDD-UNION 
            :CUDD-ZDD-VARS-FROM-BDD-VARS 
            :CUDD-ZDD-WEAK-DIV 
-           :CUDD-ZDD-WEAK-DIV-F 
-           :DD-APA-BASE 
-           :DD-APA-BITS 
-           :DD-APA-HEXPRINT 
-           :DD-APA-MASK 
+           :CUDD-ZDD-WEAK-DIV-F  
            :DD-CHILDREN 
            :DD-NODE 
            :DD-NODE-TYPE 
            :DUMP-DOT 
-           :E 
-           :FALSE 
+           :E  
            :INDEX 
            :KIDS 
            :NEXT 
            :PRINT-INFO 
            :REF 
-           :SIZEOF-INT 
-           :SIZEOF-LONG 
-           :SIZEOF-VOID-P 
-           :TRUE 
            :VALUE
            :zdd-dump-dot
            :zdd-var)

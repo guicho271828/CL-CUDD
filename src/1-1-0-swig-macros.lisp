@@ -23,7 +23,7 @@
                (t
                 (error "Invalid character: ~A" c)))))
     (let ((fix (case flag
-                 ((:constant :enumvalue) "+")
+                 ((:constant) "+")
                  (:variable "*")
                  (t ""))))
       (intern
