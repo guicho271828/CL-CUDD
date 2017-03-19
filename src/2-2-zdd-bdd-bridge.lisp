@@ -12,7 +12,7 @@
   "Converts a BDD to a ZDD via simple 1-to-1 variable conversion.
 This function internally calls cudd-zdd-vars-from-bdd-vars and increases the ZDD variable table size as necessary."
   (assert (typep bdd 'bdd-node))
-  (let ((dd (manager-pointer *manager*)))
+  (let ((dd %mp%))
     ;; TODO check if there are zdd vars?
     (assert (= 1 (cudd-zdd-vars-from-bdd-vars dd 1)))
     (wrap-and-finalize
@@ -22,7 +22,7 @@ This function internally calls cudd-zdd-vars-from-bdd-vars and increases the ZDD
 (defun zdd->bdd-simple (zdd)
   "Converts a ZDD to a BDD via simple 1-to-1 variable conversion."
   (assert (typep zdd 'zdd-node))
-  (let ((dd (manager-pointer *manager*)))
+  (let ((dd %mp%))
     (wrap-and-finalize
      (cudd-zdd-port-to-bdd dd (node-pointer zdd))
      'bdd-node)))
@@ -32,7 +32,7 @@ This function internally calls cudd-zdd-vars-from-bdd-vars and increases the ZDD
   "Converts a BDD to a ZDD via 1-to-2 conversion for cover representation.
 This function internally calls cudd-zdd-vars-from-bdd-vars and increases the ZDD variable table size as necessary."
   (assert (typep bdd 'bdd-node))
-  (let ((dd (manager-pointer *manager*)))
+  (let ((dd %mp%))
     (assert (= 1 (cudd-zdd-vars-from-bdd-vars dd 2)))
     (wrap-and-finalize
      (cudd-zdd-port-from-bdd dd (node-pointer bdd))
@@ -41,7 +41,7 @@ This function internally calls cudd-zdd-vars-from-bdd-vars and increases the ZDD
 (defun zdd->bdd-cover (zdd)
   "Converts a BDD to a ZDD via 1-to-2 conversion for cover representation."
   (assert (typep zdd 'zdd-node))
-  (let ((dd (manager-pointer *manager*)))
+  (let ((dd %mp%))
     (wrap-and-finalize
      (cudd-zdd-port-to-bdd dd (node-pointer zdd))
      'bdd-node)))

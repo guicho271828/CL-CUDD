@@ -41,8 +41,8 @@ Build a cube from a list of nodes. TYPE defines which nodes we have
 in the list of nodes: ADD-NODE or BDD-NODE"
   (wrap-and-finalize
    (ecase type
-     (bdd-node (cudd-bdd-cube (manager-pointer *manager*) (map 'list #'node-pointer nodes)))
-     (add-node (cudd-add-cube (manager-pointer *manager*) (map 'list #'node-pointer nodes))))
+     (bdd-node (cudd-bdd-cube %mp% (map 'list #'node-pointer nodes)))
+     (add-node (cudd-add-cube %mp% (map 'list #'node-pointer nodes))))
    (or type (type-of (first-elt nodes)))))
 
 (defun make-var (type &key level index)
@@ -65,21 +65,21 @@ instead of having a complement pointer to 1."
   (declare (node-type type))
   (wrap-and-finalize
    (ecase type
-     (bdd-node (bdd-var (manager-pointer *manager*) :index index :level level))
-     (add-node (add-var (manager-pointer *manager*) :index index :level level))
-     (zdd-node (zdd-var (manager-pointer *manager*) :index index :level level))) type))
+     (bdd-node (bdd-var %mp% :index index :level level))
+     (add-node (add-var %mp% :index index :level level))
+     (zdd-node (zdd-var %mp% :index index :level level))) type))
 
 (defun node-then (type node)
   "Return the then child of an inner node"
   (declare (node-type type))
   (assert (not (node-constant-p node)))
-  (wrap-and-finalize (cudd-node-get-then (manager-pointer *manager*) (node-pointer node)) type))
+  (wrap-and-finalize (cudd-node-get-then %mp% (node-pointer node)) type))
 
 (defun node-else (type node)
   "Return the else child of an inner node"
   (declare (node-type type))
   (assert (not (node-constant-p node)))
-  (wrap-and-finalize (cudd-node-get-else (manager-pointer *manager*) (node-pointer node)) type))
+  (wrap-and-finalize (cudd-node-get-else %mp% (node-pointer node)) type))
 
 #|
 
@@ -97,12 +97,12 @@ ZDD: the arithmetic zero node (0.0d0). (Same as ADD)"
   (declare (node-type type))
   (wrap-and-finalize
    (ecase type
-     (bdd-node (cudd-read-logic-zero (manager-pointer *manager*)))
-     (add-node (cudd-read-zero (manager-pointer *manager*)))
-     (zdd-node (cudd-read-zero (manager-pointer *manager*)))) type))
+     (bdd-node (cudd-read-logic-zero %mp%))
+     (add-node (cudd-read-zero %mp%))
+     (zdd-node (cudd-read-zero %mp%))) type))
 
 (defun one-node (type)
   "return the one node."
   (declare (node-type type))
-  (wrap-and-finalize (cudd-read-one (manager-pointer *manager*)) type))
+  (wrap-and-finalize (cudd-read-one %mp%) type))
 

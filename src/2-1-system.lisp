@@ -4,7 +4,7 @@
   `(defun ,name ()
      ,@doc
      (,interface
-      (manager-pointer *manager*))))
+      %mp%)))
 
 (define-simple-managed-function disable-gc cudd-disable-garbage-collection
   "Disables garbage collection. Garbage
@@ -43,7 +43,7 @@ only if garbage collection has been explicitly disabled.")
 (defun set-background (bck)
   "Sets the background constant of the manager. It assumes
 that the DdNode pointer bck is already referenced."
-  (cudd-set-background (manager-pointer *manager*) bck))
+  (cudd-set-background %mp% bck))
 
 (defun count-leaves (node)
   "Counts the number of leaves in a DD."

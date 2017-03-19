@@ -63,17 +63,17 @@
 (defun zdd-subset-0 (zdd var)
   "Computes the subset of S that does not contain element VAR (integer)."
   (wrap-and-finalize
-   (cudd-zdd-subset-0 (manager-pointer *manager*) (node-pointer zdd) var)
+   (cudd-zdd-subset-0 %mp% (node-pointer zdd) var)
    'zdd-node))
 (defun zdd-subset-1 (zdd var)
   "Computes the subset of S that contains element VAR (integer)."
   (wrap-and-finalize
-   (cudd-zdd-subset-1 (manager-pointer *manager*) (node-pointer zdd) var)
+   (cudd-zdd-subset-1 %mp% (node-pointer zdd) var)
    'zdd-node))
 (defun zdd-change (zdd var)
   "Computes the subset of S that contains element VAR (integer)."
   (wrap-and-finalize
-   (cudd-zdd-change (manager-pointer *manager*) (node-pointer zdd) var)
+   (cudd-zdd-change %mp% (node-pointer zdd) var)
    'zdd-node))
 
 ;; between 2 ZDDs
@@ -81,38 +81,38 @@
 (defun zdd-union (f g)
   "Computes the union of F and G."
   (wrap-and-finalize
-   (cudd-zdd-union (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   (cudd-zdd-union %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-intersection (f g)
   "Computes the intersection of F and G."
   (wrap-and-finalize
-   (cudd-zdd-intersect (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   (cudd-zdd-intersect %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-difference (f g)
   "Computes the difference of F and G."
   (wrap-and-finalize
-   (cudd-zdd-diff (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   (cudd-zdd-diff %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 
 (defun zdd-divide-unate (f g)
   "Computes the weak division of F by G (assumes unate representation)."
   (wrap-and-finalize
-   (cudd-zdd-divide (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   (cudd-zdd-divide %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-divide-binate (f g)
   "Computes the weak division of F by G (assumes binate representation)."
   (wrap-and-finalize
-   (cudd-zdd-weak-div (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-product-unate (f g)
   "Computes the product of F by G (assumes unate representation)."
   (wrap-and-finalize
-   (cudd-zdd-unate-product (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   (cudd-zdd-unate-product %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-product-binate (f g)
   "Computes the product of F by G (assumes binate representation)."
   (wrap-and-finalize
-   (cudd-zdd-product (manager-pointer *manager*) (node-pointer f) (node-pointer g))
+   (cudd-zdd-product %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 
 

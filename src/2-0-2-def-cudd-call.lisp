@@ -66,7 +66,7 @@ Set the finalizer to call cudd-recursive-deref."
                      :when (and (listp arg) (eq (second arg) :node))
                      :collect `(,(first arg) ,(first arg)))
                 (funcall #',native
-                         (manager-pointer *manager*)
+                         %mp%
                          ,@(clean-arguments arguments)))))
     (with-gensyms (pointer)
       `(defmethod ,generic-name ,(convert-arguments arguments)

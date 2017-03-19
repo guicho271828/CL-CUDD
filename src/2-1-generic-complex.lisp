@@ -28,7 +28,7 @@ If abstracting an ADD, we assume that it is an 0-1-ADD")
   "Computes the cofactor of f with respect to g; g must be the BDD or the ADD of a cube."
   (let* ((p
           (with-pointers ((f f) (g g))
-            (cudd-cofactor (manager-pointer *manager*) f g))))
+            (cudd-cofactor %mp% f g))))
     (wrap-and-finalize p (type-of f))))
 
 

@@ -22,7 +22,7 @@ Example:
 This is implemented by increasing the reference count of
 every node in the body and decreasing it after the body is run"
   (let ((manager (gensym "MANAGER")))
-    `(let* ((,manager (manager-pointer *manager*)))
+    `(let* ((,manager %mp%))
        (declare (ignorable ,manager))
        (progn
          ;; Reference all pointers
@@ -60,7 +60,7 @@ every node in the body and decreasing it after the body is run"
                 (pointer-address (node-pointer object))
                 (node-index object)))
     (format stream " REF ~d"
-            (cudd-node-get-ref-count (manager-pointer *manager*) (node-pointer object)))))
+            (cudd-node-get-ref-count %mp% (node-pointer object)))))
 
 (defun node-index (node)
   (cudd-node-read-index (node-pointer node)))
@@ -76,14 +76,14 @@ only if their pointers are the same."
 
 (defun node-constant-p (node)
   "return t if the node is constant, nil otherwise"
-  (cudd-node-is-constant (manager-pointer *manager*)
+  (cudd-node-is-constant %mp%
                          (node-pointer node)))
 
 (defun node-value (node)
   "Return the node value of a constant node"
   ;; Make sure that we only try to read the value of a constant node
   (assert (node-constant-p node))
-  (cudd-node-get-value (manager-pointer *manager*)
+  (cudd-node-get-value %mp%
                        (node-pointer node)))
 
 

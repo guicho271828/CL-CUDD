@@ -12,6 +12,8 @@ Every function in this package works with this manager.")
   (pointer (error "MANAGER needs to wrap a pointer")
            :type cffi:foreign-pointer))
 
+(define-symbol-macro %mp% (manager-pointer *manager*))
+
 (defmethod cffi:translate-to-foreign (pointer (manager manager))
   (manager-pointer manager))
 
@@ -44,11 +46,11 @@ Also, all data on the diagram are lost when it exits the scope of WITH-MANAGER.
                       ,cache-size ,max-memory))))
      (unwind-protect
           (progn ,@body)
-       (cudd-quit (manager-pointer *manager*))
-       (setf (manager-pointer *manager*) (cffi:null-pointer)))))
+       (cudd-quit %mp%)
+       (setf %mp% (cffi:null-pointer)))))
 
 (defun info ()
   (uiop:with-temporary-file (:stream s :pathname path)
-    (print-info (manager-pointer *manager*) path)
+    (print-info %mp% path)
     (uiop:slurp-stream-string s)))
 
