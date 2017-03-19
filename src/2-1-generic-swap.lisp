@@ -1,34 +1,5 @@
 (in-package :cudd)
 
-(defmacro with-iterator ((next has-next obj) &body body)
-  (let ((state (gensym "state"))
-        (gobj (gensym "object")))
-    `(let* ((,gobj ,obj)
-           (,state
-            (cond
-              ((typep ,gobj 'array)
-               0)
-              ((typep ,gobj 'list)
-               ,gobj)
-              (t (error "~A is neither an array nor a list" ,gobj)))))
-       (flet ((,next ()
-                (cond
-                  ((typep ,gobj 'array)
-                   (incf ,state)
-                   (aref ,gobj ,state))
-                  ((typep ,gobj 'list)
-                   (let ((e (car ,state)))
-                     (setq ,state (cdr ,state))
-                     (car ,state)
-                     e))))
-              (,has-next ()
-                (cond
-                  ((typep ,gobj 'array)
-                   (< ,state (length ,gobj)))
-                  ((typep ,gobj 'list)
-                   (not (null ,gobj))))))
-         ,@body))))
-
 (def-cudd-call node-permute ((:add cudd-add-permute :bdd cudd-bdd-permute) (node :node) permutation)
   :generic
   "Given a permutation in sequence permut, creates a new DD with
@@ -55,6 +26,9 @@ and CUDD performs iterative swaps between variables in order to achieve the spec
             :do (setf (mem-aref array :pointer i) (node-pointer (elt permutation i))))
       (node-permute node array))))
 
+
+
+
 (defun add-swap-variables (mgr node x y)
   (assert (= (length x) (length y)))
   (with-seq-as-array xa x
@@ -66,9 +40,6 @@ and CUDD performs iterative swaps between variables in order to achieve the spec
   (with-seq-as-array xa x
     (with-seq-as-array ya y
       (cudd-bdd-swap-variables mgr node xa ya (length x)))))
-
-
-
 
 (def-cudd-call swap-variables ((:add add-swap-variables :bdd bdd-swap-variables) (node :node) x y)
   :generic
