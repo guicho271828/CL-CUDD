@@ -2,23 +2,36 @@
 
 (in-package :cudd)
 
-(def-cudd-call add-negate ((:add cudd-add-negate) (node :node))
-  :generic "Computes the additive inverse of an ADD.")
+(defun add-negate (node)
+  "Computes the additive inverse of an ADD."
+  (wrap-and-finalize
+   (etypecase node
+     (add-node (cudd-add-negate (manager-pointer *manager*) (node-pointer node))))
+   'add-node))
 
-(def-cudd-call add-constant ((:add cudd-add-const) value)
-  :generic "Retrieves the ADD for constant c if it already exists, or creates a new ADD.")
+(defun add-constant (value)
+  "Retrieves the ADD for constant c if it already exists, or creates a new ADD."
+  (wrap-and-finalize
+   (cudd-add-const (manager-pointer *manager*) value)
+   'add-node))
 
-(def-cudd-call plus-infinity ((:add cudd-read-plus-infinity))
-  :generic
-  "Return node with value infinity.")
+(defun plus-infinity ()
+  "Returns a  node with value infinity."
+  (wrap-and-finalize
+   (cudd-read-plus-infinity (manager-pointer *manager*))
+   'add-node))
 
-(def-cudd-call minus-infinity ((:add cudd-read-minus-infinity))
-  :generic
-  "Return node with value -infinity.")
+(defun minus-infinity ()
+  "Returns a  node with value -infinity."
+  (wrap-and-finalize
+   (cudd-read-minus-infinity (manager-pointer *manager*))
+   'add-node))
 
-(def-cudd-call epsilon ((:add cudd-read-epsilon))
-  :generic
-  "Return node with value infinity.")
+(defun epsilon ()
+  "Returns a  node with value infinity."
+  (wrap-and-finalize
+   (cudd-read-epsilon (manager-pointer *manager*))
+   'add-node))
 
 ;;; Functions for add-apply
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -82,13 +95,21 @@
   (defparameter +mod+ (probe-symbol "Cudd_addMod" '+mod+)
     "f modulo g")
   (defparameter +log-x-y+ (probe-symbol "Cudd_addLogXY" '+log-x-y+)
-    "log f base g"))
-
-(def-cudd-call add-apply ((:add cudd-add-apply) op (f :node) (g :node))
-  :generic #.(format nil "Applies op to the corresponding discriminants of f and g.
+    "log f base g")
+  (defvar *add-apply-doc*
+      (format nil "Applies op to the corresponding discriminants of f and g.
 
 The following operations are supported:
 
 ~{~A~%~}" (mapcar (lambda (op)
-                 (format nil "~a (originally ~a) -- ~a" (car op) (cdr op) (documentation (car op) 'variable)))
-               *add-operators*)))
+                    (format nil "~a (originally ~a) -- ~a" (car op) (cdr op) (documentation (car op) 'variable)))
+                  *add-operators*))))
+
+(defun add-apply (op f g)
+  #.*add-apply-doc*
+  (wrap-and-finalize
+   (cudd-add-apply (manager-pointer *manager*)
+                   op
+                   (node-pointer f)
+                   (node-pointer g))
+   'add-node))
