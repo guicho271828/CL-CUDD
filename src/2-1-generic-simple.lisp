@@ -73,13 +73,13 @@ instead of having a complement pointer to 1."
   "Return the then child of an inner node"
   (declare (node-type type))
   (assert (not (node-constant-p node)))
-  (wrap-and-finalize (cudd-node-get-then %mp% (node-pointer node)) type))
+  (wrap-and-finalize (cudd-node-then %mp% (node-pointer node)) type))
 
 (defun node-else (type node)
   "Return the else child of an inner node"
   (declare (node-type type))
   (assert (not (node-constant-p node)))
-  (wrap-and-finalize (cudd-node-get-else %mp% (node-pointer node)) type))
+  (wrap-and-finalize (cudd-node-else %mp% (node-pointer node)) type))
 
 #|
 

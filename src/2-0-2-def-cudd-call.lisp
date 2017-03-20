@@ -20,7 +20,7 @@ pointer of the manager BOUND AT THE TIME OF THE CALL OF #'SET-NODE-FINALIZER
 is not a null pointer."
   (let ((m (manager-pointer manager)))
     (when (not (null-pointer-p m))
-      (when (zerop (cudd-node-get-ref-count m pointer))
+      (when (zerop (cudd-node-ref-count m pointer))
         (error "Tried to decrease reference count of node that already has refcount zero"))
       (cudd-recursive-deref
        m pointer))))

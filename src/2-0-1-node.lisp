@@ -60,7 +60,7 @@ every node in the body and decreasing it after the body is run"
                 (pointer-address (node-pointer object))
                 (node-index object)))
     (format stream " REF ~d"
-            (cudd-node-get-ref-count %mp% (node-pointer object)))))
+            (cudd-node-ref-count %mp% (node-pointer object)))))
 
 (defun node-index (node)
   (cudd-node-read-index (node-pointer node)))
@@ -83,8 +83,7 @@ only if their pointers are the same."
   "Return the node value of a constant node"
   ;; Make sure that we only try to read the value of a constant node
   (assert (node-constant-p node))
-  (cudd-node-get-value %mp%
-                       (node-pointer node)))
+  (cudd-node-value %mp% (node-pointer node)))
 
 
 (defstruct (bdd-node (:include node))

@@ -274,10 +274,10 @@
            :CUDD-NEXT-NODE 
            :CUDD-NEXT-PRIME 
            :CUDD-NODE 
-           :CUDD-NODE-GET-ELSE 
-           :CUDD-NODE-GET-REF-COUNT 
-           :CUDD-NODE-GET-THEN 
-           :CUDD-NODE-GET-VALUE 
+           :CUDD-NODE-ELSE 
+           :CUDD-NODE-REF-COUNT 
+           :CUDD-NODE-THEN 
+           :CUDD-NODE-VALUE 
            :CUDD-NODE-IS-CONSTANT 
            :CUDD-NODE-READ-INDEX 
            :CUDD-OVER-APPROX 

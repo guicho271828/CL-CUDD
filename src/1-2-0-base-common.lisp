@@ -19,17 +19,17 @@
 
 (declaim (ftype managed-node-operation
                 cudd-node-is-constant
-                cudd-node-get-value
-                cudd-node-get-then
-                cudd-node-get-else
-                cudd-node-get-ref-count))
+                cudd-node-value
+                cudd-node-then
+                cudd-node-else
+                cudd-node-ref-count))
 
 (defun cudd-node-is-constant (manager node)
   (declare (ignore manager))
   (let ((regular (cudd-regular node)))
     (= (cudd-node-read-index regular) +cudd-max-index+)))
 
-(defun cudd-node-get-value (manager node)
+(defun cudd-node-value (manager node)
   "Return the value of a leaf node.
 
 Warning: Undefined behaviour if DD is not a leaf node"
@@ -38,7 +38,7 @@ Warning: Undefined behaviour if DD is not a leaf node"
    (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
    '(:union dd-node/type) 'value))
 
-(defun cudd-node-get-then (manager node)
+(defun cudd-node-then (manager node)
   "Return the then-child of an inner node.
 
 Warning: Undefined behaviour if DD is a leaf node"
@@ -52,7 +52,7 @@ Warning: Undefined behaviour if DD is a leaf node"
     (cudd-ref result)
     result))
 
-(defun cudd-node-get-else (manager node)
+(defun cudd-node-else (manager node)
   "Return the else-child of an inner node.
 
 Warning: Undefined behaviour if DD is a leaf node"
@@ -66,7 +66,51 @@ Warning: Undefined behaviour if DD is a leaf node"
     (cudd-ref result)
     result))
 
-(defun cudd-node-get-ref-count (manager node)
+(defun (setf cudd-node-value) (new-value manager node)
+  "Return the value of a leaf node.
+
+Warning: Undefined behaviour if DD is not a leaf node"
+  (declare (ignore manager))
+  (setf (foreign-slot-value
+         (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
+         '(:union dd-node/type) 'value)
+        new-value))
+
+(defun (setf cudd-node-then) (new-value manager node)
+  "Return the then-child of an inner node.
+
+Warning: Undefined behaviour if DD is a leaf node"
+  (declare (ignore manager))
+  (cudd-deref (foreign-slot-value
+               (foreign-slot-value
+                (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
+                '(:union dd-node/type) 'kids)
+               '(:struct dd-children) 'T))
+  (setf (foreign-slot-value
+         (foreign-slot-value
+          (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
+          '(:union dd-node/type) 'kids)
+         '(:struct dd-children) 'T)
+        new-value))
+
+(defun (setf cudd-node-else) (new-value manager node)
+  "Return the else-child of an inner node.
+
+Warning: Undefined behaviour if DD is a leaf node"
+  (declare (ignore manager))
+  (cudd-deref (foreign-slot-value
+               (foreign-slot-value
+                (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
+                '(:union dd-node/type) 'kids)
+               '(:struct dd-children) 'E))
+  (setf (foreign-slot-value
+         (foreign-slot-value
+          (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
+          '(:union dd-node/type) 'kids)
+         '(:struct dd-children) 'E)
+        new-value))
+
+(defun cudd-node-ref-count (manager node)
   "Return the reference count of the node."
   (declare (ignore manager))
   (foreign-slot-value (cudd-regular node) '(:struct dd-node) 'ref))

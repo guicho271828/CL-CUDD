@@ -175,9 +175,9 @@
       CUDD-NEXT-NODE
       CUDD-NEXT-PRIME
       CUDD-NODE
-      CUDD-NODE-GET-ELSE
-      CUDD-NODE-GET-THEN
-      CUDD-NODE-GET-VALUE
+      CUDD-NODE-ELSE
+      CUDD-NODE-THEN
+      CUDD-NODE-VALUE
       CUDD-NODE-IS-CONSTANT
       CUDD-NODE-READ-INDEX
       CUDD-OUT-OF-MEM
@@ -362,7 +362,7 @@
          cudd-bdd-and-limit cudd-bdd-constrain cudd-bdd-intersect
          cudd-bdd-is-ns-var cudd-bdd-is-pi-var cudd-bdd-is-ps-var
          cudd-count-minterm cudd-dump-da-vinci cudd-free-zdd-tree
-         cudd-node-get-else cudd-node-get-then cudd-print-minterm
+         cudd-node-else cudd-node-then cudd-print-minterm
          cudd-print-version cudd-read-inv-perm cudd-read-max-live
          cudd-read-min-dead cudd-read-perm-zdd cudd-read-zdd-size
          cudd-read-zdd-tree cudd-shortest-path cudd-support-index
@@ -372,7 +372,7 @@
          cudd-bdd-set-ns-var cudd-bdd-set-pi-var cudd-bdd-set-ps-var
          cudd-bdd-unbind-var cudd-check-zero-ref cudd-dump-blif-body
          cudd-equal-sup-norm cudd-find-essential cudd-iter-deref-bdd
-         cudd-make-tree-node cudd-new-apa-number cudd-node-get-value
+         cudd-make-tree-node cudd-new-apa-number cudd-node-value
          cudd-read-max-cache cudd-set-background cudd-set-groupcheck
          cudd-set-max-growth cudd-set-max-memory cudd-vector-support
          cudd-zdd-complement cudd-zdd-diff-const cudd-zdd-first-path
