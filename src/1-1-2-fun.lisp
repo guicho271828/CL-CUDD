@@ -39,33 +39,33 @@
 (defcfun ("Cudd_IsNonConstant" #.(lispify "Cudd_IsNonConstant" :function)) :int
   (f node))
 (defcfun ("Cudd_AutodynEnable" #.(lispify "Cudd_AutodynEnable" :function)) :void
-  (unique manager)
+  (dd manager)
   (method #.(lispify "Cudd_ReorderingType" :enumname)))
 (defcfun ("Cudd_AutodynDisable" #.(lispify "Cudd_AutodynDisable" :function)) :void
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_ReorderingStatus" #.(lispify "Cudd_ReorderingStatus" :function)) :int
-  (unique manager)
+  (dd manager)
   (method :pointer))
 (defcfun ("Cudd_AutodynEnableZdd" #.(lispify "Cudd_AutodynEnableZdd" :function)) :void
-  (unique manager)
+  (dd manager)
   (method #.(lispify "Cudd_ReorderingType" :enumname)))
 (defcfun ("Cudd_AutodynDisableZdd" #.(lispify "Cudd_AutodynDisableZdd" :function)) :void
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_ReorderingStatusZdd" #.(lispify "Cudd_ReorderingStatusZdd" :function)) :int
-  (unique manager)
+  (dd manager)
   (method :pointer))
 (defcfun ("Cudd_zddRealignmentEnabled" #.(lispify "Cudd_zddRealignmentEnabled" :function)) :int
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_zddRealignEnable" #.(lispify "Cudd_zddRealignEnable" :function)) :void
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_zddRealignDisable" #.(lispify "Cudd_zddRealignDisable" :function)) :void
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_bddRealignmentEnabled" #.(lispify "Cudd_bddRealignmentEnabled" :function)) :int
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_bddRealignEnable" #.(lispify "Cudd_bddRealignEnable" :function)) :void
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_bddRealignDisable" #.(lispify "Cudd_bddRealignDisable" :function)) :void
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_ReadOne" #.(lispify "Cudd_ReadOne" :function)) node
   (dd manager))
 (defcfun ("Cudd_ReadZddOne" #.(lispify "Cudd_ReadZddOne" :function)) node
@@ -326,15 +326,15 @@
   (dd manager)
   (index :int))
 (defcfun ("Cudd_addExistAbstract" #.(lispify "Cudd_addExistAbstract" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (cube node))
 (defcfun ("Cudd_addUnivAbstract" #.(lispify "Cudd_addUnivAbstract" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (cube node))
 (defcfun ("Cudd_addOrAbstract" #.(lispify "Cudd_addOrAbstract" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (cube node))
 (defcfun ("Cudd_addApply" #.(lispify "Cudd_addApply" :function)) node
@@ -467,12 +467,12 @@
   (options :int)
   (top :int))
 (defcfun ("Cudd_bddAndAbstract" #.(lispify "Cudd_bddAndAbstract" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (g node)
   (cube node))
 (defcfun ("Cudd_bddAndAbstractLimit" #.(lispify "Cudd_bddAndAbstractLimit" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (g node)
   (cube node)
@@ -544,7 +544,7 @@
   (number :pointer)
   (precision :int))
 (defcfun ("Cudd_ApaCountMinterm" #.(lispify "Cudd_ApaCountMinterm" :function)) :pointer
-  (manager manager)
+  (dd manager)
   (node node)
   (nvars :int)
   (digits :pointer))
@@ -607,20 +607,20 @@
   (quality1 :double)
   (quality0 :double))
 (defcfun ("Cudd_bddExistAbstract" #.(lispify "Cudd_bddExistAbstract" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (cube node))
 (defcfun ("Cudd_bddXorExistAbstract" #.(lispify "Cudd_bddXorExistAbstract" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (g node)
   (cube node))
 (defcfun ("Cudd_bddUnivAbstract" #.(lispify "Cudd_bddUnivAbstract" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (cube node))
 (defcfun ("Cudd_bddBooleanDiff" #.(lispify "Cudd_bddBooleanDiff" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (x :int))
 (defcfun ("Cudd_bddVarIsDependent" #.(lispify "Cudd_bddVarIsDependent" :function)) :int
@@ -628,11 +628,11 @@
   (f node)
   (var node))
 (defcfun ("Cudd_bddCorrelation" #.(lispify "Cudd_bddCorrelation" :function)) :double
-  (manager manager)
+  (dd manager)
   (f node)
   (g node))
 (defcfun ("Cudd_bddCorrelationWeights" #.(lispify "Cudd_bddCorrelationWeights" :function)) :double
-  (manager manager)
+  (dd manager)
   (f node)
   (g node)
   (prob :pointer))
@@ -708,12 +708,12 @@
   (f node))
 (defcfun ("Cudd_bddTransfer" #.(lispify "Cudd_bddTransfer" :function)) node
   (ddSource manager)
-  (ddDestination manager)
+  (dd manager) #+nil (ddDestination manager)
   (f node))
 (defcfun ("Cudd_DebugCheck" #.(lispify "Cudd_DebugCheck" :function)) :int
-  (table manager))
+  (dd manager))
 (defcfun ("Cudd_CheckKeys" #.(lispify "Cudd_CheckKeys" :function)) :int
-  (table manager))
+  (dd manager))
 (defcfun ("Cudd_bddClippingAnd" #.(lispify "Cudd_bddClippingAnd" :function)) node
   (dd manager)
   (f node)
@@ -742,7 +742,7 @@
   (g node)
   (v :int))
 (defcfun ("Cudd_addPermute" #.(lispify "Cudd_addPermute" :function)) node
-  (manager manager)
+  (dd manager)
   (node node)
   (permut :pointer))
 (defcfun ("Cudd_addSwapVariables" #.(lispify "Cudd_addSwapVariables" :function)) node
@@ -752,14 +752,14 @@
   (y :pointer)
   (n :int))
 (defcfun ("Cudd_bddPermute" #.(lispify "Cudd_bddPermute" :function)) node
-  (manager manager)
+  (dd manager)
   (node node)
   (permut :pointer))
 (defcfun ("Cudd_bddVarMap" #.(lispify "Cudd_bddVarMap" :function)) node
-  (manager manager)
+  (dd manager)
   (f node))
 (defcfun ("Cudd_SetVarMap" #.(lispify "Cudd_SetVarMap" :function)) :int
-  (manager manager)
+  (dd manager)
   (x :pointer)
   (y :pointer)
   (n :int))
@@ -827,7 +827,7 @@
   (dd manager)
   (f node))
 (defcfun ("Cudd_bddIsVarEssential" #.(lispify "Cudd_bddIsVarEssential" :function)) :int
-  (manager manager)
+  (dd manager)
   (f node)
   (id :int)
   (phase :int))
@@ -968,11 +968,11 @@
   (cacheSize :unsigned-int)
   (maxMemory :unsigned-long))
 (defcfun ("Cudd_Quit" #.(lispify "Cudd_Quit" :function)) :void
-  (unique manager))
+  (dd manager))
 (defcfun ("Cudd_PrintLinear" #.(lispify "Cudd_PrintLinear" :function)) :int
-  (table manager))
+  (dd manager))
 (defcfun ("Cudd_ReadLinear" #.(lispify "Cudd_ReadLinear" :function)) :int
-  (table manager)
+  (dd manager)
   (x :int)
   (y :int))
 (defcfun ("Cudd_bddLiteralSetIntersection" #.(lispify "Cudd_bddLiteralSetIntersection" :function)) node
@@ -1091,44 +1091,44 @@
 (defcfun ("Cudd_Ref" #.(lispify "Cudd_Ref" :function)) :void
   (n node))
 (defcfun ("Cudd_RecursiveDeref" #.(lispify "Cudd_RecursiveDeref" :function)) :void
-  (table manager)
+  (dd manager)
   (n node))
 (defcfun ("Cudd_IterDerefBdd" #.(lispify "Cudd_IterDerefBdd" :function)) :void
-  (table manager)
+  (dd manager)
   (n node))
 (defcfun ("Cudd_DelayedDerefBdd" #.(lispify "Cudd_DelayedDerefBdd" :function)) :void
-  (table manager)
+  (dd manager)
   (n node))
 (defcfun ("Cudd_RecursiveDerefZdd" #.(lispify "Cudd_RecursiveDerefZdd" :function)) :void
-  (table manager)
+  (dd manager)
   (n node))
 (defcfun ("Cudd_Deref" #.(lispify "Cudd_Deref" :function)) :void
   (node node))
 (defcfun ("Cudd_CheckZeroRef" #.(lispify "Cudd_CheckZeroRef" :function)) :int
-  (manager manager))
+  (dd manager))
 (defcfun ("Cudd_ReduceHeap" #.(lispify "Cudd_ReduceHeap" :function)) :int
-  (table manager)
+  (dd manager)
   (heuristic #.(lispify "Cudd_ReorderingType" :enumname))
   (minsize :int))
 (defcfun ("Cudd_ShuffleHeap" #.(lispify "Cudd_ShuffleHeap" :function)) :int
-  (table manager)
+  (dd manager)
   (permutation :pointer))
 (defcfun ("Cudd_Eval" #.(lispify "Cudd_Eval" :function)) node
   (dd manager)
   (f node)
   (inputs :pointer))
 (defcfun ("Cudd_ShortestPath" #.(lispify "Cudd_ShortestPath" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (weight :pointer)
   (support :pointer)
   (length :pointer))
 (defcfun ("Cudd_LargestCube" #.(lispify "Cudd_LargestCube" :function)) node
-  (manager manager)
+  (dd manager)
   (f node)
   (length :pointer))
 (defcfun ("Cudd_ShortestLength" #.(lispify "Cudd_ShortestLength" :function)) :int
-  (manager manager)
+  (dd manager)
   (f node)
   (weight :pointer))
 (defcfun ("Cudd_Decreasing" #.(lispify "Cudd_Decreasing" :function)) node
@@ -1163,20 +1163,20 @@
   (dd manager)
   (node node))
 (defcfun ("Cudd_SolveEqn" #.(lispify "Cudd_SolveEqn" :function)) node
-  (bdd manager)
+  (dd manager)
   (F node)
   (Y node)
   (G :pointer)
   (yIndex :pointer)
   (n :int))
 (defcfun ("Cudd_VerifySol" #.(lispify "Cudd_VerifySol" :function)) node
-  (bdd manager)
+  (dd manager)
   (F node)
   (G :pointer)
   (yIndex :pointer)
   (n :int))
 (defcfun ("Cudd_SplitSet" #.(lispify "Cudd_SplitSet" :function)) node
-  (manager manager)
+  (dd manager)
   (S node)
   (xVars :pointer)
   (n :int)
@@ -1204,13 +1204,13 @@
   (threshold :int)
   (hardlimit :int))
 (defcfun ("Cudd_SymmProfile" #.(lispify "Cudd_SymmProfile" :function)) :void
-  (table manager)
+  (dd manager)
   (lower :int)
   (upper :int))
 (defcfun ("Cudd_Prime" #.(lispify "Cudd_Prime" :function)) :unsigned-int
   (p :unsigned-int))
 (defcfun ("Cudd_PrintMinterm" #.(lispify "Cudd_PrintMinterm" :function)) :int
-  (manager manager)
+  (dd manager)
   (node node))
 (defcfun ("Cudd_bddPrintCover" #.(lispify "Cudd_bddPrintCover" :function)) :int
   (dd manager)
@@ -1235,11 +1235,11 @@
   (nodeArray :pointer)
   (n :int))
 (defcfun ("Cudd_CountMinterm" #.(lispify "Cudd_CountMinterm" :function)) :double
-  (manager manager)
+  (dd manager)
   (node node)
   (nvars :int))
 (defcfun ("Cudd_EpdCountMinterm" #.(lispify "Cudd_EpdCountMinterm" :function)) :int
-  (manager manager)
+  (dd manager)
   (node node)
   (nvars :int)
   (epd :pointer))
@@ -1278,7 +1278,7 @@
 (defcfun ("Cudd_CountLeaves" #.(lispify "Cudd_CountLeaves" :function)) :int
   (node node))
 (defcfun ("Cudd_bddPickOneCube" #.(lispify "Cudd_bddPickOneCube" :function)) :int
-  (ddm manager)
+  (dd manager)
   (node node)
   (string :string))
 (defcfun ("Cudd_bddPickOneMinterm" #.(lispify "Cudd_bddPickOneMinterm" :function)) node
@@ -1362,10 +1362,10 @@
 (defcfun ("Cudd_OutOfMem" #.(lispify "Cudd_OutOfMem" :function)) :void
   (size :long))
 (defcfun ("Cudd_zddCount" #.(lispify "Cudd_zddCount" :function)) :int
-  (zdd manager)
+  (dd manager)
   (P node))
 (defcfun ("Cudd_zddCountDouble" #.(lispify "Cudd_zddCountDouble" :function)) :double
-  (zdd manager)
+  (dd manager)
   (P node))
 (defcfun ("Cudd_zddProduct" #.(lispify "Cudd_zddProduct" :function)) node
   (dd manager)
@@ -1414,11 +1414,11 @@
 (defcfun ("Cudd_zddDagSize" #.(lispify "Cudd_zddDagSize" :function)) :int
   (p_node node))
 (defcfun ("Cudd_zddCountMinterm" #.(lispify "Cudd_zddCountMinterm" :function)) :double
-  (zdd manager)
+  (dd manager)
   (node node)
   (path :int))
 (defcfun ("Cudd_zddPrintSubtable" #.(lispify "Cudd_zddPrintSubtable" :function)) :void
-  (table manager))
+  (dd manager))
 (defcfun ("Cudd_zddPortFromBdd" #.(lispify "Cudd_zddPortFromBdd" :function)) node
   (dd manager)
   (B node))
@@ -1426,11 +1426,11 @@
   (dd manager)
   (f node))
 (defcfun ("Cudd_zddReduceHeap" #.(lispify "Cudd_zddReduceHeap" :function)) :int
-  (table manager)
+  (dd manager)
   (heuristic #.(lispify "Cudd_ReorderingType" :enumname))
   (minsize :int))
 (defcfun ("Cudd_zddShuffleHeap" #.(lispify "Cudd_zddShuffleHeap" :function)) :int
-  (table manager)
+  (dd manager)
   (permutation :pointer))
 (defcfun ("Cudd_zddIte" #.(lispify "Cudd_zddIte" :function)) node
   (dd manager)
@@ -1450,7 +1450,7 @@
   (P node)
   (Q node))
 (defcfun ("Cudd_zddDiffConst" #.(lispify "Cudd_zddDiffConst" :function)) node
-  (zdd manager)
+  (dd manager)
   (P node)
   (Q node))
 (defcfun ("Cudd_zddSubset1" #.(lispify "Cudd_zddSubset1" :function)) node
@@ -1466,29 +1466,29 @@
   (P node)
   (var :int))
 (defcfun ("Cudd_zddSymmProfile" #.(lispify "Cudd_zddSymmProfile" :function)) :void
-  (table manager)
+  (dd manager)
   (lower :int)
   (upper :int))
 (defcfun ("Cudd_zddPrintMinterm" #.(lispify "Cudd_zddPrintMinterm" :function)) :int
-  (zdd manager)
+  (dd manager)
   (node node))
 (defcfun ("Cudd_zddPrintCover" #.(lispify "Cudd_zddPrintCover" :function)) :int
-  (zdd manager)
+  (dd manager)
   (node node))
 (defcfun ("Cudd_zddPrintDebug" #.(lispify "Cudd_zddPrintDebug" :function)) :int
-  (zdd manager)
+  (dd manager)
   (f node)
   (n :int)
   (pr :int))
 (defcfun ("Cudd_zddFirstPath" #.(lispify "Cudd_zddFirstPath" :function)) (:pointer (:struct dd-gen))
-  (zdd manager)
+  (dd manager)
   (f node)
   (path :pointer))
 (defcfun ("Cudd_zddNextPath" #.(lispify "Cudd_zddNextPath" :function)) :int
   (gen (:pointer (:struct dd-gen)))
   (path :pointer))
 (defcfun ("Cudd_zddCoverPathToString" #.(lispify "Cudd_zddCoverPathToString" :function)) :string
-  (zdd manager)
+  (dd manager)
   (path :pointer)
   (str :string))
 (defcfun ("Cudd_zddDumpDot" #.(lispify "Cudd_zddDumpDot" :function)) :int

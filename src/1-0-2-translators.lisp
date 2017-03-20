@@ -14,13 +14,20 @@
   (:actual-type :pointer)
   (:simple-parser manager))
 
+
+
+;; Any functions in 1-1-2-fun.lisp should follow a certain arugment naming convention:
+;; the arugument for a manager should be DD, otherwise DEFCFUN signals an error
+;; because its expansion contains a reference to DD.
+
 (defmethod expand-to-foreign (value (type node-type))
   value)
 (defmethod expand-from-foreign (value (type node-type))
   (let ((gvalue (gensym "value")))
     `(let ((,gvalue ,value))
        (if (null-pointer-p ,gvalue)
-           (error 'cudd-null-pointer-error)
+           (error 'cudd-null-pointer-error
+                  :code (foreign-slot-value DD '(:struct dd-manager) 'error-code))
            (progn
              (cudd-ref ,gvalue)
              ,gvalue)))))

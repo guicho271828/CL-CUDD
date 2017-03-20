@@ -472,7 +472,9 @@
            :REF 
            :VALUE
            :zdd-dump-dot
-           :zdd-var)
+           :zdd-var
+           :cudd-null-pointer-error
+           :cudd-null-manager-error)
   ;; other exports done by swig
   )
 
