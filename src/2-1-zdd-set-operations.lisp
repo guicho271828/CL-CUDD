@@ -80,3 +80,11 @@
   "Computes the remainder of division of F by G (assumes binate representation)."
   (zdd-difference f (zdd-product-binate f (zdd-divide-binate f g))))
 
+(defun zdd-count-minterm (f &optional support-size)
+  "Computes the number of minterms in f.
+SUPPORT-SIZE specifies the number of variables in the support of f, i.e.,
+the number of the variables that F essentially depends on."
+  (if support-size
+      (cudd-zdd-count-minterm %mp% (node-pointer f) support-size)
+      (cudd-zdd-count %mp% (node-pointer f))))
+

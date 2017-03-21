@@ -277,9 +277,9 @@
       CUDD-XGTY
       ;; CUDD-ZDD-CHANGE
       ;; CUDD-ZDD-COMPLEMENT
-      ;; CUDD-ZDD-COUNT      ------- returns int, internal function
-      ;; CUDD-ZDD-COUNT-DOUBLE ------- returns double, internal function
-      CUDD-ZDD-COUNT-MINTERM
+      ;; CUDD-ZDD-COUNT         ------- counts the minterm, returns int, internal function
+      ;; CUDD-ZDD-COUNT-DOUBLE  ------- returns double, internal function
+      ;; CUDD-ZDD-COUNT-MINTERM ------- returns double, uses CUDD-ZDD-COUNT-DOUBLE, takes additional PATH variable
       CUDD-ZDD-COVER-PATH-TO-STRING
       ;; CUDD-ZDD-DAG-SIZE
       ;; CUDD-ZDD-DIFF

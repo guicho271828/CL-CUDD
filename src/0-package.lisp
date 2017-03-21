@@ -585,4 +585,5 @@
    #:node-count
    #:zdd-node-count
    #:zdd-remainder-unate
-   #:zdd-remainder-binate))
+   #:zdd-remainder-binate
+   #:zdd-count-minterm))
