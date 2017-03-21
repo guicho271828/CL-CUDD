@@ -46,22 +46,37 @@ in the list of nodes: ADD-NODE or BDD-NODE"
    (or type (type-of (first-elt nodes)))))
 
 (defun make-var (type &key level index)
-  "Creates a new DD variable. At most one of index and level may be given.
+  "Creates a new DD variable (projection function). At most one of index and level may be given.
 
 If neither index nor level are given, then the new variable has an index equal
 to the largest previous index plus 1.
 
 If index is given, then retrieves the DD variable with the index if it already exists,
-or creates a new DD variable
+or creates a new DD variable.
 
 If level is given, then the new variable has an index equal to the largest
 previous index plus 1 and is positioned at the specified level in the order.
 
 Returns a pointer to the new variable if successful;
 invokes a signal otherwise.
+The returned node has the following properties depending on the type:
 
-An ADD variable differs from a BDD variable because it points to the arithmetic zero,
-instead of having a complement pointer to 1."
+type = BDD-NODE: The returned node is an internal node with both outgoing arcs
+pointing to the constant 1. The else arc is complemented.
+
+type = ADD-NODE: The returned node is an internal node with THEN arc pointing to the constant 1
+and ELSE arc pointing to the arithmetic zero.
+
+type = ZDD-NODE: The returned node is the root of N+1 nodes,
+where N is the maximum number of variables currently recognized by the manager.
+This is because that's the way ZDD represents a projection function of a single variable.
+When index = 2 and N = 4, the resulting ZDD is as follows:
+
+                then
+(root)-(0)=(1)=(2)-(3)=(4)=[1]
+                +----------[0]
+                else
+"
   (declare (node-type type))
   (wrap-and-finalize
    (ecase type
