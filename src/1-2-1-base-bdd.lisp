@@ -39,8 +39,8 @@ previous index plus 1 and is positioned at the specified level in the order.
 Returns a pointer to the new variable if successful;
 invokes a signal otherwise.
 
-An ADD variable differs from a BDD variable because it points to the arithmetic zero,
-instead of having a complement pointer to 1."
+The returned node is an internal node with both outgoing arcs
+pointing to the constant 1. The else arc is complemented."
   (declare (foreign-pointer manager))
   (when (and index level)
     (error "BDD-VAR accepts at most one of INDEX and LEVEL"))
