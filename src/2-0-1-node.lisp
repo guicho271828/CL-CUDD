@@ -53,12 +53,10 @@ every node in the body and decreasing it after the body is run"
 
 (defmethod print-object ((object node) stream)
   (print-unreadable-object (object stream :type (type-of object) :identity nil)
-    (format stream "~A " (cudd-node-read-index (node-pointer object)))
+    (format stream "INDEX ~A " (cudd-node-read-index (node-pointer object)))
     (if (node-constant-p object)
         (format stream "LEAF (VALUE ~A)" (node-value object))
-        (format stream "INNER 0x~x INDEX ~d"
-                (pointer-address (node-pointer object))
-                (node-index object)))
+        (format stream "INNER 0x~x" (pointer-address (node-pointer object))))
     (format stream " REF ~d"
             (cudd-node-ref-count %mp% (node-pointer object)))))
 
