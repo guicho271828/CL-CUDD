@@ -73,3 +73,10 @@
    'zdd-node))
 
 
+(defun zdd-remainder-unate (f g)
+  "Computes the remainder of division of F by G (assumes unate representation)."
+  (zdd-difference f (zdd-product-unate f (zdd-divide-unate f g))))
+(defun zdd-remainder-binate (f g)
+  "Computes the remainder of division of F by G (assumes binate representation)."
+  (zdd-difference f (zdd-product-binate f (zdd-divide-binate f g))))
+

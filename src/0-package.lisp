@@ -583,4 +583,6 @@
    #:peak-node-count
    #:peak-live-node-count
    #:node-count
-   #:zdd-node-count))
+   #:zdd-node-count
+   #:zdd-remainder-unate
+   #:zdd-remainder-binate))
