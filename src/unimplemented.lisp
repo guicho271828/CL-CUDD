@@ -340,7 +340,7 @@
          cudd-first-node cudd-increasing cudd-is-in-hook cudd-next-prime
          cudd-out-of-mem cudd-print-info cudd-read-slots cudd-residue-tc
          cudd-set-recomb cudd-set-stderr cudd-set-stdout cudd-verify-sol
-         cudd-zdd-change cudd-zdd-divide +cudd-max-index+ cudd-add-compose
+         cudd-zdd-change cudd-zdd-divide +cudd-maxindex+ cudd-add-compose
          cudd-add-hamming cudd-add-harwell cudd-add-ith-bit cudd-add-ith-var
          cudd-add-maximum cudd-add-minimum cudd-add-new-var cudd-add-permute
          cudd-add-residue cudd-apa-compare cudd-bdd-compose cudd-bdd-ith-var
