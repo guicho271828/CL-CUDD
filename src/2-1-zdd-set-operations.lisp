@@ -12,8 +12,8 @@
   (one-node 'zdd-node))
 
 (defun zdd-singleton (var)
-  "Returns {{var}}."
-  (make-var 'zdd-node :index var))
+  "Returns {{var}}. This is not equivalent to (make-var 'zdd-node :index var), see make-var documentation."
+  (zdd-change (zdd-set-of-emptyset) var))
 
 ;; between a ZDD and a single variable
 
