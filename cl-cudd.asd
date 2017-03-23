@@ -8,6 +8,7 @@
 (defsystem cl-cudd
  :serial t
  :author "Christian von Essen <christian@mvonessen.de>"
+ :maintainer "Masataro Asai <guicho2.7128@gmail.com>"
  :license "BSD Style (see LICENSE)"
  :defsystem-depends-on (:cffi-grovel)
  :depends-on (:cffi
