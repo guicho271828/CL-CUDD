@@ -86,5 +86,5 @@ SUPPORT-SIZE specifies the number of variables in the support of f, i.e.,
 the number of the variables that F essentially depends on."
   (if support-size
       (cudd-zdd-count-minterm %mp% (node-pointer f) support-size)
-      (cudd-zdd-count %mp% (node-pointer f))))
+      (cudd-zdd-count-double %mp% (node-pointer f))))
 
