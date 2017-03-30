@@ -9,6 +9,10 @@ addons:
       - openjdk-7-jre
       - graphviz
 
+os:
+  - osx
+  - linux
+
 env:
   global:
     - PATH=~/.roswell/bin:$PATH
