@@ -16,8 +16,16 @@ previous index plus 1 and is positioned at the specified level in the order.
 Returns a pointer to the new variable if successful;
 invokes a signal otherwise.
 
-An ADD variable differs from a BDD variable because it points to the arithmetic zero,
-instead of having a complement pointer to 1."
+type = ZDD-NODE: The returned node is the root (index 0) of N+1 nodes,
+where N is the maximum number of variables currently recognized by the manager.
+This is because that's the way ZDD represents a projection function of a single variable.
+When index = 2 and N = 4, the resulting ZDD is as follows:
+
+                then
+(root)-(0)=(1)=(2)-(3)=(4)=[1]
+                +----------[0]
+                else
+"
   (declare (foreign-pointer manager))
   (when (and index level)
     (error "BDD-VAR accepts at most one of I and LEVEL"))

@@ -56,18 +56,3 @@ that the DdNode pointer bck is already referenced."
     (add-node (cudd-dag-size (node-pointer node)))
     (bdd-node (cudd-dag-size (node-pointer node)))))
 
-;; (def-cudd-call disable-reordering ((:common cudd-disable-garbage-collection))
-;;                :generic "Disables garbage collection. Garbage
-;; collection is initially enabled. This function may be called to
-;; disable it. However, garbage collection will still occur when a new
-;; node must be created and no memory is left, or when garbage collection
-;; is required for correctness. (E.g., before reordering.)"
-;;                :dont-wrap-result t)
-;; 
-;; (def-cudd-call enable-reordering ((:common cudd-enable-garbage-collection))
-;;   :generic "Enables garbage collection. Garbage collection is
-;; initially enabled. Therefore it is necessary to call this function
-;; only if garbage collection has been explicitly disabled."
-;;   :dont-wrap-result t)
-
-;; cudd-auto-dyn-enable

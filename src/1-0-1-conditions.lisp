@@ -1,7 +1,8 @@
 (in-package :cl-cudd.baseapi)
 
 (define-condition cudd-condition (condition) ())
-(define-condition cudd-error (cudd-condition error) ())
+(define-condition cudd-error (cudd-condition error)
+  ((code :type cudd-error-type :initarg :code)))
 (define-condition cudd-null-pointer-error (cudd-error) ()
   (:report (lambda (condition stream)
              (declare (ignore condition))

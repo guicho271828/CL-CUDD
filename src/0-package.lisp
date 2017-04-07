@@ -13,7 +13,7 @@
   (:use :cl :cffi :cl-cudd.swig-macros :alexandria)
   (:shadow #:pi)
   ;; constants/variables/enums
-  (:export :+CUDD-MAX-INDEX+
+  (:export :+CUDD-MAXINDEX++
            :+SIZEOF-INT+
            :+SIZEOF-LONG+
            :+SIZEOF-VOID-P+
@@ -274,10 +274,10 @@
            :CUDD-NEXT-NODE 
            :CUDD-NEXT-PRIME 
            :CUDD-NODE 
-           :CUDD-NODE-GET-ELSE 
-           :CUDD-NODE-GET-REF-COUNT 
-           :CUDD-NODE-GET-THEN 
-           :CUDD-NODE-GET-VALUE 
+           :CUDD-NODE-ELSE 
+           :CUDD-NODE-REF-COUNT 
+           :CUDD-NODE-THEN 
+           :CUDD-NODE-VALUE 
            :CUDD-NODE-IS-CONSTANT 
            :CUDD-NODE-READ-INDEX 
            :CUDD-OVER-APPROX 
@@ -472,7 +472,9 @@
            :REF 
            :VALUE
            :zdd-dump-dot
-           :zdd-var)
+           :zdd-var
+           :cudd-null-pointer-error
+           :cudd-null-manager-error)
   ;; other exports done by swig
   )
 
@@ -581,4 +583,13 @@
    #:peak-node-count
    #:peak-live-node-count
    #:node-count
-   #:zdd-node-count))
+   #:zdd-node-count
+   #:zdd-remainder-unate
+   #:zdd-remainder-binate
+   #:zdd-count-minterm
+   #:reordering-status
+   #:zdd-disable-reordering
+   #:zdd-enable-reordering
+   #:disable-reordering
+   #:enable-reordering
+   #:zdd-reordering-status))

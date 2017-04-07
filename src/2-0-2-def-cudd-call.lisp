@@ -20,32 +20,26 @@ pointer of the manager BOUND AT THE TIME OF THE CALL OF #'SET-NODE-FINALIZER
 is not a null pointer."
   (let ((m (manager-pointer manager)))
     (when (not (null-pointer-p m))
-      (when (zerop (cudd-node-get-ref-count m pointer))
+      (when (zerop (cudd-node-ref-count m pointer))
         (error "Tried to decrease reference count of node that already has refcount zero"))
       (cudd-recursive-deref
        m pointer))))
 
-(defun set-node-finalizer (wrapper pointer)
-  "Set the finalizer of WRAPPER to recursively deref POINTER if the
-pointer of the manager BOUND AT THE TIME OF THE CALL OF #'SET-NODE-FINALIZER
-is not a null pointer."
-  (trivial-garbage:finalize
-   wrapper
-   (let ((manager *manager*))
-     (lambda () (node-finalizer manager pointer)))))
-
 (declaim (inline wrap-and-finalize))
 (defun wrap-and-finalize (pointer type)
-  "Wrap the given pointer in a node-wrapper of type TYPE.
+  "Wrap the given pointer in a node-node of type TYPE.
 Set the finalizer to call cudd-recursive-deref."
   (declare (foreign-pointer pointer)
            ((member bdd-node add-node zdd-node) type))
-  (let ((wrapper (ecase type
+  (let ((node (ecase type
                    (bdd-node (make-bdd-node :pointer pointer))
                    (add-node (make-add-node :pointer pointer))
                    (zdd-node (make-zdd-node :pointer pointer)))))
-    (set-node-finalizer wrapper pointer)
-    wrapper))
+    (trivial-garbage:finalize
+     node
+     (let ((manager *manager*))
+       (lambda () (node-finalizer manager pointer))))
+    node))
 
 (defun node-function (generic-name arguments native-function node-type
                       dont-wrap-result)

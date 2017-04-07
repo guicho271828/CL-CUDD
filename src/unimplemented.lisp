@@ -175,9 +175,9 @@
       CUDD-NEXT-NODE
       CUDD-NEXT-PRIME
       CUDD-NODE
-      CUDD-NODE-GET-ELSE
-      CUDD-NODE-GET-THEN
-      CUDD-NODE-GET-VALUE
+      CUDD-NODE-ELSE
+      CUDD-NODE-THEN
+      CUDD-NODE-VALUE
       CUDD-NODE-IS-CONSTANT
       CUDD-NODE-READ-INDEX
       CUDD-OUT-OF-MEM
@@ -277,9 +277,9 @@
       CUDD-XGTY
       ;; CUDD-ZDD-CHANGE
       ;; CUDD-ZDD-COMPLEMENT
-      ;; CUDD-ZDD-COUNT      ------- returns int, internal function
-      ;; CUDD-ZDD-COUNT-DOUBLE ------- returns double, internal function
-      CUDD-ZDD-COUNT-MINTERM
+      ;; CUDD-ZDD-COUNT         ------- counts the minterm, returns int, internal function
+      ;; CUDD-ZDD-COUNT-DOUBLE  ------- returns double, internal function
+      ;; CUDD-ZDD-COUNT-MINTERM ------- returns double, uses CUDD-ZDD-COUNT-DOUBLE, takes additional PATH variable
       CUDD-ZDD-COVER-PATH-TO-STRING
       ;; CUDD-ZDD-DAG-SIZE
       ;; CUDD-ZDD-DIFF
@@ -340,7 +340,7 @@
          cudd-first-node cudd-increasing cudd-is-in-hook cudd-next-prime
          cudd-out-of-mem cudd-print-info cudd-read-slots cudd-residue-tc
          cudd-set-recomb cudd-set-stderr cudd-set-stdout cudd-verify-sol
-         cudd-zdd-change cudd-zdd-divide +cudd-max-index+ cudd-add-compose
+         cudd-zdd-change cudd-zdd-divide +cudd-maxindex+ cudd-add-compose
          cudd-add-hamming cudd-add-harwell cudd-add-ith-bit cudd-add-ith-var
          cudd-add-maximum cudd-add-minimum cudd-add-new-var cudd-add-permute
          cudd-add-residue cudd-apa-compare cudd-bdd-compose cudd-bdd-ith-var
@@ -362,7 +362,7 @@
          cudd-bdd-and-limit cudd-bdd-constrain cudd-bdd-intersect
          cudd-bdd-is-ns-var cudd-bdd-is-pi-var cudd-bdd-is-ps-var
          cudd-count-minterm cudd-dump-da-vinci cudd-free-zdd-tree
-         cudd-node-get-else cudd-node-get-then cudd-print-minterm
+         cudd-node-else cudd-node-then cudd-print-minterm
          cudd-print-version cudd-read-inv-perm cudd-read-max-live
          cudd-read-min-dead cudd-read-perm-zdd cudd-read-zdd-size
          cudd-read-zdd-tree cudd-shortest-path cudd-support-index
@@ -372,7 +372,7 @@
          cudd-bdd-set-ns-var cudd-bdd-set-pi-var cudd-bdd-set-ps-var
          cudd-bdd-unbind-var cudd-check-zero-ref cudd-dump-blif-body
          cudd-equal-sup-norm cudd-find-essential cudd-iter-deref-bdd
-         cudd-make-tree-node cudd-new-apa-number cudd-node-get-value
+         cudd-make-tree-node cudd-new-apa-number cudd-node-value
          cudd-read-max-cache cudd-set-background cudd-set-groupcheck
          cudd-set-max-growth cudd-set-max-memory cudd-vector-support
          cudd-zdd-complement cudd-zdd-diff-const cudd-zdd-first-path
