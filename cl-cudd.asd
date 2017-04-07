@@ -38,7 +38,8 @@
               (:file "src/2-1-system")
               (:file "src/2-1-zdd-set-operations")
               (:file "src/2-2-add-bdd-bridge")
-              (:file "src/2-2-zdd-bdd-bridge"))
+              (:file "src/2-2-zdd-bdd-bridge")
+              (:file "src/2-3-reordering"))
  :description "A two-layered binding to the CUDD binary decision diagram library.
 
 See README.md for more details."
