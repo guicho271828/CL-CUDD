@@ -103,6 +103,13 @@
        ((#.(lispify "CUDD_VAR_PRESENT_STATE" :enumvalue :keyword) "CUDD_VAR_PRESENT_STATE"))
        ((#.(lispify "CUDD_VAR_NEXT_STATE" :enumvalue :keyword) "CUDD_VAR_NEXT_STATE")))
 
+(cenum #.(lispify "MTR_FLAGS" :enumname)
+       ((#.(LISPIFY "MTR_DEFAULT" :ENUMVALUE :KEYWORD) "MTR_DEFAULT"))
+       ((#.(LISPIFY "MTR_TERMINAL" :ENUMVALUE :KEYWORD) "MTR_TERMINAL"))
+       ((#.(LISPIFY "MTR_SOFT" :ENUMVALUE :KEYWORD) "MTR_SOFT"))
+       ((#.(LISPIFY "MTR_FIXED" :ENUMVALUE :KEYWORD) "MTR_FIXED"))
+       ((#.(LISPIFY "MTR_NEWNODE" :ENUMVALUE :KEYWORD) "MTR_NEWNODE")))
+
 ;; forward declarations
 
 (cstruct dd-node "DdNode")
