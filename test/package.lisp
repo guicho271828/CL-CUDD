@@ -49,6 +49,7 @@
       (pass "constructed DD")
       (finishes (print f))
       (finishes (print (dag-size f)))
+      (finishes (print (multiple-value-list (reordering-status))))
       (match path
         ((pathname name)
          (finishes
@@ -97,6 +98,7 @@
         (print f))
       (finishes
         (print (dag-size f)))
+      (finishes (print (multiple-value-list (reordering-status))))
       (match path
         ((pathname name)
          (finishes
@@ -152,6 +154,7 @@
           (print f))
         (finishes
           (print (dag-size f)))
+        (finishes (print (multiple-value-list (zdd-reordering-status))))
         (match path
           ((pathname name)
            (finishes

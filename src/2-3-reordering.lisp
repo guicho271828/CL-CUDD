@@ -28,6 +28,22 @@
 
   @see Cudd_AutodynEnableZdd Cudd_ReorderingStatusZdd Cudd_AutodynDisable ")
 
-;; (defun reordering-status ()
-;;   (match *manager*
-;;          ()(manager pointer)))
+(defun reordering-status ()
+  "Reports the status of automatic dynamic reordering of BDDs and ADDs.
+Return T if automatic reordering is enabled. NIL otherwise.
+Secondary value returns the current reordering method.
+
+  @see Cudd_AutodynDisableZdd Cudd_ReorderingStatusZdd Cudd_AutodynEnable"
+  (with-foreign-object (method-ptr 'cudd-reordering-type)
+    (values (= 1 (cudd-reordering-status %mp% method-ptr))
+            (mem-ref method-ptr 'cudd-reordering-type))))
+
+(defun zdd-reordering-status ()
+  "Reports the status of automatic dynamic reordering of ZDDs.
+Return T if automatic reordering is enabled. NIL otherwise.
+Secondary value returns the current reordering method.
+
+  @see Cudd_AutodynEnableZdd Cudd_ReorderingStatusZdd Cudd_AutodynDisableZdd"
+  (with-foreign-object (method-ptr 'cudd-reordering-type)
+    (values (= 1 (cudd-reordering-status %mp% method-ptr))
+            (mem-ref method-ptr 'cudd-reordering-type))))

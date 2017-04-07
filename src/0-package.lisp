@@ -586,4 +586,10 @@
    #:zdd-node-count
    #:zdd-remainder-unate
    #:zdd-remainder-binate
-   #:zdd-count-minterm))
+   #:zdd-count-minterm
+   #:reordering-status
+   #:zdd-disable-reordering
+   #:zdd-enable-reordering
+   #:disable-reordering
+   #:enable-reordering
+   #:zdd-reordering-status))
