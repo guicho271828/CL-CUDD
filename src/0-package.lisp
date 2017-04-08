@@ -474,7 +474,8 @@
            :zdd-dump-dot
            :zdd-var
            :cudd-null-pointer-error
-           :cudd-null-manager-error)
+           :cudd-null-manager-error
+           :mtr-flags)
   ;; other exports done by swig
   )
 

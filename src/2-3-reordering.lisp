@@ -88,3 +88,33 @@ Secondary value returns the current reordering method.
     (values (= 1 (cudd-reordering-status %mp% method-ptr))
             (the zdd-reordering-method
                  (mem-ref method-ptr 'cudd-reordering-type)))))
+
+
+
+
+(deftype mtr-flags ()
+  `(member
+    ,@(foreign-enum-keyword-list 'mtr-flags)))
+
+(defun set-variable-group (type &key from to size)
+  "Defines a variable group in the current manager. It calls cudd-make-tree-node (Cudd_MakeTreeNode).
+At least 2 of FROM, TO or SIZE should be specified.
+
+:MTR-DEFAULT requires the variables within the group to be contiguous after the reordering.
+:MTR-FIXED   requires the variables within the group to be unaffected by the reordering.
+In any cases, groups could be reordered.
+
+If the new group intersects an existing group, it must
+either contain it or be contained by it.
+"
+  (declare ((or null non-negative-fixnum) from to size)
+           (mtr-flags type))
+  (cond
+    ((and from to size)
+     (assert (= size (- from to)))
+     (cudd-make-tree-node %mp% from size type))
+    ((and from to)
+     (cudd-make-tree-node %mp% from (- from to) type))
+    ((and to size)
+     (cudd-make-tree-node %mp% (- to size) size type))
+    (t (error "insufficient specification!"))))

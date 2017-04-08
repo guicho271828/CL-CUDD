@@ -105,9 +105,12 @@
 
 (cenum #.(lispify "MTR_FLAGS" :enumname)
        ((#.(LISPIFY "MTR_DEFAULT" :ENUMVALUE :KEYWORD) "MTR_DEFAULT"))
+       #+not_useful
        ((#.(LISPIFY "MTR_TERMINAL" :ENUMVALUE :KEYWORD) "MTR_TERMINAL"))
+       #+not_useful
        ((#.(LISPIFY "MTR_SOFT" :ENUMVALUE :KEYWORD) "MTR_SOFT"))
        ((#.(LISPIFY "MTR_FIXED" :ENUMVALUE :KEYWORD) "MTR_FIXED"))
+       #+not_useful
        ((#.(LISPIFY "MTR_NEWNODE" :ENUMVALUE :KEYWORD) "MTR_NEWNODE")))
 
 ;; forward declarations
