@@ -593,4 +593,10 @@
    #:zdd-enable-reordering
    #:disable-reordering
    #:enable-reordering
-   #:zdd-reordering-status))
+   #:zdd-reordering-status
+   #:reduce-heap
+   #:zdd-reduce-heap
+   #:set-variable-group
+   #:mtr-flags
+   #:zdd-reordering-method
+   #:bdd-reordering-method))
