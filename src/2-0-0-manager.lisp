@@ -44,6 +44,10 @@ Also, all data on the diagram are lost when it exits the scope of WITH-MANAGER.
                       ,initial-num-vars-z
                       ,initial-num-slots
                       ,cache-size ,max-memory))))
+     (cudd-add-hook %mp% (callback before-gc-hook) :cudd-pre-gc-hook)
+     (cudd-add-hook %mp% (callback after-gc-hook) :cudd-post-gc-hook)
+     (cudd-add-hook %mp% (callback before-gc-hook) :cudd-pre-reordering-hook)
+     (cudd-add-hook %mp% (callback after-gc-hook) :cudd-post-reordering-hook)
      (unwind-protect
           (progn ,@body)
        (cudd-quit %mp%)
