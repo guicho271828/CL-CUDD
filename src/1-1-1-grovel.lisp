@@ -103,16 +103,6 @@
        ((#.(lispify "CUDD_VAR_PRESENT_STATE" :enumvalue :keyword) "CUDD_VAR_PRESENT_STATE"))
        ((#.(lispify "CUDD_VAR_NEXT_STATE" :enumvalue :keyword) "CUDD_VAR_NEXT_STATE")))
 
-(cenum #.(lispify "MTR_FLAGS" :enumname)
-       ((#.(LISPIFY "MTR_DEFAULT" :ENUMVALUE :KEYWORD) "MTR_DEFAULT"))
-       #+not_useful
-       ((#.(LISPIFY "MTR_TERMINAL" :ENUMVALUE :KEYWORD) "MTR_TERMINAL"))
-       #+not_useful
-       ((#.(LISPIFY "MTR_SOFT" :ENUMVALUE :KEYWORD) "MTR_SOFT"))
-       ((#.(LISPIFY "MTR_FIXED" :ENUMVALUE :KEYWORD) "MTR_FIXED"))
-       #+not_useful
-       ((#.(LISPIFY "MTR_NEWNODE" :ENUMVALUE :KEYWORD) "MTR_NEWNODE")))
-
 ;; forward declarations
 
 (cstruct dd-node "DdNode")
@@ -146,3 +136,30 @@
          (type "type" :type (:union
                              (value cudd-value-type)
                              (kids dd-children))))
+
+;;; mtr interface
+
+(include "mtr/mtrInt.h")
+
+(cenum mtr-flags
+       ((#.(LISPIFY "MTR_DEFAULT" :ENUMVALUE :KEYWORD) "MTR_DEFAULT"))
+       #+not_useful
+       ((#.(LISPIFY "MTR_TERMINAL" :ENUMVALUE :KEYWORD) "MTR_TERMINAL"))
+       #+not_useful
+       ((#.(LISPIFY "MTR_SOFT" :ENUMVALUE :KEYWORD) "MTR_SOFT"))
+       ((#.(LISPIFY "MTR_FIXED" :ENUMVALUE :KEYWORD) "MTR_FIXED"))
+       #+not_useful
+       ((#.(LISPIFY "MTR_NEWNODE" :ENUMVALUE :KEYWORD) "MTR_NEWNODE")))
+
+(ctype mtr-half-word "MtrHalfWord")
+
+(cstruct mtr-node "MtrNode"
+         ;; (flags "flags" :type mtr-half-word)
+         ;; (low "low" :type mtr-half-word)
+         ;; (size "size" :type mtr-half-word)
+         ;; (index "index" :type mtr-half-word)
+         ;; (parent "parent" :type (:pointer (:struct mtr-node)))
+         ;; (child "child" :type (:pointer (:struct mtr-node)))
+         ;; (prev "elder" :type (:pointer (:struct mtr-node)))
+         ;; (next "younger" :type (:pointer (:struct mtr-node)))
+         )
