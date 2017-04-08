@@ -1,29 +1,31 @@
 (in-package :cudd)
 
 (deftype bdd-reordering-method ()
-  '(member
-    :CUDD-REORDER-SAME
-    :CUDD-REORDER-NONE
-    :CUDD-REORDER-RANDOM
-    :CUDD-REORDER-RANDOM-PIVOT
-    :CUDD-REORDER-SIFT
-    :CUDD-REORDER-SIFT-CONVERGE
-    :CUDD-REORDER-SYMM-SIFT
-    :CUDD-REORDER-SYMM-SIFT-CONV
-    :CUDD-REORDER-WINDOW-2
-    :CUDD-REORDER-WINDOW-3
-    :CUDD-REORDER-WINDOW-4
-    :CUDD-REORDER-WINDOW-2-CONV
-    :CUDD-REORDER-WINDOW-3-CONV
-    :CUDD-REORDER-WINDOW-4-CONV
-    :CUDD-REORDER-GROUP-SIFT
-    :CUDD-REORDER-GROUP-SIFT-CONV
-    :CUDD-REORDER-ANNEALING
-    :CUDD-REORDER-GENETIC
-    :CUDD-REORDER-LINEAR          ; not documented
-    :CUDD-REORDER-LINEAR-CONVERGE ; not documented
-    :CUDD-REORDER-LAZY-SIFT       ; not documented
-    :CUDD-REORDER-EXACT))
+  `(member
+    ,@(foreign-enum-keyword-list 'cudd-reordering-type)
+    ;; :CUDD-REORDER-SAME
+    ;; :CUDD-REORDER-NONE
+    ;; :CUDD-REORDER-RANDOM
+    ;; :CUDD-REORDER-RANDOM-PIVOT
+    ;; :CUDD-REORDER-SIFT
+    ;; :CUDD-REORDER-SIFT-CONVERGE
+    ;; :CUDD-REORDER-SYMM-SIFT
+    ;; :CUDD-REORDER-SYMM-SIFT-CONV
+    ;; :CUDD-REORDER-WINDOW-2
+    ;; :CUDD-REORDER-WINDOW-3
+    ;; :CUDD-REORDER-WINDOW-4
+    ;; :CUDD-REORDER-WINDOW-2-CONV
+    ;; :CUDD-REORDER-WINDOW-3-CONV
+    ;; :CUDD-REORDER-WINDOW-4-CONV
+    ;; :CUDD-REORDER-GROUP-SIFT
+    ;; :CUDD-REORDER-GROUP-SIFT-CONV
+    ;; :CUDD-REORDER-ANNEALING
+    ;; :CUDD-REORDER-GENETIC
+    ;; :CUDD-REORDER-LINEAR          ; not documented
+    ;; :CUDD-REORDER-LINEAR-CONVERGE ; not documented
+    ;; :CUDD-REORDER-LAZY-SIFT       ; not documented
+    ;; :CUDD-REORDER-EXACT
+    ))
 
 (defun enable-reordering (method)
   "Enables automatic dynamic reordering of BDDs and ADDs.
