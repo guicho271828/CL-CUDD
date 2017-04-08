@@ -474,8 +474,29 @@
            :zdd-dump-dot
            :zdd-var
            :cudd-null-pointer-error
-           :cudd-null-manager-error
-           :mtr-flags)
+           :cudd-null-manager-error)
+  ;; mtr api
+  (:export :mtr-flags
+           :MTR-ALLOC-NODE
+           :MTR-DEALLOC-NODE
+           :MTR-INIT-TREE
+           :MTR-FREE-TREE
+           :MTR-COPY-TREE
+           :MTR-MAKE-FIRST-CHILD
+           :MTR-MAKE-LAST-CHILD
+           :MTR-CREATE-FIRST-CHILD
+           :MTR-CREATE-LAST-CHILD
+           :MTR-MAKE-NEXT-SIBLING
+           :MTR-PRINT-TREE
+           :MTR-INIT-GROUP-TREE
+           :MTR-MAKE-GROUP
+           :MTR-DISSOLVE-GROUP
+           :MTR-FIND-GROUP
+           :MTR-SWAP-GROUPS
+           :MTR-REORDER-GROUPS
+           :MTR-PRINT-GROUPS
+           :MTR-PRINT-GROUPED-ORDER
+           :MTR-READ-GROUPS)
   ;; other exports done by swig
   )
 
