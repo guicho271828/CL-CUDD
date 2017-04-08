@@ -10,7 +10,7 @@
 
 (defpackage cl-cudd.baseapi
   (:documentation "Low-level interface")
-  (:use :cl :cffi :cl-cudd.swig-macros :alexandria)
+  (:use :cl :cffi :cl-cudd.swig-macros :alexandria :trivia :trivia.cffi)
   (:shadow #:pi)
   ;; constants/variables/enums
   (:export :+CUDD-MAXINDEX++
@@ -463,18 +463,16 @@
            :DD-CHILDREN 
            :DD-NODE 
            :DD-NODE-TYPE 
-           :DUMP-DOT 
-           :E  
-           :INDEX 
-           :KIDS 
-           :NEXT 
+           :DUMP-DOT
            :PRINT-INFO 
-           :REF 
-           :VALUE
            :zdd-dump-dot
            :zdd-var
            :cudd-null-pointer-error
-           :cudd-null-manager-error)
+           :cudd-null-manager-error
+           :mtr-node
+           :mtr-type
+           :mtr-flags
+           :dump-mtr-tree)
   ;; mtr api
   (:export :mtr-flags
            :MTR-ALLOC-NODE
@@ -620,4 +618,7 @@
    #:set-variable-group
    #:mtr-flags
    #:zdd-reordering-method
-   #:bdd-reordering-method))
+   #:bdd-reordering-method
+   #:set-zdd-variable-group
+   #:dump-variable-group-hierarchy
+   #:dump-zdd-variable-group-hierarchy))

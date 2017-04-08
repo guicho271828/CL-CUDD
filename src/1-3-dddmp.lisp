@@ -120,3 +120,25 @@
     (loop :for c = (read-char in nil :eof)
           :until (eq c :eof)
           :do (write-char c))))
+
+
+;;; mtr
+
+(defun dump-mtr-tree (tree acc)
+  (ematch tree
+    ((null-pointer)
+     (nreverse acc))
+    ((-> (:struct mtr-node)
+       flags
+       low
+       size
+       child
+       younger)
+     (dump-mtr-tree
+      younger
+      (cons `(:flag ,flags
+              :low ,low
+              :size ,size
+              ,@(when (member :mtr-terminal flags)
+                  `(:children ,(dump-mtr-tree child nil))))
+            acc)))))

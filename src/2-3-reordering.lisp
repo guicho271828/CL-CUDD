@@ -126,9 +126,18 @@ currently in use."
   cudd-zdd-shuffle-heap)
 
 
+(deftype mtr-type ()
+  `(member
+    ,@(foreign-enum-keyword-list 'mtr-type)))
+
 (deftype mtr-flags ()
   `(member
-    ,@(foreign-enum-keyword-list 'mtr-flags)))
+    ,@(foreign-bitfield-symbol-list 'mtr-flags)))
+
+(defun dump-variable-group-hierarchy ()
+  (dump-mtr-tree (cudd-read-tree %mp%) nil))
+(defun dump-zdd-variable-group-hierarchy ()
+  (dump-mtr-tree (cudd-read-zdd-tree %mp%) nil))
 
 (defun set-variable-group (type &key from to size)
   "Defines a variable group in the current manager. It calls cudd-make-tree-node (Cudd_MakeTreeNode).
@@ -142,13 +151,51 @@ If the new group intersects an existing group, it must
 either contain it or be contained by it.
 "
   (declare ((or null non-negative-fixnum) from to size)
-           (mtr-flags type))
-  (cond
-    ((and from to size)
-     (assert (= size (- from to)))
-     (cudd-make-tree-node %mp% from size type))
-    ((and from to)
-     (cudd-make-tree-node %mp% from (- from to) type))
-    ((and to size)
-     (cudd-make-tree-node %mp% (- to size) size type))
-    (t (error "insufficient specification!"))))
+           (mtr-type type))
+  (assert
+   (not (null-pointer-p
+         (cond
+           ((and from to size)
+            (assert (= size (- from to)))
+            (cudd-make-tree-node %mp% from size type))
+           ((and from to)
+            (cudd-make-tree-node %mp% from (- from to) type))
+           ((and to size)
+            (cudd-make-tree-node %mp% (- to size) size type))
+           ((and from size)
+            (cudd-make-tree-node %mp% from size type))
+           (t (simple-program-error "insufficient group specification!")))))
+   nil "If the new group intersects an existing group, it must either contain it or be contained by it.
+Current variable group hierarchy:
+"))
+
+(defun set-zdd-variable-group (type &key from to size)
+  "Defines a variable group in the current manager (for zdd).
+It calls cudd-make-zdd-tree-node (Cudd_MakeZddTreeNode).
+At least 2 of FROM, TO or SIZE should be specified.
+
+:MTR-DEFAULT requires the variables within the group to be contiguous after the reordering.
+:MTR-FIXED   requires the variables within the group to be unaffected by the reordering.
+In any cases, groups could be reordered.
+
+If the new group intersects an existing group, it must
+either contain it or be contained by it.
+"
+  (declare ((or null non-negative-fixnum) from to size)
+           (mtr-type type))
+  (assert
+   (not (null-pointer-p
+         (cond
+           ((and from to size)
+            (assert (= size (- from to)))
+            (cudd-make-zdd-tree-node %mp% from size type))
+           ((and from to)
+            (cudd-make-zdd-tree-node %mp% from (- from to) type))
+           ((and to size)
+            (cudd-make-zdd-tree-node %mp% (- to size) size type))
+           ((and from size)
+            (cudd-make-zdd-tree-node %mp% from size type))
+           (t (simple-program-error "insufficient group specification!")))))
+   nil "If the new group intersects an existing group, it must either contain it or be contained by it.
+Current variable group hierarchy:
+"))

@@ -943,7 +943,7 @@
   (dd manager)
   (low :unsigned-int)
   (size :unsigned-int)
-  (type mtr-flags))
+  (type mtr-type))
 (defcfun ("Cudd_addHarwell" #.(lispify "Cudd_addHarwell" :function)) :int
   (fp :pointer)
   (dd manager)
@@ -1398,7 +1398,7 @@
   (dd manager)
   (low :unsigned-int)
   (size :unsigned-int)
-  (type :unsigned-int))
+  (type mtr-type))
 (defcfun ("Cudd_zddIsop" #.(lispify "Cudd_zddIsop" :function)) node
   (dd manager)
   (L node)
