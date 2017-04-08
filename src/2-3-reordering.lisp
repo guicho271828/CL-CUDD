@@ -90,6 +90,40 @@ Secondary value returns the current reordering method.
                  (mem-ref method-ptr 'cudd-reordering-type)))))
 
 
+(defun reduce-heap (method &optional (minsize 33000000))
+  "Initiates variable reordering explicitly.
+MINSIZE specifies the lower threshold of the number of the (live/referenced) nodes to initiate reordering:
+Number of nodes should be larger than this value.
+Default value is 33000000. In CUDD each node consumes 3 words, so this threshold corresponds to 100MB."
+  (declare (bdd-reordering-method method))
+  (cudd-reduce-heap %mp% method minsize))
+
+(defun zdd-reduce-heap (method &optional (minsize 33000000))
+  "Initiates variable reordering (zdd) explicitly.
+MINSIZE specifies the lower threshold of the number of the (live/referenced) nodes to initiate reordering:
+Number of nodes should be larger than this value.
+Default value is 33000000. In CUDD each node consumes 3 words, so this threshold corresponds to 100MB."
+  (declare (zdd-reordering-method method))
+  (cudd-zdd-reduce-heap %mp% method minsize))
+
+#+nil
+(defun shuffle-heap ()
+  "Reorders variables according to given permutation.
+
+The i-th entry of the permutation array contains the index
+of the variable that should be brought to the i-th level.  The size
+of the array should be equal or greater to the number of variables
+currently in use."
+  cudd-shuffle-heap)
+#+nil
+(defun zdd-shuffle-heap ()
+  "Reorders variables according to given permutation.
+
+The i-th entry of the permutation array contains the index
+of the variable that should be brought to the i-th level.  The size
+of the array should be equal or greater to the number of variables
+currently in use."
+  cudd-zdd-shuffle-heap)
 
 
 (deftype mtr-flags ()
