@@ -14,7 +14,8 @@
  :depends-on (:cffi
               :alexandria
               :trivial-garbage
-              :cl-cudd.build)
+              :cl-cudd.build
+              :trivia.cffi)
  :serial t
  :components ((:file "src/0-package")
               (:file "src/1-0-0-library")
@@ -39,7 +40,8 @@
               (:file "src/2-1-zdd-set-operations")
               (:file "src/2-2-add-bdd-bridge")
               (:file "src/2-2-zdd-bdd-bridge")
-              (:file "src/2-3-reordering"))
+              (:file "src/2-3-reordering")
+              (:file "src/2-4-hook"))
  :description "A two-layered binding to the CUDD binary decision diagram library.
 
 See README.md for more details."

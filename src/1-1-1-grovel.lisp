@@ -136,3 +136,30 @@
          (type "type" :type (:union
                              (value cudd-value-type)
                              (kids dd-children))))
+
+;;; mtr interface
+
+(include "mtr/mtrInt.h")
+
+(cenum mtr-type
+       ((#.(LISPIFY "MTR_DEFAULT" :ENUMVALUE :KEYWORD) "MTR_DEFAULT"))
+       ((#.(LISPIFY "MTR_FIXED" :ENUMVALUE :KEYWORD) "MTR_FIXED")))
+
+(bitfield mtr-flags
+          ((#.(LISPIFY "MTR_DEFAULT" :ENUMVALUE :KEYWORD) "MTR_DEFAULT"))
+          ((#.(LISPIFY "MTR_FIXED" :ENUMVALUE :KEYWORD) "MTR_FIXED"))
+          ((#.(LISPIFY "MTR_TERMINAL" :ENUMVALUE :KEYWORD) "MTR_TERMINAL"))
+          ((#.(LISPIFY "MTR_SOFT" :ENUMVALUE :KEYWORD) "MTR_SOFT"))
+          ((#.(LISPIFY "MTR_NEWNODE" :ENUMVALUE :KEYWORD) "MTR_NEWNODE")))
+
+(ctype mtr-half-word "MtrHalfWord")
+
+(cstruct mtr-node "MtrNode"
+         (flags "flags" :type mtr-flags)
+         (low "low" :type mtr-half-word)
+         (size "size" :type mtr-half-word)
+         (index "index" :type mtr-half-word)
+         (parent "parent" :type (:pointer (:struct mtr-node)))
+         (child "child" :type (:pointer (:struct mtr-node)))
+         (elder "elder" :type (:pointer (:struct mtr-node)))
+         (younger "younger" :type (:pointer (:struct mtr-node))))

@@ -40,7 +40,7 @@
   (f node))
 (defcfun ("Cudd_AutodynEnable" #.(lispify "Cudd_AutodynEnable" :function)) :void
   (dd manager)
-  (method #.(lispify "Cudd_ReorderingType" :enumname)))
+  (method cudd-reordering-type))
 (defcfun ("Cudd_AutodynDisable" #.(lispify "Cudd_AutodynDisable" :function)) :void
   (dd manager))
 (defcfun ("Cudd_ReorderingStatus" #.(lispify "Cudd_ReorderingStatus" :function)) :int
@@ -48,7 +48,7 @@
   (method :pointer))
 (defcfun ("Cudd_AutodynEnableZdd" #.(lispify "Cudd_AutodynEnableZdd" :function)) :void
   (dd manager)
-  (method #.(lispify "Cudd_ReorderingType" :enumname)))
+  (method cudd-reordering-type))
 (defcfun ("Cudd_AutodynDisableZdd" #.(lispify "Cudd_AutodynDisableZdd" :function)) :void
   (dd manager))
 (defcfun ("Cudd_ReorderingStatusZdd" #.(lispify "Cudd_ReorderingStatusZdd" :function)) :int
@@ -943,7 +943,7 @@
   (dd manager)
   (low :unsigned-int)
   (size :unsigned-int)
-  (type :unsigned-int))
+  (type mtr-type))
 (defcfun ("Cudd_addHarwell" #.(lispify "Cudd_addHarwell" :function)) :int
   (fp :pointer)
   (dd manager)
@@ -1108,7 +1108,7 @@
   (dd manager))
 (defcfun ("Cudd_ReduceHeap" #.(lispify "Cudd_ReduceHeap" :function)) :int
   (dd manager)
-  (heuristic #.(lispify "Cudd_ReorderingType" :enumname))
+  (heuristic cudd-reordering-type)
   (minsize :int))
 (defcfun ("Cudd_ShuffleHeap" #.(lispify "Cudd_ShuffleHeap" :function)) :int
   (dd manager)
@@ -1398,7 +1398,7 @@
   (dd manager)
   (low :unsigned-int)
   (size :unsigned-int)
-  (type :unsigned-int))
+  (type mtr-type))
 (defcfun ("Cudd_zddIsop" #.(lispify "Cudd_zddIsop" :function)) node
   (dd manager)
   (L node)
@@ -1427,7 +1427,7 @@
   (f node))
 (defcfun ("Cudd_zddReduceHeap" #.(lispify "Cudd_zddReduceHeap" :function)) :int
   (dd manager)
-  (heuristic #.(lispify "Cudd_ReorderingType" :enumname))
+  (heuristic cudd-reordering-type)
   (minsize :int))
 (defcfun ("Cudd_zddShuffleHeap" #.(lispify "Cudd_zddShuffleHeap" :function)) :int
   (dd manager)
@@ -1544,3 +1544,59 @@
 (defcfun ("Cudd_bddIsVarHardGroup" #.(lispify "Cudd_bddIsVarHardGroup" :function)) :int
   (dd manager)
   (index :int))
+
+;; mtr api
+
+(defcfun ("Mtr_AllocNode" #.(lispify "Mtr_AllocNode" :function)) (:pointer (:struct mtr-node)))
+(defcfun ("Mtr_DeallocNode" #.(lispify "Mtr_DeallocNode" :function)) :void
+  (node (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_InitTree" #.(lispify "Mtr_InitTree" :function)) (:pointer (:struct mtr-node)))
+(defcfun ("Mtr_FreeTree" #.(lispify "Mtr_FreeTree" :function)) :void
+  (node (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_CopyTree" #.(lispify "Mtr_CopyTree" :function)) (:pointer (:struct mtr-node))
+  (node (:pointer (:struct mtr-node)))
+  (expansion :int))
+(defcfun ("Mtr_MakeFirstChild" #.(lispify "Mtr_MakeFirstChild" :function)) :void
+  (parent (:pointer (:struct mtr-node)))
+  (child (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_MakeLastChild" #.(lispify "Mtr_MakeLastChild" :function)) :void
+  (parent (:pointer (:struct mtr-node)))
+  (child (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_CreateFirstChild" #.(lispify "Mtr_CreateFirstChild" :function)) (:pointer (:struct mtr-node))
+  (parent (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_CreateLastChild" #.(lispify "Mtr_CreateLastChild" :function)) (:pointer (:struct mtr-node))
+  (parent (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_MakeNextSibling" #.(lispify "Mtr_MakeNextSibling" :function)) :void
+  (first (:pointer (:struct mtr-node)))
+  (second (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_PrintTree" #.(lispify "Mtr_PrintTree" :function)) :void
+  (node (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_InitGroupTree" #.(lispify "Mtr_InitGroupTree" :function)) (:pointer (:struct mtr-node))
+  (lower  :int  :int size))
+(defcfun ("Mtr_MakeGroup" #.(lispify "Mtr_MakeGroup" :function)) (:pointer (:struct mtr-node))
+  (root (:pointer (:struct mtr-node)))
+  (low :unsigned-int)
+  (high :unsigned-int)
+  (flags :unsigned-int))
+(defcfun ("Mtr_DissolveGroup" #.(lispify "Mtr_DissolveGroup" :function)) (:pointer (:struct mtr-node))
+  (group (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_FindGroup" #.(lispify "Mtr_FindGroup" :function)) (:pointer (:struct mtr-node))
+  (root (:pointer (:struct mtr-node)))
+  (low :unsigned-int)
+  (high :unsigned-int))
+(defcfun ("Mtr_SwapGroups" #.(lispify "Mtr_SwapGroups" :function)) :int
+  (first (:pointer (:struct mtr-node)))
+  (second (:pointer (:struct mtr-node))))
+(defcfun ("Mtr_ReorderGroups" #.(lispify "Mtr_ReorderGroups" :function)) :void
+  (treenode (:pointer (:struct mtr-node)))
+  (permutation (:pointer :int)))
+(defcfun ("Mtr_PrintGroups" #.(lispify "Mtr_PrintGroups" :function)) :void
+  (root (:pointer (:struct mtr-node)))
+  (silent :int))
+(defcfun ("Mtr_PrintGroupedOrder" #.(lispify "Mtr_PrintGroupedOrder" :function)) :int
+  (root  (:pointer (:struct mtr-node)))
+  (invperm (:pointer :int))
+  (fp :pointer))
+(defcfun ("Mtr_ReadGroups" #.(lispify "Mtr_ReadGroups" :function)) (:pointer (:struct mtr-node))
+  (fp :pointer)
+  (nleaves :int))

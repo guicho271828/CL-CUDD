@@ -10,7 +10,7 @@
 
 (defpackage cl-cudd.baseapi
   (:documentation "Low-level interface")
-  (:use :cl :cffi :cl-cudd.swig-macros :alexandria)
+  (:use :cl :cffi :cl-cudd.swig-macros :alexandria :trivia :trivia.cffi)
   (:shadow #:pi)
   ;; constants/variables/enums
   (:export :+CUDD-MAXINDEX++
@@ -463,18 +463,38 @@
            :DD-CHILDREN 
            :DD-NODE 
            :DD-NODE-TYPE 
-           :DUMP-DOT 
-           :E  
-           :INDEX 
-           :KIDS 
-           :NEXT 
+           :DUMP-DOT
            :PRINT-INFO 
-           :REF 
-           :VALUE
            :zdd-dump-dot
            :zdd-var
            :cudd-null-pointer-error
-           :cudd-null-manager-error)
+           :cudd-null-manager-error
+           :mtr-node
+           :mtr-type
+           :mtr-flags
+           :dump-mtr-tree)
+  ;; mtr api
+  (:export :mtr-flags
+           :MTR-ALLOC-NODE
+           :MTR-DEALLOC-NODE
+           :MTR-INIT-TREE
+           :MTR-FREE-TREE
+           :MTR-COPY-TREE
+           :MTR-MAKE-FIRST-CHILD
+           :MTR-MAKE-LAST-CHILD
+           :MTR-CREATE-FIRST-CHILD
+           :MTR-CREATE-LAST-CHILD
+           :MTR-MAKE-NEXT-SIBLING
+           :MTR-PRINT-TREE
+           :MTR-INIT-GROUP-TREE
+           :MTR-MAKE-GROUP
+           :MTR-DISSOLVE-GROUP
+           :MTR-FIND-GROUP
+           :MTR-SWAP-GROUPS
+           :MTR-REORDER-GROUPS
+           :MTR-PRINT-GROUPS
+           :MTR-PRINT-GROUPED-ORDER
+           :MTR-READ-GROUPS)
   ;; other exports done by swig
   )
 
@@ -592,4 +612,13 @@
    #:zdd-enable-reordering
    #:disable-reordering
    #:enable-reordering
-   #:zdd-reordering-status))
+   #:zdd-reordering-status
+   #:reduce-heap
+   #:zdd-reduce-heap
+   #:set-variable-group
+   #:mtr-flags
+   #:zdd-reordering-method
+   #:bdd-reordering-method
+   #:set-zdd-variable-group
+   #:dump-variable-group-hierarchy
+   #:dump-zdd-variable-group-hierarchy))
