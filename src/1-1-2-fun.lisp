@@ -40,7 +40,7 @@
   (f node))
 (defcfun ("Cudd_AutodynEnable" #.(lispify "Cudd_AutodynEnable" :function)) :void
   (dd manager)
-  (method #.(lispify "Cudd_ReorderingType" :enumname)))
+  (method cudd-reordering-type))
 (defcfun ("Cudd_AutodynDisable" #.(lispify "Cudd_AutodynDisable" :function)) :void
   (dd manager))
 (defcfun ("Cudd_ReorderingStatus" #.(lispify "Cudd_ReorderingStatus" :function)) :int
@@ -48,7 +48,7 @@
   (method :pointer))
 (defcfun ("Cudd_AutodynEnableZdd" #.(lispify "Cudd_AutodynEnableZdd" :function)) :void
   (dd manager)
-  (method #.(lispify "Cudd_ReorderingType" :enumname)))
+  (method cudd-reordering-type))
 (defcfun ("Cudd_AutodynDisableZdd" #.(lispify "Cudd_AutodynDisableZdd" :function)) :void
   (dd manager))
 (defcfun ("Cudd_ReorderingStatusZdd" #.(lispify "Cudd_ReorderingStatusZdd" :function)) :int
@@ -1108,7 +1108,7 @@
   (dd manager))
 (defcfun ("Cudd_ReduceHeap" #.(lispify "Cudd_ReduceHeap" :function)) :int
   (dd manager)
-  (heuristic #.(lispify "Cudd_ReorderingType" :enumname))
+  (heuristic cudd-reordering-type)
   (minsize :int))
 (defcfun ("Cudd_ShuffleHeap" #.(lispify "Cudd_ShuffleHeap" :function)) :int
   (dd manager)
@@ -1427,7 +1427,7 @@
   (f node))
 (defcfun ("Cudd_zddReduceHeap" #.(lispify "Cudd_zddReduceHeap" :function)) :int
   (dd manager)
-  (heuristic #.(lispify "Cudd_ReorderingType" :enumname))
+  (heuristic cudd-reordering-type)
   (minsize :int))
 (defcfun ("Cudd_zddShuffleHeap" #.(lispify "Cudd_zddShuffleHeap" :function)) :int
   (dd manager)
