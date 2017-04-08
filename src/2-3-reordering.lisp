@@ -27,7 +27,7 @@
     ;; :CUDD-REORDER-EXACT
     ))
 
-(defun enable-reordering (method)
+(defun enable-reordering (&optional (method :cudd-reorder-same))
   "Enables automatic dynamic reordering of BDDs and ADDs.
 
   Parameter method is used to determine the method used for
@@ -52,7 +52,7 @@
     :CUDD-REORDER-SYMM-SIFT
     :CUDD-REORDER-SYMM-SIFT-CONV))
 
-(defun zdd-enable-reordering (method)
+(defun zdd-enable-reordering (&optional (method :cudd-reorder-same))
   "Enables automatic dynamic reordering of ZDDs.
 
   Parameter method is used to determine the method used for
@@ -90,16 +90,16 @@ Secondary value returns the current reordering method.
                  (mem-ref method-ptr 'cudd-reordering-type)))))
 
 
-(defun reduce-heap (method &optional (minsize 33000000))
-  "Initiates variable reordering explicitly.
+(defun reduce-heap (&optional (method :cudd-reorder-same) (minsize 33000000))
+  "Initiates variable reordering explicitly (for bdd/add).
 MINSIZE specifies the lower threshold of the number of the (live/referenced) nodes to initiate reordering:
 Number of nodes should be larger than this value.
 Default value is 33000000. In CUDD each node consumes 3 words, so this threshold corresponds to 100MB."
   (declare (bdd-reordering-method method))
   (assert (= 0 (cudd-reduce-heap %mp% method minsize))))
 
-(defun zdd-reduce-heap (method &optional (minsize 33000000))
-  "Initiates variable reordering (zdd) explicitly.
+(defun zdd-reduce-heap (&optional (method :cudd-reorder-same) (minsize 33000000))
+  "Initiates variable reordering explicitly (for zdd).
 MINSIZE specifies the lower threshold of the number of the (live/referenced) nodes to initiate reordering:
 Number of nodes should be larger than this value.
 Default value is 33000000. In CUDD each node consumes 3 words, so this threshold corresponds to 100MB."
