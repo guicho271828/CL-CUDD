@@ -96,7 +96,7 @@ MINSIZE specifies the lower threshold of the number of the (live/referenced) nod
 Number of nodes should be larger than this value.
 Default value is 33000000. In CUDD each node consumes 3 words, so this threshold corresponds to 100MB."
   (declare (bdd-reordering-method method))
-  (cudd-reduce-heap %mp% method minsize))
+  (assert (= 0 (cudd-reduce-heap %mp% method minsize))))
 
 (defun zdd-reduce-heap (method &optional (minsize 33000000))
   "Initiates variable reordering (zdd) explicitly.
@@ -104,7 +104,7 @@ MINSIZE specifies the lower threshold of the number of the (live/referenced) nod
 Number of nodes should be larger than this value.
 Default value is 33000000. In CUDD each node consumes 3 words, so this threshold corresponds to 100MB."
   (declare (zdd-reordering-method method))
-  (cudd-zdd-reduce-heap %mp% method minsize))
+  (assert (= 0 (cudd-zdd-reduce-heap %mp% method minsize))))
 
 #+nil
 (defun shuffle-heap ()
