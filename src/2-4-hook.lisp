@@ -8,10 +8,26 @@
 ;;
 ;; in cl-cudd we completely ignore the provided hook facility.
 
-(defvar *before-gc-hook* nil)
-(defvar *after-gc-hook*  nil)
-(defvar *before-reordering-hook* nil)
-(defvar *after-reordering-hook*  nil)
+(defvar *before-gc-hook* nil
+  "A list of function designators that is called before GC.
+
+This list is managed by a lisp process, independently from Cudd_AddHook function.
+WITH-MANAGER macro registers 4 global hooks which in turn call the functions in this special variable.")
+(defvar *after-gc-hook*  nil
+  "A list of function designators that is called before GC.
+
+This list is managed by a lisp process, independently from Cudd_AddHook function.
+WITH-MANAGER macro registers 4 global hooks which in turn call the functions in this special variable.")
+(defvar *before-reordering-hook* nil
+  "A list of function designators that is called before GC.
+
+This list is managed by a lisp process, independently from Cudd_AddHook function.
+WITH-MANAGER macro registers 4 global hooks which in turn call the functions in this special variable.")
+(defvar *after-reordering-hook*  nil
+  "A list of function designators that is called before GC.
+
+This list is managed by a lisp process, independently from Cudd_AddHook function.
+WITH-MANAGER macro registers 4 global hooks which in turn call the functions in this special variable.")
 
 (defcallback before-gc-hook :int ((dd :pointer) (mode :string) (data :pointer))
   (let ((*manager* (make-manager :pointer dd)))
