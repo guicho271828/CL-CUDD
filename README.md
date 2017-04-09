@@ -7,9 +7,9 @@ This is a fork of original CL-CUDD using the modern common lisp convension.
 * **Requirements**: make, curl
 * **Developmental State**: After some refurbishment, now it loads reliably and all tests pass.
 * **TODOs**:
-    * Automatic variable reordering
-    * Variable grouping API
-    * GC hook and control API
+    * ~~Automatic variable reordering~~
+    * ~~Variable grouping API~~
+    * ~~GC hook and control API~~
     * Higher-order layer for set manipulation
     * benchmarking
 * **Related work**: 
