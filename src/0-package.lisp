@@ -621,4 +621,8 @@
    #:bdd-reordering-method
    #:set-zdd-variable-group
    #:dump-variable-group-hierarchy
-   #:dump-zdd-variable-group-hierarchy))
+   #:dump-zdd-variable-group-hierarchy
+   #:*before-gc-hook*
+   #:*after-gc-hook*
+   #:*before-reordering-hook*
+   #:*after-reordering-hook*))
