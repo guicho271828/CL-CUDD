@@ -1,7 +1,7 @@
 (in-package :cudd)
 
-(def-cudd-call exist-abstract ((:add cudd-add-exist-abstract :bdd cudd-bdd-exist-abstract)
-                               (f :node) (cube :node))
+(def-cudd-call sum-abstract ((:add cudd-add-exist-abstract :bdd cudd-bdd-exist-abstract)
+                             (f :node) (cube :node))
   :generic "Abstracts all the variables in CUBE from the BDD (ADD) F by
   taking the disjunction (sum) over all possible values taken by the variables.
   Returns the abstracted DD.")
@@ -22,6 +22,7 @@ Returns the abstracted DD.
 
 If abstracting an ADD, we assume that it is an 0-1-ADD")
 
+;; cudd-bdd-and-abstract
 ;; cudd-bdd-xor-exist-abstract
 
 (defun cofactor (f g)
