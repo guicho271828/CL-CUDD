@@ -40,7 +40,10 @@ Set the finalizer to call cudd-recursive-deref."
          (let ((mp (manager-pointer manager)))
            (when (zerop (cudd-node-ref-count mp pointer))
              (error "Tried to decrease reference count of node that already has refcount zero"))
-           (cudd-recursive-deref mp pointer)))))
+           (ecase type
+             (bdd-node (cudd-recursive-deref mp pointer))
+             (add-node (cudd-recursive-deref mp pointer))
+             (zdd-node (cudd-recursive-deref-zdd mp pointer)))))))
     node))
 
 (defun node-function (generic-name arguments native-function node-type
