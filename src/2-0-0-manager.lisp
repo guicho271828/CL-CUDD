@@ -3,10 +3,6 @@
 
 ;;; Manager
 
-(defvar *manager* nil "The current manager.
-
-Every function in this package works with this manager.")
-
 (defstruct manager
   "A boxed CUDD manager class"
   (pointer (error "MANAGER needs to wrap a pointer")
@@ -32,6 +28,12 @@ Every function in this package works with this manager.")
     (cudd-add-hook p (callback after-gc-hook) :cudd-post-reordering-hook)
     (tg:finalize m (lambda () (cudd-quit p)))
     m))
+
+(defvar *manager* (manager-init) "The current manager.
+
+Every function in this package works with this manager.
+
+Bound to a global manager by default.")
 
 (defmacro with-manager ((&rest
                          keys
