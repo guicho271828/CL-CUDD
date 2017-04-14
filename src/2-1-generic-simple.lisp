@@ -73,16 +73,14 @@ This is because that's the way ZDD represents a projection function of a single 
 When index = 2 and N = 4, the resulting ZDD is as follows:
 
                 then
-(root)-(0)=(1)=(2)-(3)=(4)=[1]
+ (root)-(0)=(1)=(2)-(3)=(4)=[1]
                 +----------[0]
-                else
-"
+                else "
   (declare (node-type type))
-  (wrap-and-finalize
-   (ecase type
-     (bdd-node (bdd-var %mp% :index index :level level))
-     (add-node (add-var %mp% :index index :level level))
-     (zdd-node (zdd-var %mp% :index index :level level))) type))
+  (ecase type
+    (bdd-node (wrap-and-finalize (bdd-var %mp% :index index :level level) type nil nil))
+    (add-node (wrap-and-finalize (add-var %mp% :index index :level level) type t t))
+    (zdd-node (wrap-and-finalize (zdd-var %mp% :index index :level level) type t t))))
 
 (defun node-then (type node)
   "Return the then child of an inner node"
