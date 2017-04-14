@@ -1,11 +1,12 @@
 ;;; base class definitions and macros for defining APIs
 (in-package :cudd)
 
+(defun required ()
+  (error "Required slot"))
 ;;; Wrapped CUDD node
 (defstruct node
   "A boxed CUDD node class. Top class of all CUDD nodes."
-  (pointer (error "NODE needs to wrap a pointer")
-           :type cffi:foreign-pointer))
+  (pointer (required) :type cffi:foreign-pointer))
 
 (defmacro with-pointers (pointers &body body)
   "Create a binding to pointers using a let-like specification.
