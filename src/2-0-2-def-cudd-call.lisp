@@ -17,25 +17,20 @@
 (defun node-function (generic-name arguments native-function node-type
                       dont-wrap-result)
   (labels ((convert-arguments (arguments)
-             (mapcar #'convert-argument arguments))
-           (convert-argument (arg)
-             (if (and (listp arg) (eq (second arg) :node))
-                 `(,(first arg) ,node-type)
-                 arg))
+             (mapcar (lambda-match
+                       ((list var :node)
+                        (list var node-type))
+                       (arg arg))
+                     arguments))
            (clean-arguments (arguments)
-             (mapcar (lambda (arg)
-                       (if (and (listp arg) (eq (second arg) :node))
-                           (first arg)
-                           arg)) arguments))
+             (mapcar (lambda-match
+                       ((list var :node)
+                        `(node-pointer ,var))
+                       (arg arg))
+                     arguments))
            (make-funcall (native arguments)
-             `(with-pointers
-                  ,(loop
-                     :for arg :in arguments
-                     :when (and (listp arg) (eq (second arg) :node))
-                     :collect `(,(first arg) ,(first arg)))
-                (funcall #',native
-                         %mp%
-                         ,@(clean-arguments arguments)))))
+             `(,native %mp%
+                       ,@(clean-arguments arguments))))
     (with-gensyms (pointer)
       `(defmethod ,generic-name ,(convert-arguments arguments)
          ,(if dont-wrap-result

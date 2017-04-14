@@ -294,31 +294,31 @@ Using the GC to do reference counting automatically has its own share of problem
    manually every so often using for example
    TRIVIAL-GARBAGE:GC
 
-2. References may be freed too early
+Solved problems
+---------------
 
-   The following two examples demonstrate the problem.
+~~References may be freed too early~~
+
+The old text below is wrong. CUDD's reference counting GC does not work this
+way.  According to CUDD's manual, its GC happens when:
+
+1. A call to cuddUniqueInter , to cuddUniqueInterZdd , to cuddUnique-
+   Const, or to a function that may eventually cause a call to them.
+2. A call to Cudd RecursiveDeref , to Cudd RecursiveDerefZdd , or to a
+   function that may eventually cause a call to them.
+
+Thus the GC does not occur at arbitrary code path, as assumed below.
+
+     The following two examples demonstrate the problem.
 
         (defun foo (dd)
           (let ((ptr (node-pointer dd)))
             ;; please don't GC me here
             (cudd-do-something ptr)))
 
-   In this example the GC might decide to run where there is the
-   comment.
-   In that case, provided that nothing outside of the function call
-   holds on to `dd`, the reference count of `ptr` might be decreased,
-   go down to zero and the node vanishes before `cudd-do-something` is
-   called.
-   The solution: Instead of `let`, use macro `with-pointers` which
-   increases the reference count of each node before the body and
-   decreases the reference count of each node after the body.
-
-        (defun bar (dd)
-          (cudd-do-something-with-callback (node-pointer dd)))
-
-   In this case, we might have a problem if
-   `cudd-do-something-with-callback` calls back into
-   lisp, upon which point lisp garbage collects and decreases
-   the reference count of `dd`.
-   
-   Solution: Again, use `with-pointers` instead of `node-pointer`.
+    In this example the GC might decide to run where there is the
+    comment.
+    In that case, provided that nothing outside of the function call
+    holds on to `dd`, the reference count of `ptr` might be decreased,
+    go down to zero and the node vanishes before `cudd-do-something` is
+    called.

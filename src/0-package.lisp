@@ -500,7 +500,7 @@
 
 (defpackage cl-cudd
   (:documentation "High-level interface")
-  (:use :cl :cffi :alexandria :cl-cudd.swig-macros :cl-cudd.baseapi)
+  (:use :cl :cffi :alexandria :cl-cudd.swig-macros :cl-cudd.baseapi :trivia)
   (:nicknames :cudd)
   (:export 
    #:+AGREEMENT+

@@ -8,47 +8,6 @@
   "A boxed CUDD node class. Top class of all CUDD nodes."
   (pointer (required) :type cffi:foreign-pointer))
 
-(defmacro with-pointers (pointers &body body)
-  "Create a binding to pointers using a let-like specification.
-Takes care that the nodes stay alive during the body.
-
-Example:
- (with-pointers ((f-ptr f)
-                 (g-ptr g))
-   (cudd-add-apply +or+ f-ptr g-ptr))
-
-This is implemented by increasing the reference count of
-every node in the body and decreasing it after the body is run"
-  (let ((manager (gensym "MANAGER")))
-    `(let* ((,manager %mp%))
-       (declare (ignorable ,manager))
-       (progn
-         ;; Reference all pointers
-         ;; Effectively, we call node-pointer twice on every wrapper.
-         ;; The reason is that we have to keep holding on to
-         ;; the wrapper until after all referencing is done, i.e.,
-         ;; until after the following code block ran.
-         ;; Therefore, we first call `(cudd-ref (node-pointer wrapper))`
-         ;; for each wrapper. Then later we create the binding for
-         ;; the pointers.
-         ,@(loop
-              :for binding :in pointers
-              :unless (and (listp binding) (= (length binding) 2))
-              :do (error "Binding ~A is mal-formed" binding)
-              ;; increase refcount
-              :collect `(cudd-ref (node-pointer ,(cadr binding))))
-         (let
-             ;; Create bindings
-             ,(loop
-                 :for binding :in pointers
-                 :collect `(,(car binding) (node-pointer ,(cadr binding))))
-           (unwind-protect
-                (progn
-                  ,@body)
-             ,@(loop
-                  :for binding :in pointers
-                  :collect `(cudd-recursive-deref ,manager ,(car binding)))))))))
-
 (declaim (inline wrap-and-finalize))
 (defun wrap-and-finalize (pointer type &optional (finalize t) (ref t))
   "Wrap the given pointer in a node-node of type TYPE.
