@@ -29,7 +29,7 @@
     (tg:finalize m (lambda () (cudd-quit p)))
     m))
 
-(defvar *manager* (manager-init) "The current manager.
+(defvar *manager* nil "The current manager.
 
 Every function in this package works with this manager.
 

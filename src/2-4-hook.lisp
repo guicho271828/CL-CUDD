@@ -58,4 +58,4 @@ WITH-MANAGER macro registers 4 global hooks which in turn call the functions in 
       (error ()
         0))))
 
-
+(setf *manager* (manager-init))
