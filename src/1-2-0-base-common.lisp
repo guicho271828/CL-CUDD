@@ -36,28 +36,22 @@ Warning: Undefined behaviour if DD is not a leaf node"
 
 Warning: Undefined behaviour if DD is a leaf node"
   (declare (ignore manager))
-  (let ((result
-         (foreign-slot-value
-          (foreign-slot-value
-           (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
-           '(:union dd-node/type) 'kids)
-          '(:struct dd-children) 'T)))
-    (cudd-ref result)
-    result))
+  (foreign-slot-value
+   (foreign-slot-value
+    (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
+    '(:union dd-node/type) 'kids)
+   '(:struct dd-children) 'T))
 
 (defun cudd-node-else (manager node)
   "Return the else-child of an inner node.
 
 Warning: Undefined behaviour if DD is a leaf node"
   (declare (ignore manager))
-  (let ((result
-         (foreign-slot-value
-          (foreign-slot-value
-           (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
-           '(:union dd-node/type) 'kids)
-          '(:struct dd-children) 'E)))
-    (cudd-ref result)
-    result))
+  (foreign-slot-value
+   (foreign-slot-value
+    (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
+    '(:union dd-node/type) 'kids)
+   '(:struct dd-children) 'E))
 
 (defun (setf cudd-node-value) (new-value manager node)
   "Return the value of a leaf node.
