@@ -9,9 +9,7 @@ This function is not imported from CFFI because the corresponding implementation
  is written as a macro. See cudd.h l.334"
   (declare (ignore manager))
   ;; TODO What happens on big-endian machines?
-  (let ((result (make-pointer (logxor 1 (pointer-address node)))))
-    (cudd-ref result)
-    result))
+  (make-pointer (logxor 1 (pointer-address node))))
 
 (defun cudd-bdd-cube (manager vars)
   "Build an bdd cube out of the variables."

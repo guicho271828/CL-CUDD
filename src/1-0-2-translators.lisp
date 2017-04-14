@@ -28,9 +28,7 @@
        (if (null-pointer-p ,gvalue)
            (error 'cudd-null-pointer-error
                   :code (foreign-slot-value DD '(:struct dd-manager) 'error-code))
-           (progn
-             (cudd-ref ,gvalue)
-             ,gvalue)))))
+           ,gvalue))))
 
 (defmethod expand-to-foreign (value (type manager-type))
   value)
