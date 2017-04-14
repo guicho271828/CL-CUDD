@@ -7,9 +7,6 @@
   (pointer (error "NODE needs to wrap a pointer")
            :type cffi:foreign-pointer))
 
-(defmethod cffi:translate-to-foreign (pointer (node node))
-  (node-pointer node))
-
 (defmacro with-pointers (pointers &body body)
   "Create a binding to pointers using a let-like specification.
 Takes care that the nodes stay alive during the body.

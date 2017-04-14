@@ -14,10 +14,7 @@ Every function in this package works with this manager.")
 
 (define-symbol-macro %mp% (manager-pointer *manager*))
 
-(defmethod cffi:translate-to-foreign (pointer (manager manager))
-  (manager-pointer manager))
-
-(defmacro with-manager ((&key 
+(defmacro with-manager ((&key
                          (initial-num-vars 0)
                          (initial-num-vars-z 0)
                          (initial-num-slots 256)
