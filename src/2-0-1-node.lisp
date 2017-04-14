@@ -50,11 +50,13 @@ every node in the body and decreasing it after the body is run"
                   :collect `(cudd-recursive-deref ,manager ,(car binding)))))))))
 
 (declaim (inline wrap-and-finalize))
-(defun wrap-and-finalize (pointer type &optional (finalize t))
+(defun wrap-and-finalize (pointer type &optional (finalize t) (ref t))
   "Wrap the given pointer in a node-node of type TYPE.
 Set the finalizer to call cudd-recursive-deref."
   (declare (foreign-pointer pointer)
            ((member bdd-node add-node zdd-node) type))
+  (when ref
+    (cudd-ref pointer))
   (let ((node (ecase type
                 (bdd-node (make-bdd-node :pointer pointer))
                 (add-node (make-add-node :pointer pointer))
