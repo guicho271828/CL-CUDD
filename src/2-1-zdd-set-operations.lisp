@@ -28,7 +28,7 @@
    (cudd-zdd-subset-1 %mp% (node-pointer zdd) var)
    'zdd-node))
 (defun zdd-change (zdd var)
-  "Computes the subset of S that contains element VAR (integer)."
+  "Flip the membership of variable VAR in ZDD."
   (wrap-and-finalize
    (cudd-zdd-change %mp% (node-pointer zdd) var)
    'zdd-node))
@@ -52,22 +52,26 @@
    'zdd-node))
 
 (defun zdd-divide-unate (f g)
-  "Computes the weak division of F by G (assumes unate representation)."
+  "Computes the weak division of F by G (assumes unate representation).
+cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
   (wrap-and-finalize
    (cudd-zdd-divide %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-divide-binate (f g)
-  "Computes the weak division of F by G (assumes binate representation)."
+  "Computes the weak division of F by G (assumes binate representation).
+cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
   (wrap-and-finalize
    (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-product-unate (f g)
-  "Computes the product of F by G (assumes unate representation)."
+  "Computes the product of F by G (assumes unate representation).
+cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
   (wrap-and-finalize
    (cudd-zdd-unate-product %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-product-binate (f g)
-  "Computes the product of F by G (assumes binate representation)."
+  "Computes the product of F by G (assumes binate representation).
+cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
   (wrap-and-finalize
    (cudd-zdd-product %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
