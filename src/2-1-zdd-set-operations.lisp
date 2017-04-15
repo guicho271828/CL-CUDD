@@ -73,6 +73,19 @@ cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
   (wrap-and-finalize
    (cudd-zdd-unate-product %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
+(defun zdd-remainder-unate (f g)
+  "Computes the remainder of division of F by G (assumes unate representation)."
+  (wrap-and-finalize
+   (let ((p1 (cudd-zdd-divide %mp% (node-pointer f) (node-pointer g))))
+     (cudd-ref p1)
+     (let ((p2 (cudd-zdd-unate-product %mp% (node-pointer f) p1)))
+       (cudd-ref p2)
+       (cudd-recursive-deref-zdd %mp% p1)
+       (let ((p3 (cudd-zdd-diff %mp% (node-pointer f) p2)))
+         (cudd-ref p3)
+         (cudd-recursive-deref-zdd %mp% p2)
+         p3)))
+   'zdd-node t nil))
 
 ;; binate operations
 
@@ -88,14 +101,19 @@ cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
   (wrap-and-finalize
    (cudd-zdd-product %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
-
-
-(defun zdd-remainder-unate (f g)
-  "Computes the remainder of division of F by G (assumes unate representation)."
-  (zdd-difference f (zdd-product-unate f (zdd-divide-unate f g))))
 (defun zdd-remainder-binate (f g)
   "Computes the remainder of division of F by G (assumes binate representation)."
-  (zdd-difference f (zdd-product-binate f (zdd-divide-binate f g))))
+  (wrap-and-finalize
+   (let ((p1 (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g))))
+     (cudd-ref p1)
+     (let ((p2 (cudd-zdd-product %mp% (node-pointer f) p1)))
+       (cudd-ref p2)
+       (cudd-recursive-deref-zdd %mp% p1)
+       (let ((p3 (cudd-zdd-diff %mp% (node-pointer f) p2)))
+         (cudd-ref p3)
+         (cudd-recursive-deref-zdd %mp% p2)
+         p3)))
+   'zdd-node t nil))
 
 (defun zdd-count-minterm (f &optional support-size)
   "Computes the number of minterms in f.
