@@ -23,7 +23,7 @@
    (cudd-zdd-subset-0 %mp% (node-pointer zdd) var)
    'zdd-node))
 (defun zdd-subset-1 (zdd var)
-  "Computes the subset of S that contains element VAR (integer)."
+  "Computes the subset of S that contains element VAR (integer), and remove VAR from each combination."
   (wrap-and-finalize
    (cudd-zdd-subset-1 %mp% (node-pointer zdd) var)
    'zdd-node))
@@ -51,23 +51,36 @@
    (cudd-zdd-diff %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 
+;; unate operations
+
+(setf (fdefinition 'zdd-onset) #'zdd-subset-1
+      (documentation 'zdd-onset 'function)
+      "Computes the subset of S that contains element VAR (integer), and remove VAR from each combination. (same as zdd-subset-1)")
+
+(setf (fdefinition 'zdd-offset) #'zdd-subset-0
+      (documentation 'zdd-offset 'function)
+      "selects the subset of the combinations each of which does not include var. (same as zdd-subset-1)")
+
 (defun zdd-divide-unate (f g)
   "Computes the weak division of F by G (assumes unate representation).
 cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
   (wrap-and-finalize
    (cudd-zdd-divide %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
-(defun zdd-divide-binate (f g)
-  "Computes the weak division of F by G (assumes binate representation).
-cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
-  (wrap-and-finalize
-   (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g))
-   'zdd-node))
 (defun zdd-product-unate (f g)
   "Computes the product of F by G (assumes unate representation).
 cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
   (wrap-and-finalize
    (cudd-zdd-unate-product %mp% (node-pointer f) (node-pointer g))
+   'zdd-node))
+
+;; binate operations
+
+(defun zdd-divide-binate (f g)
+  "Computes the weak division of F by G (assumes binate representation).
+cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
+  (wrap-and-finalize
+   (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 (defun zdd-product-binate (f g)
   "Computes the product of F by G (assumes binate representation).

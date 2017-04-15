@@ -625,4 +625,6 @@
    #:*before-gc-hook*
    #:*after-gc-hook*
    #:*before-reordering-hook*
-   #:*after-reordering-hook*))
+   #:*after-reordering-hook*
+   #:zdd-offset
+   #:zdd-onset))
