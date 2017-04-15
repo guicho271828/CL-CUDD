@@ -627,4 +627,6 @@
    #:*before-reordering-hook*
    #:*after-reordering-hook*
    #:zdd-offset
-   #:zdd-onset))
+   #:zdd-onset
+   #:zdd-set
+   #:zdd-unset))

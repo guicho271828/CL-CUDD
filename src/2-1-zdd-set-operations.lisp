@@ -33,6 +33,37 @@
    (cudd-zdd-change %mp% (node-pointer zdd) var)
    'zdd-node))
 
+(defun zdd-set (zdd var)
+  "Add a variable VAR; i.e. force the value of VAR to be true"
+  (wrap-and-finalize
+   (let ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var)))
+     (cudd-ref then)
+     (let ((else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var)))
+       (cudd-ref else)
+       (let ((union (cudd-zdd-union %mp% then else)))
+         (cudd-ref union)
+         (cudd-recursive-deref-zdd %mp% then)
+         (cudd-recursive-deref-zdd %mp% else)
+         (let ((result (cudd-zdd-change %mp% union var)))
+           (cudd-ref result)
+           (cudd-recursive-deref-zdd %mp% union)
+           result))))
+   'zdd-node t nil))
+
+(defun zdd-unset (zdd var)
+  "Remove a variable VAR; i.e. force the value of VAR to be false"
+  (wrap-and-finalize
+   (let ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var)))
+     (cudd-ref then)
+     (let ((else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var)))
+       (cudd-ref else)
+       (let ((union (cudd-zdd-union %mp% then else)))
+         (cudd-ref union)
+         (cudd-recursive-deref-zdd %mp% then)
+         (cudd-recursive-deref-zdd %mp% else)
+         union)))
+   'zdd-node t nil))
+
 ;; between 2 ZDDs
 
 (defun zdd-union (f g)
