@@ -629,4 +629,6 @@
    #:zdd-offset
    #:zdd-onset
    #:zdd-set
-   #:zdd-unset))
+   #:zdd-unset
+   #:zdd-union*
+   #:zdd-intersection*))

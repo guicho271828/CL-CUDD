@@ -71,11 +71,32 @@
   (wrap-and-finalize
    (cudd-zdd-union %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
+
 (defun zdd-intersection (f g)
   "Computes the intersection of F and G."
   (wrap-and-finalize
    (cudd-zdd-intersect %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
+
+(defun zdd-union* (&rest args)
+  "Performs zdd-union on all variables."
+  (cond
+    ((second args)
+     (reduce #'zdd-union args))
+    (args
+     (first args))
+    ((null args)
+     (zdd-emptyset))))
+
+(defun zdd-intersection* (first &rest args)
+  "Performs zdd-intersection on all variables.
+Null intersection (union of all combinations) is undefined because
+ZDD has no upper limit on the number of variables."
+  (if args
+      (reduce #'zdd-intersection args :initial-value first)
+      first))
+
+
 (defun zdd-difference (f g)
   "Computes the difference of F and G."
   (wrap-and-finalize
