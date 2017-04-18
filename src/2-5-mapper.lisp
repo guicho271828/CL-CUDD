@@ -2,8 +2,9 @@
 (in-package :cudd)
 
 (defun map-ones (node fn)
-  "DFS on a ZDD, calling the given callback when it reaches the 1-node.
-The callback is called with an argument containing a bit vector which stores 1-bit."
+  "Runs a DFS on a ZDD. It calls the given callback function when it reaches the 1-node.
+The callback is called with an argument containing a bit vector which stores 1-bit.
+Returns the node."
   (let ((bv (make-array (zdd-max-variables) :element-type 'bit))
         (one (cudd-read-one %mp%))
         (zero (cudd-read-zero %mp%)))
@@ -20,4 +21,5 @@ The callback is called with an argument containing a bit vector which stores 1-b
                     (rec (cudd-node-then p))
                     (setf (aref bv index) 0)
                     (rec (cudd-node-else p)))))))
-      (rec (node-pointer node)))))
+      (rec (node-pointer node))))
+  node)
