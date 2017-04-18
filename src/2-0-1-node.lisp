@@ -35,7 +35,7 @@ Set the finalizer to call cudd-recursive-deref."
          ;; is called.
          (lambda ()
            (let ((mp (manager-pointer manager)))
-             (when (zerop (cudd-node-ref-count mp pointer))
+             (when (zerop (cudd-node-ref-count pointer))
                (error "Tried to decrease reference count of node that already has refcount zero"))
              (ecase type
                (bdd-node (cudd-recursive-deref mp pointer))
@@ -50,7 +50,7 @@ Set the finalizer to call cudd-recursive-deref."
         (format stream "LEAF (VALUE ~A)" (node-value object))
         (format stream "INNER 0x~x" (pointer-address (node-pointer object))))
     (format stream " REF ~d"
-            (cudd-node-ref-count %mp% (node-pointer object)))))
+            (cudd-node-ref-count (node-pointer object)))))
 
 (defun node-index (node)
   (cudd-node-read-index (node-pointer node)))
@@ -66,14 +66,13 @@ only if their pointers are the same."
 
 (defun node-constant-p (node)
   "return t if the node is constant, nil otherwise"
-  (cudd-node-is-constant %mp%
-                         (node-pointer node)))
+  (cudd-node-is-constant (node-pointer node)))
 
 (defun node-value (node)
   "Return the node value of a constant node"
   ;; Make sure that we only try to read the value of a constant node
   (assert (node-constant-p node))
-  (cudd-node-value %mp% (node-pointer node)))
+  (cudd-node-value (node-pointer node)))
 
 (defstruct (bdd-node (:include node))
   "Node of a binary decision diagram (BDD)")
