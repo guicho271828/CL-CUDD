@@ -36,7 +36,7 @@ Warning: Undefined behaviour if DD is not a leaf node"
 
 Warning: Undefined behaviour if DD is a leaf node"
   (foreign-slot-value
-   (foreign-slot-value
+   (foreign-slot-pointer
     (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
     '(:union dd-node/type) 'kids)
    '(:struct dd-children) 'T))
@@ -46,7 +46,7 @@ Warning: Undefined behaviour if DD is a leaf node"
 
 Warning: Undefined behaviour if DD is a leaf node"
   (foreign-slot-value
-   (foreign-slot-value
+   (foreign-slot-pointer
     (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
     '(:union dd-node/type) 'kids)
    '(:struct dd-children) 'E))
@@ -65,12 +65,12 @@ Warning: Undefined behaviour if DD is not a leaf node"
 
 Warning: Undefined behaviour if DD is a leaf node"
   (cudd-deref (foreign-slot-value
-               (foreign-slot-value
+               (foreign-slot-pointer
                 (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
                 '(:union dd-node/type) 'kids)
                '(:struct dd-children) 'T))
   (setf (foreign-slot-value
-         (foreign-slot-value
+         (foreign-slot-pointer
           (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
           '(:union dd-node/type) 'kids)
          '(:struct dd-children) 'T)
@@ -81,12 +81,12 @@ Warning: Undefined behaviour if DD is a leaf node"
 
 Warning: Undefined behaviour if DD is a leaf node"
   (cudd-deref (foreign-slot-value
-               (foreign-slot-value
+               (foreign-slot-pointer
                 (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
                 '(:union dd-node/type) 'kids)
                '(:struct dd-children) 'E))
   (setf (foreign-slot-value
-         (foreign-slot-value
+         (foreign-slot-pointer
           (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
           '(:union dd-node/type) 'kids)
          '(:struct dd-children) 'E)
