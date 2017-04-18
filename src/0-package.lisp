@@ -644,4 +644,6 @@
    #:map-ones
    #:do-ones
    #:integer->zdd
-   #:bitvector->zdd))
+   #:bitvector->zdd
+   #:integer->zdd-binate
+   #:integer->zdd-unate))

@@ -33,14 +33,27 @@ Returns the node."
      (map-ones ,dd (lambda (,var) ,@body))))
 
 
-(defun integer->zdd (int)
+(defun integer->zdd-unate (int)
+  "Converts an integer to a zdd bit-by-bit."
   (declare (integer int))
   (let ((zdd (zdd-set-of-emptyset)))
-    (dotimes (i (max 1 (integer-length int)) zdd)
+    (dotimes (i (integer-length int) zdd)
       (when (logbitp i int)
         (setf zdd (zdd-change zdd i))))))
 
+(defun integer->zdd-binate (int)
+  "Converts an integer to a zdd bit-by-bit, in a binate representation. (ith bit is encoded into 2i and 2i+1 bits)"
+  (declare (integer int))
+  (let ((zdd (zdd-set-of-emptyset)))
+    (dotimes (i (integer-length int) zdd)
+      (setf zdd (zdd-change zdd (if (logbitp i int)
+                                    (* i 2)
+                                    (1+ (* i 2))))))))
+
+(setf (fdefinition 'integer->zdd) #'integer->zdd-unate)
+
 (defun bitvector->zdd (bv)
+  "Converts a bit-vector to a zdd bit-by-bit."
   (declare (bit-vector bv))
   (let ((zdd (zdd-set-of-emptyset)))
     (dotimes (i (length bv) zdd)
