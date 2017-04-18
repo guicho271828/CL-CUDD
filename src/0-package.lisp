@@ -647,4 +647,5 @@
    #:bitvector->zdd
    #:integer->zdd-binate
    #:integer->zdd-unate
-   #:follow-diagram))
+   #:follow-diagram
+   #:plot))

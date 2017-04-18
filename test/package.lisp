@@ -15,19 +15,10 @@
 
 ;; we need a better api for creating a bdd
 
-(defun dump (path name f)
-  (cl-cudd.baseapi:dump-dot
-   (manager-pointer *manager*)
-   (cudd-regular (node-pointer f))
-   (namestring (make-pathname :name name :type "dot" :defaults path))))
-
-
-(defun dump-zdd (path name f)
-  (cl-cudd.baseapi:zdd-dump-dot
-   (manager-pointer *manager*)
-   (cudd-regular (node-pointer f))
-   (namestring (make-pathname :name name :type "dot" :defaults path))))
-
+(defun basename (pathname)
+  (make-pathname :type nil :defaults pathname))
+(defun append-name (pathname suffix)
+  (make-pathname :name (concatenate 'string (pathname-name pathname) suffix) :defaults pathname))
 
 (defun parse-bdd (path &optional zdd-binate?)
   (fresh-line)
@@ -50,31 +41,21 @@
       (finishes (print f))
       (finishes (print (dag-size f)))
       (finishes (print (multiple-value-list (reordering-status))))
-      (match path
-        ((pathname name)
-         (finishes
-           (dump path (format nil "~a-BDD" name) f))
-         ;; since BDDs may contain complemented edges, it is slightly hard to understand.
-         ;; Usually converting it into ADDs will improve the output
-         (finishes
-           (dump path (format nil "~a-BDD-as-ADD" name) (bdd->add f)))
-         (finishes
-           (if zdd-binate?
-               (dump-zdd path (format nil "~a-BDD-as-ZDD-cover" name) (bdd->zdd-cover f))
-               (dump-zdd path (format nil "~a-BDD-as-ZDD-simple" name) (bdd->zdd-simple f)))))))))
+      (finishes
+       (plot (append-name path "-BDD") f))
+      ;; since BDDs may contain complemented edges, it is slightly hard to understand.
+      ;; Usually converting it into ADDs will improve the output
+      (finishes
+       (plot (append-name path "-BDD-as-ADD") (bdd->add f)))
+      (finishes
+       (if zdd-binate?
+           (plot (append-name path "-BDD-as-ZDD-cover") (bdd->zdd-cover f))
+           (plot (append-name path "-BDD-as-ZDD-simple") (bdd->zdd-simple f)))))))
 
 (test bdd
   (dolist (m (append (models "gates") (models "modest")))
     (parse-bdd m)
-    (parse-bdd m t))
-  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/gates/"))
-                    :ignore-error-status t
-                    :output t
-                    :error-output t)
-  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/modest/"))
-                    :ignore-error-status t
-                    :output t
-                    :error-output t))
+    (parse-bdd m t)))
 
 (defun parse-add (path)
   (fresh-line)
@@ -99,10 +80,8 @@
       (finishes
         (print (dag-size f)))
       (finishes (print (multiple-value-list (reordering-status))))
-      (match path
-        ((pathname name)
-         (finishes
-           (dump path (format nil "~a-ADD" name) f)))))))
+      (finishes
+       (plot (append-name path "-ADD") f)))))
 
 (test add
   (with-manager ()
@@ -124,15 +103,7 @@
     (is (= 2 (zdd-node-count))))
   (dolist (m (append (models "gates") (models "modest")))
     (format t "~%testing model ~a" m)
-    (parse-add m))
-  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/gates/"))
-                    :ignore-error-status t
-                    :output t
-                    :error-output t)
-  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/modest/"))
-                    :ignore-error-status t
-                    :output t
-                    :error-output t))
+    (parse-add m)))
 
 
 (defun parse-zdd-sets-of-subsets (path)
@@ -155,19 +126,13 @@
         (finishes
           (print (dag-size f)))
         (finishes (print (multiple-value-list (zdd-reordering-status))))
-        (match path
-          ((pathname name)
-           (finishes
-             (dump-zdd path (format nil "~a-ZDD" name) f))))))))
+        (finishes
+         (plot (append-name path "-ZDD") f))))))
 
 (test zdd
   (dolist (m (models "sets-of-subsets"))
     (format t "~%testing model ~a" m)
-    (parse-zdd-sets-of-subsets m))
-  (uiop:run-program (format nil "make -C ~a" (asdf:system-relative-pathname :cl-cudd "test/sets-of-subsets/"))
-                    :ignore-error-status t
-                    :output t
-                    :error-output t))
+    (parse-zdd-sets-of-subsets m)))
 
 
 (test reordering
