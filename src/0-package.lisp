@@ -642,4 +642,6 @@
    #:zdd-max-variables
    #:%mp%
    #:map-ones
-   #:do-ones))
+   #:do-ones
+   #:integer->zdd
+   #:bitvector->zdd))

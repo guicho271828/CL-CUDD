@@ -42,7 +42,7 @@
               (:file "src/2-2-zdd-bdd-bridge")
               (:file "src/2-3-reordering")
               (:file "src/2-4-hook")
-              (:file "src/2-5-mapper"))
+              (:file "src/2-5-utils"))
  :description "A two-layered binding to the CUDD binary decision diagram library.
 
 See README.md for more details."

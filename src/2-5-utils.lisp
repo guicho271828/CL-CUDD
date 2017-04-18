@@ -31,3 +31,18 @@ Symbol VAR is lexically bound to a bit vector which stores 1-bit when a zdd vari
 Returns the node."
   `(block nil
      (map-ones ,dd (lambda (,var) ,@body))))
+
+
+(defun integer->zdd (int)
+  (declare (integer int))
+  (let ((zdd (zdd-set-of-emptyset)))
+    (dotimes (i (max 1 (integer-length int)) zdd)
+      (when (logbitp i int)
+        (setf zdd (zdd-change zdd i))))))
+
+(defun bitvector->zdd (bv)
+  (declare (bit-vector bv))
+  (let ((zdd (zdd-set-of-emptyset)))
+    (dotimes (i (length bv) zdd)
+      (when (= 1 (aref bv i))
+        (setf zdd (zdd-change zdd i))))))
