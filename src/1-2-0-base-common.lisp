@@ -102,5 +102,15 @@ Warning: Undefined behaviour if DD is a leaf node"
   (declare (ignore manager))
   (foreign-slot-value (cudd-regular node) '(:struct dd-node) 'ref))
 
-
-
+(defun cudd-bdd-variables (manager)
+  "Return the number of BDD variables"
+  (foreign-slot-value manager '(:struct dd-manager) 'size))
+(defun cudd-zdd-variables (manager)
+  "Return the number of ZDD variables"
+  (foreign-slot-value manager '(:struct dd-manager) 'size-z))
+(defun cudd-bdd-max-variables (manager)
+  "Return the maximum number of BDD variables"
+  (foreign-slot-value manager '(:struct dd-manager) 'max-size))
+(defun cudd-zdd-max-variables (manager)
+  "Return the maximum number of ZDD variables"
+  (foreign-slot-value manager '(:struct dd-manager) 'max-size-z))

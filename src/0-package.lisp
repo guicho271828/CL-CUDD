@@ -472,7 +472,11 @@
            :mtr-node
            :mtr-type
            :mtr-flags
-           :dump-mtr-tree)
+           :dump-mtr-tree
+           :cudd-bdd-variables
+           :cudd-zdd-variables
+           :cudd-bdd-max-variables
+           :cudd-zdd-max-variables)
   ;; mtr api
   (:export :mtr-flags
            :MTR-ALLOC-NODE
@@ -631,4 +635,8 @@
    #:zdd-set
    #:zdd-unset
    #:zdd-union*
-   #:zdd-intersection*))
+   #:zdd-intersection*
+   #:bdd-variables
+   #:zdd-variables
+   #:bdd-max-variables
+   #:zdd-max-variables))

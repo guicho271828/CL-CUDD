@@ -128,6 +128,10 @@
          (t "T" :type (:pointer (:struct dd-node)))
          (e "E" :type (:pointer (:struct dd-node))))
 (cstruct dd-manager "DdManager"
+         (size "size" :type :int)
+         (size-z "sizeZ" :type :int)
+         (max-size "maxSize" :type :int)
+         (max-size-z "maxSizeZ" :type :int)
          (error-code "errorCode" :type cudd-error-type))
 
 #+enable_this_when_cffi_upstream_patch_is_approved
