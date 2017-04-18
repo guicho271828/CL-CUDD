@@ -64,6 +64,18 @@
          union)))
    'zdd-node t nil))
 
+(defun zdd-dont-care (zdd var)
+  "Direct the both arcs of the VAR'th node to the next index.
+If it does not exist (i.e. then-arc points to 0 and zero-suppressed) creates a new node."
+  (wrap-and-finalize
+   (let ((flipped (cudd-zdd-change %mp% (node-pointer zdd) var)))
+     (cudd-ref flipped)
+     (let ((union (cudd-zdd-union %mp% zdd flipped)))
+       (cudd-ref union)
+       (cudd-recursive-deref-zdd %mp% flipped)
+       union))
+   'zdd-node t nil))
+
 ;; between 2 ZDDs
 
 (defun zdd-union (f g)

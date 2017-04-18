@@ -648,4 +648,5 @@
    #:integer->zdd-binate
    #:integer->zdd-unate
    #:follow-diagram
-   #:plot))
+   #:plot
+   #:zdd-dont-care))
