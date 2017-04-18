@@ -101,15 +101,8 @@ To take the disjunction of conjunctions, there are similarly named `node-or` fun
     ...)
 ```
 
-I don't think you need further explanation but there is one thing to note about
-for those unfamiliar with CUDD package. The function `node-complement` turns a
-variable into a node having a "complement" arc whose meaning of true-branch and
-false-branch are opposite from the standard node. Complement arcs exist for the
-performance. Detailed explanations are included in the CUDD manual. Briefly, the
-flag designating the complement arc is stored in the least significant bit in
-the else-branch pointer. Complement arc reduces the memory usage and cache usage
-because taking a complement of a node is a common operation, and complementing a
-node without such arc may create a huge number of nodes.
+``(plot pathname dd)`` function (accepts bdd, add and zdd) generates a dot file
+and a pdf, but requires graphviz.
 
 ### Representing real functions using ADD and taking their symbolic sum
 
