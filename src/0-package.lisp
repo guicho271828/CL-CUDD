@@ -641,4 +641,5 @@
    #:bdd-max-variables
    #:zdd-max-variables
    #:%mp%
-   #:map-ones))
+   #:map-ones
+   #:do-ones))

@@ -23,3 +23,11 @@ Returns the node."
                     (rec (cudd-node-else p)))))))
       (rec (node-pointer node))))
   node)
+
+(defmacro do-ones ((var dd) &body body)
+  "Runs a DFS on a ZDD. BODY is executed for each path in a ZDD to the constant 1-node.
+Entire body is wrapped in a block NIL.
+Symbol VAR is lexically bound to a bit vector which stores 1-bit when a zdd variable is true on the path.
+Returns the node."
+  `(block nil
+     (map-ones ,dd (lambda (,var) ,@body))))
