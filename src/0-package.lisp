@@ -639,4 +639,5 @@
    #:bdd-variables
    #:zdd-variables
    #:bdd-max-variables
-   #:zdd-max-variables))
+   #:zdd-max-variables
+   #:%mp%))
