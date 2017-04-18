@@ -15,7 +15,8 @@
               :alexandria
               :trivial-garbage
               :cl-cudd.build
-              :trivia.cffi)
+              :trivia.cffi
+              :iterate)
  :serial t
  :components ((:file "src/0-package")
               (:file "src/1-0-0-library")

@@ -59,3 +59,28 @@ Returns the node."
     (dotimes (i (length bv) zdd)
       (when (= 1 (aref bv i))
         (setf zdd (zdd-change zdd i))))))
+
+(defun follow-diagram (node thing)
+  "Follow the decision diagram according to the bits in THING, which is either an integer or a bit vector.
+Follow the then-branch when 1, else-branch otherwise."
+  (let ((p (node-pointer node)))
+    (etypecase thing
+      (integer
+       (iter (for index = (cudd-node-read-index p))
+             (while (< index (integer-length thing)))
+             (setf p
+                   (if (logbitp index thing)
+                       (cudd-node-then p)
+                       (cudd-node-else p)))))
+      (bit-vector
+       (iter (for index = (cudd-node-read-index p))
+             (while (< index (length thing)))
+             (setf p
+                   (if (plusp (aref thing index))
+                       (cudd-node-then p)
+                       (cudd-node-else p))))))
+    (etypecase node
+      (add-node (wrap-and-finalize p 'add-node))
+      (bdd-node (wrap-and-finalize p 'bdd-node))
+      (zdd-node (wrap-and-finalize p 'zdd-node)))))
+

@@ -504,7 +504,7 @@
 
 (defpackage cl-cudd
   (:documentation "High-level interface")
-  (:use :cl :cffi :alexandria :cl-cudd.swig-macros :cl-cudd.baseapi :trivia)
+  (:use :cl :cffi :alexandria :cl-cudd.swig-macros :cl-cudd.baseapi :trivia :iterate)
   (:nicknames :cudd)
   (:export 
    #:+AGREEMENT+
@@ -646,4 +646,5 @@
    #:integer->zdd
    #:bitvector->zdd
    #:integer->zdd-binate
-   #:integer->zdd-unate))
+   #:integer->zdd-unate
+   #:follow-diagram))
