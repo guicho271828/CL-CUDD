@@ -36,6 +36,10 @@ When index = 2 and N = 4, the resulting ZDD is as follows:
     (t (cudd-bdd-new-var manager))))
 
 
-
+(defun cudd-zdd-empty-belongs (dd node-ptr)
+  (do ()
+      ((cudd-node-is-constant node-ptr))
+    (setf node-ptr (cudd-node-else node-ptr)))
+  (pointer-eq (cudd-read-one dd) node-ptr))
 
 

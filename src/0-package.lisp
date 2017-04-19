@@ -476,7 +476,8 @@
            :cudd-bdd-variables
            :cudd-zdd-variables
            :cudd-bdd-max-variables
-           :cudd-zdd-max-variables)
+           :cudd-zdd-max-variables
+           :cudd-zdd-empty-belongs)
   ;; mtr api
   (:export :mtr-flags
            :MTR-ALLOC-NODE
