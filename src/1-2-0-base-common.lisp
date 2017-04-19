@@ -12,9 +12,13 @@
     (setf (ldb (byte 1 0) addr) 0)
     (make-pointer addr)))
 
+(declaim (ftype managed-node-operation
+                cudd-node-level
+                cudd-node-level-zdd))
 (declaim (ftype node-operation
                 cudd-node-is-constant
                 cudd-node-value
+                cudd-node-index
                 cudd-node-then
                 cudd-node-else
                 cudd-node-ref-count))
@@ -30,6 +34,18 @@ Warning: Undefined behaviour if DD is not a leaf node"
   (foreign-slot-value
    (foreign-slot-pointer (cudd-regular node) '(:struct dd-node) 'type)
    '(:union dd-node/type) 'value))
+
+(defun cudd-node-index (node)
+  "Return the index of an internal node."
+  (cudd-node-read-index node))
+
+(defun cudd-node-level (dd node)
+  "Return the index of an internal node."
+  (cudd-read-perm dd (cudd-node-read-index node)))
+
+(defun cudd-node-level-zdd (dd node)
+  "Return the index of an internal node."
+  (cudd-read-perm-zdd dd (cudd-node-read-index node)))
 
 (defun cudd-node-then (node)
   "Return the then-child of an inner node.

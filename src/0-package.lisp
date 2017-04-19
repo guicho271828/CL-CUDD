@@ -480,7 +480,10 @@
            :cudd-zdd-empty-belongs
            :CUDD-ZDD-GET-NODE
            :CUDD-UNIQUE-INTER
-           :CUDD-ZDD-UNIQUE-INTER)
+           :CUDD-ZDD-UNIQUE-INTER
+           :cudd-node-level
+           :cudd-node-level-zdd
+           :cudd-node-index)
   ;; mtr api
   (:export :mtr-flags
            :MTR-ALLOC-NODE
