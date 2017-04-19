@@ -13,7 +13,7 @@
   (:use :cl :cffi :cl-cudd.swig-macros :alexandria :trivia :trivia.cffi)
   (:shadow #:pi)
   ;; constants/variables/enums
-  (:export :+CUDD-MAXINDEX++
+  (:export :+CUDD-MAXINDEX+
            :+SIZEOF-INT+
            :+SIZEOF-LONG+
            :+SIZEOF-VOID-P+
