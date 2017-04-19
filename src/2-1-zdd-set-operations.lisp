@@ -151,6 +151,11 @@ cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
          p3)))
    'zdd-node t nil))
 
+;; aliasing
+(setf (fdefinition 'zdd-product) #'zdd-product-unate)
+(setf (fdefinition 'zdd-divide) #'zdd-divide-unate)
+(setf (fdefinition 'zdd-remainder) #'zdd-remainder-unate)
+
 ;; binate operations
 
 (defun zdd-divide-binate (f g)

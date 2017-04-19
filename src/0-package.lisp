@@ -649,4 +649,7 @@
    #:integer->zdd-unate
    #:follow-diagram
    #:plot
-   #:zdd-dont-care))
+   #:zdd-dont-care
+   #:zdd-product
+   #:zdd-divide
+   #:zdd-remainder))
