@@ -508,8 +508,8 @@
            :MTR-READ-GROUPS)
   ;; cache api
   (:export :cudd-cache-insert
-           :cudd-cache-insert1
-           :cudd-cache-insert2
+           :cudd-cache-insert-1
+           :cudd-cache-insert-2
            :cudd-cache-lookup
            :cudd-cache-lookup-1
            :cudd-cache-lookup-2
