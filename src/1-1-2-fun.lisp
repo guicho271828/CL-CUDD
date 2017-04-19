@@ -1,4 +1,8 @@
+;;;; cffi function definitions.
+
 (in-package :cl-cudd.baseapi)
+
+;;;; remove this when cffi upstream patch is approved
 
 (defcunion dd-node/type
   (value cudd-value-type)
@@ -10,6 +14,7 @@
   (next node)
   (type (:union dd-node/type)))
 
+;;;; external functions
 
 (defcfun ("Cudd_addNewVar" #.(lispify "Cudd_addNewVar" :function)) node
   (dd manager))
@@ -1545,7 +1550,7 @@
   (dd manager)
   (index :int))
 
-;; mtr api
+;;;; mtr functions --- used for grouping variables
 
 (defcfun ("Mtr_AllocNode" #.(lispify "Mtr_AllocNode" :function)) (:pointer (:struct mtr-node)))
 (defcfun ("Mtr_DeallocNode" #.(lispify "Mtr_DeallocNode" :function)) :void
