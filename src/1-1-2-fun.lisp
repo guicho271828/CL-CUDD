@@ -1642,3 +1642,23 @@
     (1 (foreign-alloc 'unary-operator))
     (2 (foreign-alloc 'binary-operator))
     (3 (foreign-alloc 'tertiary-operator))))
+
+(defcfun ("cuddUniqueInter"      #.(lispify "cuddUniqueInter"      :function)) node
+  (dd manager)
+  (id :int)
+  (then node)
+  (else node))
+
+(defcfun ("cuddZddUniqueInter"      #.(lispify "cuddZddUniqueInter"      :function)) node
+  ;; this function does not have reduction rule
+  (dd manager)
+  (id :int)
+  (then node)
+  (else node))
+
+(defcfun ("cuddZddGetNode"      #.(lispify "cuddZddGetNode"      :function)) node
+  (dd manager)
+  (id :int)
+  (then node)
+  (else node))
+
