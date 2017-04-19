@@ -198,3 +198,83 @@ the number of the variables that F essentially depends on."
       (cudd-zdd-count-minterm %mp% (node-pointer f) support-size)
       (cudd-zdd-count-double %mp% (node-pointer f))))
 
+
+;;;; reimplementing set operations in Extra package
+
+#|
+
+NOTE: use the native CUDD cache.
+
+|#
+
+(let ((op (new-cached-operator 2)))
+  (defun cudd-zdd-supset (dd f g)
+    (let* ((one (cudd-read-one dd))
+           (zero (cudd-read-zero dd)))
+      (labels ((rec (f g)
+                 (macrolet ((retnull (x)
+                              `(when (null-pointer-p ,x) (return-from rec ,x))))
+                   (cond
+                     ((pointer-eq f g)    f)
+                     ((pointer-eq zero f) zero)
+                     ((pointer-eq zero g) zero)
+                     ((pointer-eq one f)  one)
+                     ((pointer-eq one g)
+                      (if (cudd-zdd-empty-belongs dd f) one zero))
+                     (t
+                      (let ((zres (cudd-cache-lookup-2-zdd dd op f g)))
+                        (when (not (null-pointer-p zres))
+                          (return-from rec zres)))
+                      (let ((i1 (cudd-node-level-zdd dd f))
+                            (i2 (cudd-node-level-zdd dd g)))
+                        (cond
+                          ((< i1 i2)
+                           ;; all NULLs are derived from external function calls, but they
+                           ;; are already handled by type translators.
+                           (rec (cudd-node-else f) g))
+                          ((= i1 i2)
+                           (zdd-ref-let* ((ztmp (cudd-zdd-union dd (cudd-node-then g) (cudd-node-else g)))
+                                          (zres0 (rec (cudd-node-else f) ztmp))
+                                          (zres1 (rec (cudd-node-then f) (cudd-node-then g)))
+                                          (zres (cudd-zdd-get-node dd (cudd-node-index f) zres1 zres0) t))
+                             ;; cudd-zdd-get-node / cudd-zdd-unique-inter increases the zres0/zres1 refcount.
+                             ;; since we already called cudd_ref on them, this effect should be cancelled
+                             (cudd-deref zres0)
+                             (cudd-deref zres1)
+                             (cudd-cache-insert-2 dd op f g zres)
+                             zres))      ;is returned referenced
+                          (t
+                           (zdd-ref-let* ((ztmp (cudd-zdd-union dd (cudd-node-then g) (cudd-node-else g)))
+                                          (zres (rec f ztmp) t))
+                             (cudd-cache-insert-2 dd op f g zres)
+                             zres)))))))))      ;is returned referenced
+        (rec f g)))))
+
+
+(defun zdd-supset (f g)
+  "Returns the subset of F whose element is a superset of at least one element of G. {p ∈ P | ∃q ∈ Q p ⊇ q}
+
+Coudert, Olivier, Jean Christophe Madre, and Henri Fraisse. \"A new viewpoint on two-level logic minimization.\"
+Design Automation, 1993. 30th Conference on.
+
+Reference implementation is available in Extra libnrary by Alan Mishchenko.
+https://people.eecs.berkeley.edu/~alanmi/research/extra/
+"
+  (wrap-and-finalize
+   (cudd-zdd-supset %mp% (node-pointer f) (node-pointer g))
+   'zdd-node))
+
+;; (defun zdd-maximal (f)
+;;   (wrap-and-finalize
+;;    'zdd-node t nil))
+
+;; (defun zdd-minimal (f)
+;;   (wrap-and-finalize
+;;    'zdd-node t nil))
+
+;; (defun zdd-subset (f)
+;;   (wrap-and-finalize
+;;    'zdd-node t nil))
+
+
+

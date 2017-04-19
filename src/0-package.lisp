@@ -673,4 +673,8 @@
    #:zdd-dont-care
    #:zdd-product
    #:zdd-divide
-   #:zdd-remainder))
+   #:zdd-remainder
+   #:zdd-subset
+   #:zdd-supset
+   #:zdd-maximal
+   #:zdd-minimal))
