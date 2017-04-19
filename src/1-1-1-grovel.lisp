@@ -167,3 +167,10 @@
          (child "child" :type (:pointer (:struct mtr-node)))
          (elder "elder" :type (:pointer (:struct mtr-node)))
          (younger "younger" :type (:pointer (:struct mtr-node))))
+
+;;; cache interface
+
+(ctype tertiary-operator "ptruint")
+(ctype binary-operator "DD_CTFP")
+(ctype unary-operator "DD_CTFP1")
+

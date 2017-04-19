@@ -500,6 +500,20 @@
            :MTR-PRINT-GROUPS
            :MTR-PRINT-GROUPED-ORDER
            :MTR-READ-GROUPS)
+  ;; cache api
+  (:export :cudd-cache-insert
+           :cudd-cache-insert1
+           :cudd-cache-insert2
+           :cudd-cache-lookup
+           :cudd-cache-lookup-1
+           :cudd-cache-lookup-2
+           :cudd-cache-lookup-zdd
+           :cudd-cache-lookup-1-zdd
+           :cudd-cache-lookup-2-zdd
+           :cudd-constant-lookup
+           :cudd-cache-resize
+           :cudd-cache-flush
+           :new-cached-operator)
   ;; other exports done by swig
   )
 

@@ -1605,3 +1605,40 @@
 (defcfun ("Mtr_ReadGroups" #.(lispify "Mtr_ReadGroups" :function)) (:pointer (:struct mtr-node))
   (fp :pointer)
   (nleaves :int))
+
+;;;; internal cache manipulation functions --- you now extend CUDD from lisp by adding real cached operations
+;; note that lisp's hash table may not be that efficient / may be incompatible to CUDD GC?
+
+;; extern void cuddCacheInsert(DdManager *table, ptruint op, DdNode *f, DdNode *g, DdNode *h, DdNode *data);
+;; extern void cuddCacheInsert2(DdManager *table, DdNode * (*)(DdManager *, DdNode *, DdNode *), DdNode *f, DdNode *g, DdNode *data);
+;; extern void cuddCacheInsert1(DdManager *table, DdNode * (*)(DdManager *, DdNode *), DdNode *f, DdNode *data);
+;; extern DdNode * cuddCacheLookup(DdManager *table, ptruint op, DdNode *f, DdNode *g, DdNode *h);
+;; extern DdNode * cuddCacheLookupZdd(DdManager *table, ptruint op, DdNode *f, DdNode *g, DdNode *h);
+;; extern DdNode * cuddCacheLookup2(DdManager *table, DdNode * (*)(DdManager *, DdNode *, DdNode *), DdNode *f, DdNode *g);
+;; extern DdNode * cuddCacheLookup1(DdManager *table, DdNode * (*)(DdManager *, DdNode *), DdNode *f);
+;; extern DdNode * cuddCacheLookup2Zdd(DdManager *table, DdNode * (*)(DdManager *, DdNode *, DdNode *), DdNode *f, DdNode *g);
+;; extern DdNode * cuddCacheLookup1Zdd(DdManager *table, DdNode * (*)(DdManager *, DdNode *), DdNode *f);
+;; extern DdNode * cuddConstantLookup(DdManager *table, ptruint op, DdNode *f, DdNode *g, DdNode *h);
+;; extern int cuddCacheProfile(DdManager *table, FILE *fp);
+;; extern void cuddCacheResize(DdManager *table);
+;; extern void cuddCacheFlush(DdManager *table);
+
+(defcfun ("cuddCacheInsert"     #.(lispify "cuddCacheInsert"     :function)) :void (dd manager) (op tertiary-operator) (f node) (g node) (h node) (data node))
+(defcfun ("cuddCacheInsert2"    #.(lispify "cuddCacheInsert2"    :function)) :void (dd manager) (op binary-operator)   (f node) (g node) (data node))
+(defcfun ("cuddCacheInsert1"    #.(lispify "cuddCacheInsert1"    :function)) :void (dd manager) (op unary-operator)    (f node) (data node))
+(defcfun ("cuddCacheLookup"     #.(lispify "cuddCacheLookup"     :function)) unsafe-node  (dd manager) (op tertiary-operator) (f node) (g node) (h node))
+(defcfun ("cuddCacheLookupZdd"  #.(lispify "cuddCacheLookupZdd"  :function)) unsafe-node  (dd manager) (op tertiary-operator) (f node) (g node) (h node))
+(defcfun ("cuddCacheLookup2"    #.(lispify "cuddCacheLookup2"    :function)) unsafe-node  (dd manager) (op binary-operator)   (f node) (g node))
+(defcfun ("cuddCacheLookup1"    #.(lispify "cuddCacheLookup1"    :function)) unsafe-node  (dd manager) (op unary-operator)    (f node))
+(defcfun ("cuddCacheLookup2Zdd" #.(lispify "cuddCacheLookup2Zdd" :function)) unsafe-node  (dd manager) (op binary-operator)   (f node) (g node))
+(defcfun ("cuddCacheLookup1Zdd" #.(lispify "cuddCacheLookup1Zdd" :function)) unsafe-node  (dd manager) (op unary-operator)    (f node))
+(defcfun ("cuddConstantLookup"  #.(lispify "cuddConstantLookup"  :function)) unsafe-node  (dd manager) (op tertiary-operator) (f node) (g node) (h node))
+(defcfun ("cuddCacheResize"     #.(lispify "cuddCacheResize"     :function)) :void (dd manager))
+(defcfun ("cuddCacheFlush"      #.(lispify "cuddCacheFlush"      :function)) :void (dd manager))
+
+(defun new-cached-operator (arity)
+  "Returns a new pointer. Use it for the second value to cudd-cache-insert etc."
+  (ecase arity
+    (1 (foreign-alloc 'unary-operator))
+    (2 (foreign-alloc 'binary-operator))
+    (3 (foreign-alloc 'tertiary-operator))))

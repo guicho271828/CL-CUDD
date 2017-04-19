@@ -3,6 +3,7 @@
 
 (defctype node :pointer "A DD-node returned by CUDD")
 (defctype manager :pointer "A manager of CUDD")
+(defctype unsafe-node :pointer "A DD-node returned by CUDD, but does not signal error on NULL.")
 
 (define-foreign-type node-type ()
   ()
@@ -14,7 +15,10 @@
   (:actual-type :pointer)
   (:simple-parser manager))
 
-
+(define-foreign-type unsafe-node-type ()
+  ()
+  (:actual-type :pointer)
+  (:simple-parser unsafe-node))
 
 ;; Any functions in 1-1-2-fun.lisp should follow a certain arugment naming convention:
 ;; the arugument for a manager should be DD, otherwise DEFCFUN signals an error
