@@ -1,7 +1,38 @@
 
 (in-package :cudd)
 
-;; elementary sets
+(defmacro zdd-ref-let* (bindings &body body)
+  "For internal use only. Bind variables like let*, call cudd-ref, execute body,
+then calls cudd-recursive-deref-zdd in unwind-protect.
+
+However each binding may have an optional third element i.e. (var val no-deref),
+where no-deref, when evaluates to non-nil, disables the call to cudd-recursive-deref-zdd.
+"
+  (ematch bindings
+    (nil `(progn ,@body))
+    ((list* (list var form) rest)
+     `(let ((,var ,form))
+        (cudd-ref ,var)
+        (unwind-protect (zdd-ref-let* ,rest ,@body)
+          (cudd-recursive-deref-zdd %mp% ,var))))
+    ((list* (list var form) rest)
+     `(let ((,var ,form))
+        (cudd-ref ,var)
+        (unwind-protect (zdd-ref-let* ,rest ,@body)
+          (cudd-recursive-deref-zdd %mp% ,var))))
+    ((list* (list var form t) rest)
+     `(let ((,var ,form))
+        (cudd-ref ,var)
+        (zdd-ref-let* ,rest ,@body)))
+    ((list* (list var form no-deref) rest)
+     `(let ((,var ,form))
+        (cudd-ref ,var)
+        (if ,no-deref
+            (zdd-ref-let* ,rest ,@body)
+            (unwind-protect (zdd-ref-let* ,rest ,@body)
+              (cudd-recursive-deref-zdd %mp% ,var)))))))
+
+;;;; elementary sets
 
 (defun zdd-emptyset ()
   "Returns an empty set {}."
@@ -15,7 +46,7 @@
   "Returns {{var}}. This is not equivalent to (make-var 'zdd-node :index var), see make-var documentation."
   (zdd-change (zdd-set-of-emptyset) var))
 
-;; between a ZDD and a single variable
+;;;; between a ZDD and a single variable
 
 (defun zdd-subset-0 (zdd var)
   "Computes the subset of S that does not contain element VAR (integer)."
@@ -36,47 +67,32 @@
 (defun zdd-set (zdd var)
   "Add a variable VAR; i.e. force the value of VAR to be true"
   (wrap-and-finalize
-   (let ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var)))
-     (cudd-ref then)
-     (let ((else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var)))
-       (cudd-ref else)
-       (let ((union (cudd-zdd-union %mp% then else)))
-         (cudd-ref union)
-         (cudd-recursive-deref-zdd %mp% then)
-         (cudd-recursive-deref-zdd %mp% else)
-         (let ((result (cudd-zdd-change %mp% union var)))
-           (cudd-ref result)
-           (cudd-recursive-deref-zdd %mp% union)
-           result))))
+   (zdd-ref-let* ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
+                  (else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var))
+                  (union (cudd-zdd-union %mp% then else))
+                  (result (cudd-zdd-change %mp% union var) t))
+     result)
    'zdd-node t nil))
 
 (defun zdd-unset (zdd var)
   "Remove a variable VAR; i.e. force the value of VAR to be false"
   (wrap-and-finalize
-   (let ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var)))
-     (cudd-ref then)
-     (let ((else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var)))
-       (cudd-ref else)
-       (let ((union (cudd-zdd-union %mp% then else)))
-         (cudd-ref union)
-         (cudd-recursive-deref-zdd %mp% then)
-         (cudd-recursive-deref-zdd %mp% else)
-         union)))
+   (zdd-ref-let* ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
+                  (else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var))
+                  (union (cudd-zdd-union %mp% then else) t))
+     union)
    'zdd-node t nil))
 
 (defun zdd-dont-care (zdd var)
   "Direct the both arcs of the VAR'th node to the next index.
 If it does not exist (i.e. then-arc points to 0 and zero-suppressed) creates a new node."
   (wrap-and-finalize
-   (let ((flipped (cudd-zdd-change %mp% (node-pointer zdd) var)))
-     (cudd-ref flipped)
-     (let ((union (cudd-zdd-union %mp% (node-pointer zdd) flipped)))
-       (cudd-ref union)
-       (cudd-recursive-deref-zdd %mp% flipped)
-       union))
+   (zdd-ref-let* ((flipped (cudd-zdd-change %mp% (node-pointer zdd) var))
+                  (union (cudd-zdd-union %mp% (node-pointer zdd) flipped) t))
+     union)
    'zdd-node t nil))
 
-;; between 2 ZDDs
+;;;; between 2 ZDDs
 
 (defun zdd-union (f g)
   "Computes the union of F and G."
@@ -115,7 +131,7 @@ ZDD has no upper limit on the number of variables."
    (cudd-zdd-diff %mp% (node-pointer f) (node-pointer g))
    'zdd-node))
 
-;; unate operations
+;;;; unate operations
 
 (setf (fdefinition 'zdd-onset) #'zdd-subset-1
       (documentation 'zdd-onset 'function)
@@ -140,15 +156,10 @@ cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
 (defun zdd-remainder-unate (f g)
   "Computes the remainder of division of F by G (assumes unate representation)."
   (wrap-and-finalize
-   (let ((p1 (cudd-zdd-divide %mp% (node-pointer f) (node-pointer g))))
-     (cudd-ref p1)
-     (let ((p2 (cudd-zdd-unate-product %mp% (node-pointer f) p1)))
-       (cudd-ref p2)
-       (cudd-recursive-deref-zdd %mp% p1)
-       (let ((p3 (cudd-zdd-diff %mp% (node-pointer f) p2)))
-         (cudd-ref p3)
-         (cudd-recursive-deref-zdd %mp% p2)
-         p3)))
+   (zdd-ref-let* ((p1 (cudd-zdd-divide %mp% (node-pointer f) (node-pointer g)))
+                  (p2 (cudd-zdd-unate-product %mp% (node-pointer f) p1))
+                  (p3 (cudd-zdd-diff %mp% (node-pointer f) p2) t))
+     p3)
    'zdd-node t nil))
 
 ;; aliasing
@@ -156,7 +167,7 @@ cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
 (setf (fdefinition 'zdd-divide) #'zdd-divide-unate)
 (setf (fdefinition 'zdd-remainder) #'zdd-remainder-unate)
 
-;; binate operations
+;;;; binate operations
 
 (defun zdd-divide-binate (f g)
   "Computes the weak division of F by G (assumes binate representation).
@@ -173,15 +184,10 @@ cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
 (defun zdd-remainder-binate (f g)
   "Computes the remainder of division of F by G (assumes binate representation)."
   (wrap-and-finalize
-   (let ((p1 (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g))))
-     (cudd-ref p1)
-     (let ((p2 (cudd-zdd-product %mp% (node-pointer f) p1)))
-       (cudd-ref p2)
-       (cudd-recursive-deref-zdd %mp% p1)
-       (let ((p3 (cudd-zdd-diff %mp% (node-pointer f) p2)))
-         (cudd-ref p3)
-         (cudd-recursive-deref-zdd %mp% p2)
-         p3)))
+   (zdd-ref-let* ((p1 (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g)))
+                  (p2 (cudd-zdd-product %mp% (node-pointer f) p1))
+                  (p3 (cudd-zdd-diff %mp% (node-pointer f) p2) t))
+     p3)
    'zdd-node t nil))
 
 (defun zdd-count-minterm (f &optional support-size)
