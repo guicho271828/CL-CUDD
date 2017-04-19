@@ -70,7 +70,7 @@ If it does not exist (i.e. then-arc points to 0 and zero-suppressed) creates a n
   (wrap-and-finalize
    (let ((flipped (cudd-zdd-change %mp% (node-pointer zdd) var)))
      (cudd-ref flipped)
-     (let ((union (cudd-zdd-union %mp% zdd flipped)))
+     (let ((union (cudd-zdd-union %mp% (node-pointer zdd) flipped)))
        (cudd-ref union)
        (cudd-recursive-deref-zdd %mp% flipped)
        union))
