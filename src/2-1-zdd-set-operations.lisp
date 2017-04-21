@@ -1,3 +1,4 @@
+;;; set operations for zdd
 
 (in-package :cudd)
 
@@ -87,9 +88,12 @@ where no-deref, when evaluates to non-nil, disables the call to cudd-recursive-d
   "Direct the both arcs of the VAR'th node to the next index.
 If it does not exist (i.e. then-arc points to 0 and zero-suppressed) creates a new node."
   (wrap-and-finalize
-   (zdd-ref-let* ((flipped (cudd-zdd-change %mp% (node-pointer zdd) var))
-                  (union (cudd-zdd-union %mp% (node-pointer zdd) flipped) t))
-     union)
+   (zdd-ref-let* ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
+                  (else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var))
+                  (union (cudd-zdd-union %mp% then else))
+                  (flipped (cudd-zdd-change %mp% union var))
+                  (result (cudd-zdd-union %mp% union flipped) t))
+     result)
    'zdd-node t nil))
 
 ;;;; between 2 ZDDs
