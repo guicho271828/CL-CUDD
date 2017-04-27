@@ -4,13 +4,26 @@
 
 (defmacro zdd-ref-let* (bindings &body body)
   "For internal use only. Bind variables like let*, call cudd-ref, execute body,
-then calls cudd-recursive-deref-zdd in unwind-protect.
+then cleanup the node calling cudd-recursive-deref-zdd in unwind-protect.
 
 However each binding may have an optional third element i.e. (var val no-deref),
 where no-deref, when evaluates to non-nil, disables the call to cudd-recursive-deref-zdd.
+
+Finally, a binding could be just t, which means the value of this form is
+dereferenced (cudd-deref) once AFTER all unwind-protect form is exited.
 "
   (ematch bindings
     (nil `(progn ,@body))
+    ((list* 't rest)
+     (with-gensyms (res)
+       `((lambda (,res)
+           (cudd-deref ,res)
+          ,res)
+         (zdd-ref-let* ,rest ,@body))
+       ;; `(let ((,res (zdd-ref-let* ,rest ,@body)))
+       ;;    (cudd-deref ,res)
+       ;;    ,res)
+       ))
     ((list* (list var form) rest)
      `(let ((,var ,form))
         (cudd-ref ,var)
@@ -237,7 +250,8 @@ NOTE: use the native CUDD cache.
                            ;; are already handled by type translators.
                            (rec (cudd-node-else f) g))
                           ((= i1 i2)
-                           (zdd-ref-let* ((ztmp (cudd-zdd-union dd (cudd-node-then g) (cudd-node-else g)))
+                           (zdd-ref-let* (t ; returned with reference 0
+                                          (ztmp (cudd-zdd-union dd (cudd-node-then g) (cudd-node-else g)))
                                           (zres0 (rec (cudd-node-else f) ztmp))
                                           (zres1 (rec (cudd-node-then f) (cudd-node-then g)))
                                           (zres (cudd-zdd-get-node dd (cudd-node-index f) zres1 zres0) t))
@@ -248,10 +262,11 @@ NOTE: use the native CUDD cache.
                              (cudd-cache-insert-2 dd op f g zres)
                              zres))      ;is returned referenced
                           (t
-                           (zdd-ref-let* ((ztmp (cudd-zdd-union dd (cudd-node-then g) (cudd-node-else g)))
+                           (zdd-ref-let* (t ; returned with reference 0
+                                          (ztmp (cudd-zdd-union dd (cudd-node-then g) (cudd-node-else g)))
                                           (zres (rec f ztmp) t))
                              (cudd-cache-insert-2 dd op f g zres)
-                             zres)))))))))      ;is returned referenced
+                             zres)))))))))
         (rec f g)))))
 
 
