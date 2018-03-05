@@ -26,7 +26,7 @@
     (cudd-add-hook p (callback after-gc-hook) :cudd-post-gc-hook)
     (cudd-add-hook p (callback before-gc-hook) :cudd-pre-reordering-hook)
     (cudd-add-hook p (callback after-gc-hook) :cudd-post-reordering-hook)
-    (tg:finalize m (lambda () (cudd-quit p)))
+    (tg:finalize m (lambda () (format *error-output* "~&freeing a cudd manager at ~a~%" p) (cudd-quit p)))
     m))
 
 (defvar *manager* nil "The current manager.
