@@ -19,19 +19,25 @@
   "Returns a  node with value infinity."
   (wrap-and-finalize
    (cudd-read-plus-infinity %mp%)
-   'add-node))
+   'add-node
+   ;; because these nodes are predefined constants.
+   nil))
 
 (defun minus-infinity ()
   "Returns a  node with value -infinity."
   (wrap-and-finalize
    (cudd-read-minus-infinity %mp%)
-   'add-node))
+   'add-node
+   ;; because these nodes are predefined constants.
+   nil))
 
 (defun epsilon ()
   "Returns a  node with value infinity."
   (wrap-and-finalize
    (cudd-read-epsilon %mp%)
-   'add-node))
+   'add-node
+   ;; because these nodes are predefined constants.
+   nil))
 
 ;;; Functions for add-apply
 (eval-when (:compile-toplevel :load-toplevel :execute)

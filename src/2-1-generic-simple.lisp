@@ -86,9 +86,14 @@ When index = 2 and N = 4, the resulting ZDD looks as follows:
                 else branch"
   (declare (node-type type))
   (ecase type
-    (bdd-node (wrap-and-finalize (bdd-var %mp% :index index :level level) type nil nil))
-    (add-node (wrap-and-finalize (add-var %mp% :index index :level level) type t t))
-    (zdd-node (wrap-and-finalize (zdd-var %mp% :index index :level level) type t t))))
+    ;; var is a projection function, and its reference count is always greater
+    ;; than 0. Therefore, there is no call to Cudd Ref.
+    (bdd-node (wrap-and-finalize (bdd-var %mp% :index index :level level) type nil))
+    ;; The ADD projection function are not maintained by the manager. It is
+    ;; therefore necessary to reference and dereference them.
+    (add-node (wrap-and-finalize (add-var %mp% :index index :level level) type))
+    ;; The projection functions are referenced, because they are not maintained by the manager.
+    (zdd-node (wrap-and-finalize (zdd-var %mp% :index index :level level) type))))
 
 (defun node-then (type node)
   "Return the then child of an inner node"
@@ -120,10 +125,16 @@ ZDD: the arithmetic zero node (0.0d0). (Same as ADD)"
    (ecase type
      (bdd-node (cudd-read-logic-zero %mp%))
      (add-node (cudd-read-zero %mp%))
-     (zdd-node (cudd-read-zero %mp%))) type))
+     (zdd-node (cudd-read-zero %mp%)))
+   type
+   ;; because these nodes are predefined constants.
+   nil))
 
 (defun one-node (type)
-  "return the one node."
+  "return the constant one node."
   (declare (node-type type))
-  (wrap-and-finalize (cudd-read-one %mp%) type))
+  (wrap-and-finalize (cudd-read-one %mp%)
+                     type
+                     ;; because these nodes are predefined constants.
+                     nil))
 
