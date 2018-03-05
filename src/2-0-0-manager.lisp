@@ -23,6 +23,7 @@
                        cache-size
                        max-memory))
          (m (make-manager :pointer p)))
+    ;; see 2-4-hook.lisp
     (cudd-add-hook p (callback before-gc-hook) :cudd-pre-gc-hook)
     (cudd-add-hook p (callback after-gc-hook) :cudd-post-gc-hook)
     (cudd-add-hook p (callback before-gc-hook) :cudd-pre-reordering-hook)
