@@ -52,6 +52,11 @@ Set the finalizer to call cudd-recursive-deref."
     (format stream " REF ~d"
             (cudd-node-ref-count (node-pointer object)))))
 
+(declaim (inline node-index
+                 node-equal
+                 node-constant-p
+                 node-value))
+
 (defun node-index (node)
   (cudd-node-read-index (node-pointer node)))
 
