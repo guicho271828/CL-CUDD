@@ -119,36 +119,36 @@ Notice that:
 (defun zdd-set (zdd var)
   "Add a variable VAR; i.e. force the value of VAR to be true"
   (wrap-and-finalize
-   (zdd-ref-let* ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
+   (zdd-ref-let* (t
+                  (then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
                   (else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var))
                   (union (cudd-zdd-union %mp% then else))
                   (result (cudd-zdd-change %mp% union var) t))
      result)
-   ;; result is already cudd-ref'ed.
-   'zdd-node t nil))
+   'zdd-node))
 
 (defun zdd-unset (zdd var)
   "Remove a variable VAR; i.e. force the value of VAR to be false"
   (wrap-and-finalize
-   (zdd-ref-let* ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
+   (zdd-ref-let* (t
+                  (then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
                   (else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var))
                   (union (cudd-zdd-union %mp% then else) t))
      union)
-   ;; result is already cudd-ref'ed.
-   'zdd-node t nil))
+   'zdd-node))
 
 (defun zdd-dont-care (zdd var)
   "Direct the both arcs of the VAR'th node to the next index.
 If it does not exist (i.e. then-arc points to 0 and zero-suppressed) creates a new node."
   (wrap-and-finalize
-   (zdd-ref-let* ((then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
+   (zdd-ref-let* (t
+                  (then (cudd-zdd-subset-1 %mp% (node-pointer zdd) var))
                   (else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var))
                   (union (cudd-zdd-union %mp% then else))
                   (flipped (cudd-zdd-change %mp% union var))
                   (result (cudd-zdd-union %mp% union flipped) t))
      result)
-   ;; result is already cudd-ref'ed.
-   'zdd-node t nil))
+   'zdd-node))
 
 ;;;; between 2 ZDDs
 
@@ -214,11 +214,12 @@ cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
 (defun zdd-remainder-unate (f g)
   "Computes the remainder of division of F by G (assumes unate representation)."
   (wrap-and-finalize
-   (zdd-ref-let* ((p1 (cudd-zdd-divide %mp% (node-pointer f) (node-pointer g)))
+   (zdd-ref-let* (t
+                  (p1 (cudd-zdd-divide %mp% (node-pointer f) (node-pointer g)))
                   (p2 (cudd-zdd-unate-product %mp% (node-pointer f) p1))
                   (p3 (cudd-zdd-diff %mp% (node-pointer f) p2) t))
      p3)
-   'zdd-node t nil))
+   'zdd-node))
 
 ;; aliasing
 (setf (fdefinition 'zdd-product) #'zdd-product-unate)
@@ -242,11 +243,12 @@ cf. Shin-ichi Minato: Zero-Suppressed BDDs and Their Applications"
 (defun zdd-remainder-binate (f g)
   "Computes the remainder of division of F by G (assumes binate representation)."
   (wrap-and-finalize
-   (zdd-ref-let* ((p1 (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g)))
+   (zdd-ref-let* (t
+                  (p1 (cudd-zdd-weak-div %mp% (node-pointer f) (node-pointer g)))
                   (p2 (cudd-zdd-product %mp% (node-pointer f) p1))
                   (p3 (cudd-zdd-diff %mp% (node-pointer f) p2) t))
      p3)
-   'zdd-node t nil))
+   'zdd-node))
 
 (defun zdd-count-minterm (f &optional support-size)
   "Computes the number of minterms in f.

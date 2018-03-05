@@ -9,39 +9,47 @@
   (pointer (required) :type cffi:foreign-pointer))
 
 (declaim (inline wrap-and-finalize))
-(defun wrap-and-finalize (pointer type &optional (finalize t) (ref t))
-  "Wrap the given pointer in a node-node of type TYPE.
-Set the finalizer to call cudd-recursive-deref."
+(defun wrap-and-finalize (pointer type)
+  "Wrap the given pointer in a node of type TYPE.
+If a node for the same pointer is already in the lisp image, it is reused.
+Otherwise, a new node object is instantiated.
+
+When a new lisp node is created, we call cudd-ref on the given pointer.
+We also set a finalizer for the node
+which calls cudd-recursive-deref on the pointer when the lisp node is garbage collected.
+"
   (declare (foreign-pointer pointer)
            ((member bdd-node add-node zdd-node) type))
-  (when ref
-    (cudd-ref pointer))
-  (let ((node (ecase type
-                (bdd-node (make-bdd-node :pointer pointer))
-                (add-node (make-add-node :pointer pointer))
-                (zdd-node (make-zdd-node :pointer pointer)))))
-    (when finalize
-      (trivial-garbage:finalize
-       node
-       (let ((manager *manager*))
-         ;; NOTE: ^^^ This holds the reference from the __finalizer function__ to
-         ;; the manager (along with avoiding problems related to dynamic binding).
-         ;; Without it, the finalizer may be called after the manager is finalized
-         ;; (i.e. cudd-quit is called), invalidating the pointer to the node.
-         ;; It is insufficient to reference a manager from a node, since the order
-         ;; to call finalizers is unspecified. If a manager and a node is freed in
-         ;; the same gc, it could be possible that cudd-quit is called
-         ;; first. Manager object should be referenced until the node finalizer
-         ;; is called.
-         (lambda ()
-           (let ((mp (manager-pointer manager)))
-             (when (zerop (cudd-node-ref-count pointer))
-               (error "Tried to decrease reference count of node that already has refcount zero"))
-             (ecase type
-               (bdd-node (cudd-recursive-deref mp pointer))
-               (add-node (cudd-recursive-deref mp pointer))
-               (zdd-node (cudd-recursive-deref-zdd mp pointer))))))))
-    node))
+  (ensure-gethash
+   pointer
+   (manager-node-hash *manager*)
+   (progn
+     (cudd-ref pointer)
+     (let ((node (ecase type
+                   (bdd-node (make-bdd-node :pointer pointer))
+                   (add-node (make-add-node :pointer pointer))
+                   (zdd-node (make-zdd-node :pointer pointer)))))
+       (trivial-garbage:finalize
+        node
+        (let ((manager *manager*))
+          ;; NOTE: ^^^ This holds the reference from the __finalizer function__ to
+          ;; the manager (along with avoiding problems related to dynamic binding).
+          ;; Without it, the finalizer may be called after the manager is finalized
+          ;; (i.e. cudd-quit is called), invalidating the pointer to the node.
+          ;; It is insufficient to reference a manager from a node, since the order
+          ;; to call finalizers is unspecified. If a manager and a node is freed in
+          ;; the same gc, it could be possible that cudd-quit is called
+          ;; first. Manager object should be referenced until the node finalizer
+          ;; is called.
+          (lambda ()
+            (let ((mp (manager-pointer manager)))
+              (when (zerop (cudd-node-ref-count pointer))
+                (error "Tried to decrease reference count of node that already has refcount zero"))
+              (ecase type
+                (bdd-node (cudd-recursive-deref mp pointer))
+                (add-node (cudd-recursive-deref mp pointer))
+                (zdd-node (cudd-recursive-deref-zdd mp pointer)))))))
+       node))))
 
 (defmethod print-object ((object node) stream)
   (print-unreadable-object (object stream :type (type-of object) :identity nil)
