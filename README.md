@@ -53,13 +53,14 @@ This layer is a very thin wrapper around the C library,
 passes raw pointers around and requires that you take care of reference counting.
 
 Above this layer there is a package named `cl-cudd` (with a nickname `cudd`).
-It wraps the pointers from the lower layer, takes care of reference counting for you, and also
+It wraps the pointers from the lower layer, takes care of reference counting for you, 
+defines several high-level operations, and also
 adds documentation from the CUDD manual.
 
 DD Construction Examples
 ------------------------
 
-See [EXAMPLE.md](EXAMPLE.md).
+See [EXAMPLES.md](EXAMPLES.md).
 
 System structure
 ----------------
