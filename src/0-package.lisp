@@ -677,4 +677,5 @@
    #:zdd-subset
    #:zdd-supset
    #:zdd-maximal
-   #:zdd-minimal))
+   #:zdd-minimal
+   #:manager-init))
