@@ -15,8 +15,7 @@
                        (initial-num-vars-z 0)
                        (initial-num-slots 256)
                        (cache-size 262144)
-                       (max-memory 0)
-                       (stack-allocated nil))
+                       (max-memory 0))
   (let* ((p (cudd-init initial-num-vars
                        initial-num-vars-z
                        initial-num-slots
@@ -28,8 +27,7 @@
     (cudd-add-hook p (callback after-gc-hook) :cudd-post-gc-hook)
     (cudd-add-hook p (callback before-gc-hook) :cudd-pre-reordering-hook)
     (cudd-add-hook p (callback after-gc-hook) :cudd-post-reordering-hook)
-    (unless stack-allocated
-      (tg:finalize m (lambda () (format *error-output* "~&freeing a cudd manager at ~a~%" p) (cudd-quit p))))
+    (tg:finalize m (lambda () (format *error-output* "~&freeing a cudd manager at ~a~%" p) (cudd-quit p)))
     m))
 
 (defvar *manager* nil "The current manager.
@@ -45,8 +43,7 @@ Bound to a global manager by default.")
                          (initial-num-vars-z 0)
                          (initial-num-slots 256)
                          (cache-size 262144)
-                         (max-memory 0)
-                         (stack-allocated nil))
+                         (max-memory 0))
                         &body body)
   "Bind a freshly generated manager to *MANAGER*.
 This macro is not so useful when multiple managers are in place.
@@ -63,7 +60,6 @@ Also, all data on the diagram are lost when it exits the scope of WITH-MANAGER.
   values for the maximum size of the cache and for the limit for fast
   unique table growth based on the available memory.
 
-* STACK-ALLOCATED : when true, free the manager as soon as the execution exits from the dynamic extent
 "
 
   (declare (ignorable initial-num-vars
@@ -71,16 +67,8 @@ Also, all data on the diagram are lost when it exits the scope of WITH-MANAGER.
                       initial-num-slots
                       cache-size
                       max-memory))
-  (if stack-allocated
-      `(let (*manager*)
-         (unwind-protect
-              (progn (setf *manager* (manager-init ,@keys))
-                     ,@body)
-           (let ((p (manager-pointer *manager*)))
-             (format *error-output* "~&freeing a cudd manager at ~a~%" p)
-             (cudd-quit p))))
-      `(let ((*manager* (manager-init ,@keys)))
-         ,@body)))
+  `(let ((*manager* (manager-init ,@keys)))
+     ,@body))
 
 (defun info ()
   (uiop:with-temporary-file (:stream s :pathname path)
