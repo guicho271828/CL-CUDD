@@ -3,11 +3,16 @@
 (in-package :cudd)
 
 (defmacro zdd-ref-let* (bindings &body body)
-  "For internal use only. Bind variables like let*, call cudd-ref, execute body,
-then cleanup the node calling cudd-recursive-deref-zdd in unwind-protect.
+  "
+The purpose of using this macro is to defining a high-level operations of zdd without
+instantiating the lisp node objects. For internal use only.
 
-However each binding may have an optional third element i.e. (var val no-deref),
-where no-deref, when evaluates to non-nil, disables the call to cudd-recursive-deref-zdd.
+Bind temporary variables like let*, call cudd-ref, execute the body,
+then cleanup the nodes with cudd-recursive-deref-zdd in unwind-protect.
+
+However each binding may have an optional third element i.e. (var val no-deref).
+When no-deref evaluates to non-nil, it does not call cudd-recursive-deref-zdd.
+This is useful for returning a meaningful node.
 
 Finally, a binding could be just t, which means the value of this form is
 dereferenced (cudd-deref) once AFTER all unwind-protect form is exited.
@@ -86,6 +91,7 @@ dereferenced (cudd-deref) once AFTER all unwind-protect form is exited.
                   (union (cudd-zdd-union %mp% then else))
                   (result (cudd-zdd-change %mp% union var) t))
      result)
+   ;; result is already cudd-ref'ed.
    'zdd-node t nil))
 
 (defun zdd-unset (zdd var)
@@ -95,6 +101,7 @@ dereferenced (cudd-deref) once AFTER all unwind-protect form is exited.
                   (else (cudd-zdd-subset-0 %mp% (node-pointer zdd) var))
                   (union (cudd-zdd-union %mp% then else) t))
      union)
+   ;; result is already cudd-ref'ed.
    'zdd-node t nil))
 
 (defun zdd-dont-care (zdd var)
@@ -107,6 +114,7 @@ If it does not exist (i.e. then-arc points to 0 and zero-suppressed) creates a n
                   (flipped (cudd-zdd-change %mp% union var))
                   (result (cudd-zdd-union %mp% union flipped) t))
      result)
+   ;; result is already cudd-ref'ed.
    'zdd-node t nil))
 
 ;;;; between 2 ZDDs
