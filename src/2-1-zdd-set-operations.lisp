@@ -4,7 +4,7 @@
 
 (defmacro zdd-ref-let* (bindings &body body)
   "
-The purpose of using this macro is to defining a high-level operations of zdd without
+The purpose of using this macro is to defining a high-level operations on zdd without
 instantiating the lisp node objects. For internal use only.
 
 Bind temporary variables like let*, call cudd-ref, execute the body,
@@ -16,6 +16,39 @@ This is useful for returning a meaningful node.
 
 Finally, a binding could be just t, which means the value of this form is
 dereferenced (cudd-deref) once AFTER all unwind-protect form is exited.
+
+This corresponds to the programming pattern that appears on CUDD manual, as follows:
+
+tmp = Cudd_ReadZddOne(manager,0);
+Cudd_Ref(tmp);
+for (i = 3; i >= 0; i--) {
+   var = Cudd_zddIthVar(manager,i);
+   Cudd_Ref(var);
+   f = Cudd_zddIntersect(manager,var,tmp);
+   Cudd_Ref(f);
+   Cudd_RecursiveDerefZdd(manager,tmp);
+   Cudd_RecursiveDerefZdd(manager,var);
+   tmp = f;
+}
+f = Cudd_zddDiff(manager,Cudd_ReadZddOne(manager,0),tmp);
+Cudd_Ref(f);
+Cudd_RecursiveDerefZdd(manager,tmp);
+
+Cudd_Deref(f); // if you need a function that returns f with refcount zero
+
+In our case, a single loop of this example roughly translates to the following form:
+
+(zdd-ref-let* (t
+               (tmp (cudd-read-zdd-one %mp% 0))
+               (var (cudd-zdd-ith-var %mp% i))
+               (f   (cudd-zdd-intersect %mp% var tmp)
+                    t))
+  f)
+
+Notice that:
++ Temporary variables are recursively deref'ed by unwind-protect.
++ f is marked not recursively deref'ed, by (f (cudd-zdd-intersect %mp% var tmp) t).
++ Using t in the binding, thus deref f once (non recursively) when exit.
 "
   (ematch bindings
     (nil `(progn ,@body))
