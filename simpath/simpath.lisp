@@ -179,7 +179,7 @@
                 (v (var)   (make-var 'zdd-node :index var)))
          (with-manager (:initial-num-vars-z (+ %mates %edges)
                                             :max-memory 1000000 ; 1Mbyte
-                                            :stack-allocated t)
+                                            )
            (cl-cudd:info)
            ;; (set-zdd-variable-group :mtr-default :from 0 :size %mates)
            ;; (set-zdd-variable-group :mtr-default :from %mates :size %edges)
