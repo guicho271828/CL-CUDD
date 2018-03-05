@@ -58,6 +58,12 @@ adds documentation from the CUDD manual.
 
 DD Construction Examples
 ------------------------
+Table of contents:
++ Representing a binary function using BDD
++ Representing real functions using ADD and taking their symbolic sum
++ Representing a family of set using ZDD
++ The more complex example in simpath/ directory which implements Knuth's simpath algorithm in ZDD.
+  See [README](blob/master/simpath/README.md)
 
 ### Representing a binary function using BDD
 
