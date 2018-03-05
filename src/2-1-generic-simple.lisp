@@ -57,25 +57,33 @@ or creates a new DD variable.
 If level is given, then the new variable has an index equal to the largest
 previous index plus 1 and is positioned at the specified level in the order.
 
-Returns a pointer to the new variable if successful;
-invokes a signal otherwise.
+Returns a node to the new variable if successful; invokes a signal otherwise.
 The returned node has the following properties depending on the type:
 
 type = BDD-NODE: The returned node is an internal node with both outgoing arcs
-pointing to the constant 1. The else arc is complemented.
+pointing to the constant 1. The else arc is complemented. Constant 1 node is shared by BDD,ADD,ZDD.
+
+ (index)-----[1]
+        \.../
+          (complemented arc)
 
 type = ADD-NODE: The returned node is an internal node with THEN arc pointing to the constant 1
 and ELSE arc pointing to the arithmetic zero.
 
+ (index)--[1]
+        \
+         +[arithmetic 0]
+
 type = ZDD-NODE: The returned node is the root of N+1 nodes,
 where N is the maximum number of variables currently recognized by the manager.
 This is because that's the way ZDD represents a projection function of a single variable.
-When index = 2 and N = 4, the resulting ZDD is as follows:
+When index = 2 and N = 4, the resulting ZDD looks as follows:
 
-                then
+                then branch
  (root)-(0)=(1)=(2)-(3)=(4)=[1]
-                +----------[0]
-                else "
+                |
+                +----------[arithmetic 0]
+                else branch"
   (declare (node-type type))
   (ecase type
     (bdd-node (wrap-and-finalize (bdd-var %mp% :index index :level level) type nil nil))
