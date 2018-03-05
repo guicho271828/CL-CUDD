@@ -21,7 +21,7 @@ which calls cudd-recursive-deref on the pointer when the lisp node is garbage co
   (declare (foreign-pointer pointer)
            ((member bdd-node add-node zdd-node) type))
   (ensure-gethash
-   pointer
+   (cffi:pointer-address pointer)
    (manager-node-hash *manager*)
    (progn
      (cudd-ref pointer)

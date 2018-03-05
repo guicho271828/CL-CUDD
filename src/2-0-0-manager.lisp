@@ -3,9 +3,6 @@
 
 ;;; Manager
 
-#+sbcl
-(sb-ext:define-hash-table-test cffi:pointer-eq cffi:pointer-address)
-
 (defstruct manager
   "A boxed CUDD manager class"
   (pointer (error "MANAGER needs to wrap a pointer")
@@ -15,7 +12,7 @@
   ;; It stores a mapping between a node pointer <-> a lisp node.
   ;; This is added since each dd-node is considered unique and
   ;; it is ugly when there are multiple lisp node objects for a single dd-node pointer.
-  (node-hash (tg:make-weak-hash-table :weakness :value #+sbcl :test #+sbcl 'cffi:pointer-eq)
+  (node-hash (tg:make-weak-hash-table :weakness :value)
              :type hash-table))
 
 (define-symbol-macro %mp% (manager-pointer *manager*))
